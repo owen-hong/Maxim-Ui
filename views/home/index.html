@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Maxim</title>
+    <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+
+<!-- loadding -->
+<div id="loadding-box" style="display: none;">
+    <div class="uploader-box loading-box">
+        <svg version="1.1" class="loading-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+              <path opacity="0.2" fill="#06c" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path>
+              <path fill="#06c" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                C22.32,8.481,24.301,9.057,26.013,10.047z" transform="rotate(120.437 20 20)">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform>
+                </path>
+            </svg>
+    </div>
+</div>
+<!-- end-->
+
+<div class="content">
+    <div class="flex-box">
+        <aside>
+            <div class="logo"></div>
+            <menu>
+                <ul class="menu-list">
+                    <% configItemes.forEach(function(result,i){ %>
+                    <% if(i===0){ %>
+                    <li class="cur">
+                        <a href="javascript:void(0);"><%= result.itemsName %></a>
+                        <i class="arrow-left"></i>
+                    </li>
+                    <% }else{ %>
+                    <li>
+                        <a href="javascript:void(0);"><%= result.itemsName %></a>
+                        <i class="arrow-left"></i>
+                    </li>
+                    <% } })%>
+                </ul>
+                <input type="hidden" name="itemsIndex" value="0"/>
+            </menu>
+            <div class="project-btn-box">
+                <a href="javascript:void(0);" id="addProject" title="新增项目">
+                    <i class="add-icon"></i>新建
+                </a>
+                <a href="javascript:void(0);" id="settingBtn">
+                    <i class="setting-icon"></i>设置
+                </a>
+
+            </div>
+        </aside>
+        <main>
+            <div class="itemes-info">
+                <span class="text"><%= configItemes[0].itemsName %></span>
+                <a href="javascript:void(0);" class="edit-btn" title="编辑当前项目">
+                    <i class="edit-icon"></i>
+                </a>
+            </div>
+            <div class="shortcut-operations">
+                <a href="javascript:void(0);" id="clearLogs">清空LOG</a>
+                <a href="javascript:void(0);" id="repeatLastfiles">执行上一次操作</a>
+            </div>
+            <div class="drop-files-box" id="drag-and-drop-zone">
+                <!-- logs -->
+                <em class="drop-tips">请拖拽文件到此区域</em>
+            </div>
+        </main>
+        <div class="global-operations">
+            <a href="javascript:void(0);" title="最小化窗口" class="minimize-btn" id="minimize"></a>
+            <a href="javascript:void(0);" title="全屏模式" class="fullscreen-btn" id="enterFullscreen"></a>
+            <a href="javascript:void(0);" title="关闭软件" class="close-btn" id="closeSortware"></a>
+        </div>
+        <div class="operations-box">
+            <a href="javascript:void(0)" class="close-btn" id="close-btn">
+                <i class="arrow-icon"></i>
+            </a>
+            <% if(configItemes[0].imgSwitch =="youtu"){ %>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="tinyimg">tinyimg压缩
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" checked class="radio" value="youtu">优图压缩
+            </label>
+            <% } else {%>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" checked class="radio" value="tinyimg">tinyimg压缩
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="youtu">优图压缩
+            </label>
+            <% } %>
+
+            <hr/>
+
+            <% if(configItemes[0].ftpSwitch =="true"){ %>
+            <label class="check-inline">
+                <input type="checkbox" id="ftpSwitch" class="checkbox" checked>FTP上传
+            </label>
+            <% } else {%>
+            <label class="check-inline">
+                <input type="checkbox" id="ftpSwitch" class="checkbox">FTP上传
+            </label>
+            <% } %>
+            <hr/>
+            <div class="form-group">
+                <label class="control-label">Sprites：</label>
+                <div class="col-sm-8">
+                    <div style="margin-bottom:10px;">
+                        <% if(configItemes[0].spriteNameSwitch =="true"){ %>
+                        <label class="check-inline">
+                            <input type="checkbox" class="checkbox" checked name="spriteNameSwitch" checked>新名规则：CSS名-版本号
+                        </label>
+                        <% } else {%>
+                        <label class="check-inline">
+                            <input type="checkbox" class="checkbox" name="spriteNameSwitch">新名规则：CSS名-版本号
+                        </label>
+                        <% } %>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" disabled name="spriteName" class="form-control" placeholder="" value="<%= configItemes[0].spriteName %>">
+                        <a href="javascript:void(0);" id="changeSpriteKey" style="display: none;">换一个</a>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="form-group">
+                <label class="control-label">CSS命名：</label>
+                <div class="col-sm-8">
+                    <div style="margin-bottom:10px;">
+                        <% if(configItemes[0].cssNameSwitch =="true"){ %>
+                        <label class="check-inline">
+                            <input type="checkbox" class="checkbox" checked name="cssNameSwitch" checked>新名规则：原名-版本号
+                        </label>
+                        <% } else {%>
+                        <label class="check-inline">
+                            <input type="checkbox" class="checkbox" name="cssNameSwitch">新名规则：原名-版本号
+                        </label>
+                        <% } %>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" disabled name="cssName" class="form-control" placeholder="" value="<%= configItemes[0].cssName %>">
+                        <a href="javascript:void(0);" id="changeCssKey" style="display: none;">换一个</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="panelBox" value="0"/>
+<script src="/js/dist/sea.js" id="seajsnode"></script>
+<script>
+    // seajs 的简单配置
+    seajs.config({
+        base: "/js/modules/",
+        alias: {
+            "jquery": "/js/jquery/2.1.4/jquery"
+        },
+        debug:true
+    })
+
+    // 加载入口模块
+    seajs.use("/js/global.js")
+</script>
+
+</body>
+</html>

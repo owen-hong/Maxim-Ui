@@ -1,0 +1,41 @@
+.checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    vertical-align: middle;
+    outline: none;
+    background: none\0;
+    background-image: url(img/slice/form/checkbox.png);
+    -webkit-appearance: none;
+    *background: none;
+}
+
+.checkbox:hover,
+.checkbox:focus {
+    background-image: url(img/slice/form/checkbox-hover.png);
+}
+
+.checkbox:checked {
+    background-image: url(img/slice/form/checkbox-checked.png);
+}
+.checkbox:checked:hover {
+    background-image: url(img/slice/form/checkbox-checked-hover.png);
+}
+.checkbox:checked:focus {
+    background-image: url(img/slice/form/checkbox-focus.png);
+}
+
+.checkbox[disabled] {
+    background-image: url(img/slice/form/checkbox-disabled.png);
+}
+
+.checkbox[disabled]:checked {
+    background-image: url(img/slice/form/checkbox-checked-disabled.png);
+}
+.checkbox[disabled],
+.checkbox[disabled] + label,
+.form-ctrl-label.disabled,
+.checkbox-wrap.disabled{
+    cursor:default;
+    cursor:not-allowed;
+}

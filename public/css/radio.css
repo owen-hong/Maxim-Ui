@@ -1,0 +1,71 @@
+.radio[type=radio] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    vertical-align: middle;
+    outline: none;
+    background: none\0;
+    background-image: url(img/slice/form/radio.png);
+    -webkit-appearance: none;
+    *background: none;
+}
+.radio[type=radio]:hover,
+.radio[type=radio]:focus {
+    background-image: url(img/slice/form/radio-hover.png);
+}
+.radio[type=radio]:checked {
+    background-image: url(img/slice/form/radio-checked.png);
+}
+.radio[type=radio]:checked:hover {
+    background-image: url(img/slice/form/radio-checked-hover.png);
+}
+.radio[type=radio]:checked:focus {
+    background-image: url(img/slice/form/radio-focus.png);
+}
+
+.radio[type=radio][disabled] {
+    background-image: url(img/slice/form/radio-disabled.png);
+}
+
+.radio[type=radio][disabled]:checked {
+    background-image: url(img/slice/form/radio-checked-disabled.png);
+}
+.radio[disabled],
+.radio[disabled] + label,
+.form-ctrl-label.disabled,
+.radio-wrap.disabled{
+    cursor:default;
+    cursor:not-allowed;
+}
+
+/* 与label组合使用 */
+.form-ctrl-label-stacked{
+    display:block;
+    margin-bottom:10px;
+}
+.form-ctrl-label{
+    margin-right:15px;
+}
+.form-ctrl-label,
+.form-ctrl-label-stacked,
+.radio-wrap{
+    font-size:14px;
+    cursor:pointer;
+    vertical-align:middle;
+    line-height:1;
+}
+.radio + .form-ctrl-label,
+.radio + label{
+    margin-left:5px;
+    color:#404a58;
+    vertical-align:middle;
+}
+.form-ctrl-label .radio,
+.form-ctrl-label-stacked .radio,
+.radio-wrap .radio{
+    vertical-align:-3px;
+    margin-right:5px;
+}
+.radio-wrap{
+    margin-left:20px;
+}

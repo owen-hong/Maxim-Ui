@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maxim工具</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="public/css/uploader.css">
+    <link rel="stylesheet" href="public/css/bootstrap.css">
+</head>
+<body>
+<body>
+<div class="tools-box">
+    <!-- D&D Zone-->
+    <div class="uploader" id="panel1" style="display: ;">
+
+        <!--<div class="demo">-->
+            <input type="hidden" id="para" />
+            <!--<a href="#" id="copy_p" class="copy">复制内容</a>-->
+        <!--</div>-->
+
+        <div class="text-tips">Drop your files file here!</div>
+
+        <div class="uploader-box w80" id="drag-and-drop-zone">
+            <!--<input type="file" name="files[]" id="file-box" class="file-box" multiple="multiple" title='Click to add Files'>-->
+        </div>
+        <div class="sidebar-box">
+
+            <label class="check-inline">
+                <input type="checkbox" id="tinyImg" class="checkbox">tinyimg压缩
+            </label>
+
+            <hr/>
+
+            <label class="check-inline">
+                <input type="checkbox" id="ftpSwitch" class="checkbox">FTP上传
+            </label>
+
+            <hr/>
+            <label class="check-inline">
+                <button type="button" id="clearLogs" class="">清除logs</button>
+            </label>
+
+        </div>
+    </div>
+
+    <!-- 路径配置 -->
+    <div class="uploader" id="panel2" style="display: none;">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            qcloud #1
+                        </a>
+                    </h4>
+                </div>
+                <div class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">FTP名称：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id="" name="projectName" class="form-control" placeholder="" value="qcloud #1">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">本地路径：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id="localPath" name="localPath" class="form-control local-path" placeholder="" value="<%= config.localPath %>">
+                                </div>
+                                <div class="col-sm-4 checkbox">
+                                    <label>
+                                        <input type="file" id="chooseLocal" value="上传文件" class="control-file choose-local" nwdirectory />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">dest目录：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id="destPath" disabled="disabled" name="destPath" class="form-control dest-path disabled" placeholder="F:\dest" value="<%= config.destPath %>">
+                                </div>
+                                <div class="col-sm-4 checkbox">
+                                    <label style="display: none;">
+                                        <input type="file" id="choosedest" value="上传文件" class="control-file choose-dest" nwdirectory />
+                                    </label>
+                                    <label class="check-inline">
+                                        <input id="destPathSwitch" type="checkbox" class="checkbox">自定义dest目录
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">提单路径：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="releasePath" class="form-control" placeholder="/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2" value="<%= config.releasePath %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">测试路径：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="testPath" class="form-control" placeholder="http://10.198.14.14/open_proj/proj_qcloud_v2" value="<%= config.testPath %>">
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">IP地址：</label>
+                                <div class="col-sm-8 control-box">
+                                    <input type="text" name="ftpHost" class="form-control" placeholder="" value="<%= config.ftpHost %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">端口号：</label>
+                                <div class="col-sm-5 control-box">
+                                    <input type="text" name="ftpPort" style="width:6em;" class="form-control" placeholder="" value="<%= config.ftpPort %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">根路径：</label>
+                                <div class="col-sm-8 control-box">
+                                    <input type="text" name="ftpRemotePath" class="form-control" placeholder="" value="<%= config.ftpRemotePath %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">用户名：</label>
+                                <div class="col-sm-5 control-box">
+                                    <input type="text" name="ftpUser" class="form-control" placeholder="" value="<%= config.ftpUser %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">密码：</label>
+                                <div class="col-sm-5 control-box">
+                                    <input type="password" name="ftpPassword" class="form-control" placeholder="" value="<%= config.ftpPassword %>">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-10">
+                                    <input type="hidden" name="panelBox" value="1"/>
+                                    <button type="submit" class="btn btn-primary">保存</button>
+                                    <button class="btn btn-default">取消</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end-->
+    <!-- 其他配置 -->
+    <div class="uploader" id="panel3" style="display: none;">
+        <div class="uploader-box">
+            <form class="form-horizontal" id="form2" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+
+                    <label class="col-sm-3 control-label">Sprites：</label>
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <% if(config.spriteNameSwitch =="true"){ %>
+                        <label class="radio-inline">
+                            <input type="radio" class="radio" name="spriteNameSwitch" value="false">与CSS名一致
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" class="radio" checked name="spriteNameSwitch" value="true">与CSS名一致，并添加版本号
+                        </label>
+                        <% } else {%>
+                        <label class="radio-inline">
+                            <input type="radio" class="radio" checked name="spriteNameSwitch" value="false">与CSS名一致
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" class="radio" name="spriteNameSwitch" value="true">与CSS名一致，并添加版本号
+                        </label>
+
+                        <% } %>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" disabled name="spriteName" class="form-control" placeholder="" value="<%= config.spriteName %>">
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="javascript:void(0);" id="changeSpriteKey" style="display: none;">换一个</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Tiny API key：</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="tinyApi" class="form-control" placeholder="dpv0q0x3DnmxsTMSxjnSbnhk1LJXqiap" value="<%= config.tinyApi %>">
+                    </div>
+                    <div class="col-sm-4">
+                        <a data-href="https://tinypng.com/developers" id="apply-tiny-api">申请地址</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Proxy：</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="proxy" class="form-control" placeholder="http://proxy.tencent.com:8080" value="<%= config.proxy %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- end -->
+
+    <!-- loadding -->
+    <div class="uploader" id="loadding-box" style="display: none;">
+        <div class="uploader-box loading-box">
+            <svg version="1.1" class="loading-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+              <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path>
+              <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                C22.32,8.481,24.301,9.057,26.013,10.047z" transform="rotate(120.437 20 20)">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform>
+                </path>
+            </svg>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="public/js/jquery-2.1.4.min.js"></script>
+<script src="public/js/dmuploader.js"></script>
+<script src="public/js/modules/jquery.zclip.min.js"></script>
+<script src="public/js/global.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+p,
+form,
+legend,
+button,
+select,
+input,
+textarea,
+menu,
+header,
+table {
+    margin: 0;
+    padding: 0
+}
+
+body,
+input,
+button,
+textarea,
+select {
+    font-size: 14px;
+    font-family:  'helvetica neue', 'hiragino sans gb', 'tahoma', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif';
+}
+
+label,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    -webkit-user-select: none;
+}
+
+button,
+select,
+input {
+    box-sizing: content-box;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+}
+
+li {
+    list-style: none
+}
+
+em,
+i,
+b {
+    font-style: normal;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: #006eff;
+    cursor: pointer;
+}
+a:hover{
+    text-decoration: underline;
+}
+img {
+    border: 0;
+}

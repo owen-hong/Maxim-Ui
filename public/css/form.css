@@ -1,0 +1,136 @@
+fieldset{
+    border:none;
+}
+
+.form-control {
+    height: 26px;
+    padding: 0px 12px;
+    font-size: 14px;
+    box-sizing: border-box;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+}
+
+.form-control[disabled],fieldset[disabled] .form-control {
+    cursor: not-allowed;
+}
+.form-control[disabled], .form-control[readonly],fieldset[disabled] .form-control {
+    background-color: #eee;
+    opacity: 1;
+}
+.control-group {
+    margin-bottom: 0px;
+}
+
+legend + .control-group {
+    margin-top: 18px;
+    -webkit-margin-top-collapse: separate
+}
+.form-horizontal{
+    padding-top:10px;
+    padding-bottom: 10px;
+    -webkit-box-flex: 1;
+    overflow: auto;
+    border: 1px solid #e6e6e6;
+    border-top: none;
+}
+.form-horizontal.xl .form-control{
+    width: 200px;
+}
+
+
+.form-horizontal .control-group {*zoom:1;
+    padding-bottom: 10px;
+}
+.form-horizontal hr{
+    border-style: dashed;
+    border-color: #e6e6e6;
+    border-width: 1px;
+    font-size: 0;
+    margin-top: 7px;
+    margin-bottom: 14px;
+}
+
+.form-horizontal .control-file {
+    width:94px;
+}
+
+
+
+
+.form-horizontal .control-group:before,.form-horizontal .control-group:after {
+    display: table;
+    content: "";
+    width: 100%;
+}
+
+.form-horizontal .control-group:after {
+    clear: both
+}
+
+.form-horizontal .control-label {
+    width: 100px;
+    text-align: right;
+    display: table-cell;
+    padding-right: 15px;
+}
+.form-horizontal .control-label.title{
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
+    /* border-bottom: 1px solid #ccc; */
+}
+
+
+.form-horizontal .controls {
+    display: inline-block;
+    padding-left: 20px;
+    margin-left: 0;
+    display: table-cell;
+}
+
+.form-horizontal .controls .input-append{
+    position: relative;
+}
+.form-horizontal .controls .input-append .control-file{
+    position: absolute;
+    width: 200px;
+    left: 0;
+    opacity: 0;
+    height: 26px;
+    top: 0;
+}
+
+
+.form-horizontal .controls:first-child {
+    padding-left: 160px
+}
+
+.form-horizontal .help-block {
+    margin-top: 10px;
+    margin-bottom: 0
+}
+
+.form-horizontal .form-actions {
+    padding-left: 160px
+}
+
+
+/*form*/
+.radio-inline{
+    display: block;
+}
+.check-inline .checkbox{
+    margin-right: 5px;
+}
+
+.radio-inline .radio{
+    margin-right: 5px;
+}
+.form-group .control-label{
+    font-weight: bold;
+}

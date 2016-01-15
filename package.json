@@ -1,0 +1,70 @@
+{
+  "name": "Maxim-Ui",
+  "version": "0.0.1",
+  "description": "qcloud front end workflow tools",
+  "author": {
+    "name": "Owen Hong",
+    "email": "520UED.com@gmail.com",
+    "url": "http://520UED.com"
+  },
+  "maintainers": [
+    {
+      "name": "Owenhong",
+      "email": "520ued.com@gmail.com",
+      "web": "http://520ued.com"
+    }
+  ],
+  "nodejs": true,
+  "main": "http://localhost:3030/",
+  "node-remote": "http://localhost:3030",
+  "node-main": "",
+  "single-instance": true,
+  "window": {
+    "frame": false,
+    "toolbar": true,
+    "title": "node-webkit demo",
+    "icon": "maxim-logo.png",
+    "position": "center",
+    "resizable": true,
+    "show_in_taskbar": true,
+    "fullscreen": false,
+    "always-on-top": false,
+    "show": true,
+    "kiosk": false,
+    "width": 800,
+    "height": 600,
+    "min_width": 800,
+    "min_height": 600
+  },
+  "webkit": {
+    "page-cache": false,
+    "plugin": true,
+    "java": false
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "connect-multiparty": "^2.0.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "log4js": "^0.6.28",
+    "maxim-workflow": "^0.1.0",
+    "method-override": "^2.3.5"
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owen-hong/Maxim-Ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/owen-hong/Maxim-Ui/issues"
+  },
+  "homepage": "https://github.com/owen-hong/Maxim-Ui/",
+  "license": "MIT",
+  "devDependencies": {
+    "http-proxy": "^1.12.0",
+    "request": "^2.67.0"
+  }
+}
