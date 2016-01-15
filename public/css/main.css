@@ -162,7 +162,7 @@ main{
     -webkit-box-orient: vertical;
     position: relative;
     border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;*/;
+    border-bottom: 1px solid #e6e6e6;
 }
 
 
@@ -186,19 +186,19 @@ main{
     border: 1px solid #2D3945;
 }
 .global-operations.alert-box h1{
-    
+
 text-align: left;
-    
+
 display: inline-block;
-    
+
 float: left;
-    
+
 color: #fff;
-    
+
 font-size: 16px;
-    
+
 padding-left: 20px;
-    
+
 margin-top: 14px;
 }
 
@@ -220,7 +220,7 @@ margin-top: 14px;
 
 .global-operations .close-btn{
     background: url("img/close-hover-icon.png") no-repeat center center;
-    margin-top: 8px;*/;
+    margin-top: 8px;
     margin-right: 15px;
 }
 
@@ -321,6 +321,9 @@ main .shortcut-operations a{
     color:#006DFF;
     margin-top: 10px;
     display: inline-block;
+}
+.drop-files-box .logs-box .copy-input{
+    opacity: 0;
 }
 .drop-files-box .logs-box .copy-btn .copy-icon,
 .drop-files-box .logs-box .success-icon

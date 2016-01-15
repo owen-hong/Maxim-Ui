@@ -10,7 +10,8 @@ define(function(require, exports, module) {
 
     var $ = require('jquery');
 
-    require('ZeroClipboard');
+    //初始化复制功能
+    require('Copy')($);
 
     //加载dmuploader
     require('dmuploader')($);
@@ -139,7 +140,6 @@ define(function(require, exports, module) {
             gui.Shell.openExternal($url);
         }
     });
-
 
 
     //TODO 清楚logs
@@ -408,13 +408,11 @@ define(function(require, exports, module) {
     });
 
 
-
     //todo 关闭当前窗口
     $("#cancelWin").click(function(e){
         e.preventDefault();
         win.close();
     });
-
 });
 
 

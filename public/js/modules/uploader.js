@@ -11,37 +11,9 @@ define(function(require, exports, module) {
      * */
 
 
-    //TODO 复制到剪贴板
-    var initZeroClipboard = function(){
-        var client = new ZeroClipboard($(".copy-btn"), {
-            moviePath: "http://www.paulund.co.uk/playground/demo/zeroclipboard-demo/zeroclipboard/ZeroClipboard.swf",
-            debug: false
-        });
-        client.on('ready', function(event) {
-            client.on('copy', function(event) {
-                var $copyText = $(event.target).siblings(".copy-input").val();
-
-
-                event.clipboardData.setData('text/plain', $copyText);
-            } );
-
-            client.on('aftercopy', function(event) {
-                $(event.target).siblings(".copy-tips").css("display","inline-block").fadeOut(1500);
-                //alert("复制成功");
-            } );
-        } );
-        client.on('error', function(event) {
-            // console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
-            ZeroClipboard.destroy();
-        });
-    }
-
-
-
-
     //返回ajax数据函数处理
     var uploadAjaxSuccess = function (result) {
-        console.log(result)
+        //console.log(result)
 
         var $fileBox = $("#drag-and-drop-zone");
 
@@ -67,7 +39,7 @@ define(function(require, exports, module) {
 
             $.each(result.successFiles, function (i, value) {
                 $releasePath += $releaseUrl + value + '\n';
-                $copyContent += $releaseUrl + value + "\n";
+                $copyContent += $releaseUrl + value + '\n';
 
                 $testPath += "<a data-href='" + $testUrl + value + "'>" + $testUrl + value + "</a>";
             });
@@ -77,7 +49,7 @@ define(function(require, exports, module) {
                 $testPath += '<p class="red">' + $testUrl + value + '</p>';
             });
 
-            $releasePath += '</div><input type="hidden" class="copy-input" /><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div></div>'
+            $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" id="copy1" class="copy-input"></textarea></div>'
             $testPath += '</div></div>'
 
 
@@ -89,9 +61,6 @@ define(function(require, exports, module) {
 
             //输出提单复制路径到input.hidden
             $fileBox.children(".logs-wrap").last().find(".copy-input").val($copyContent);
-
-            //初始化复制到剪贴板函数
-            initZeroClipboard();
 
         } else if(result.ftpSuccess === false) {
             $(".drop-tips").hide();
