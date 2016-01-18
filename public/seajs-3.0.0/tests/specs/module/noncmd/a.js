@@ -1,1 +1,0 @@
-//noncmd script

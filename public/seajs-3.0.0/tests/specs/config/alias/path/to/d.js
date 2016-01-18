@@ -1,1 +1,0 @@
-define('alias/path/to/d', { name: 'd' })

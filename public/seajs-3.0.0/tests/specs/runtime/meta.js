@@ -1,4 +1,0 @@
-define('./meta', [
-  'multi-circular'
-])
-

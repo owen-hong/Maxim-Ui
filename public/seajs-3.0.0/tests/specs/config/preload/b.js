@@ -1,1 +1,0 @@
-global.B = 'b'

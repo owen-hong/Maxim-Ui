@@ -1,1 +1,0 @@
-define({ fn: { jquery: '1.7.1' } })
