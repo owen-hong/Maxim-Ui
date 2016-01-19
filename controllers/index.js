@@ -245,7 +245,8 @@ exports.doUploader = function(req,res){
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
-
+                console.log("abc:::::::");
+                console.log(result);
                 result.forEach(function(resultFiles){
                     var $imgLocalFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
                     var $filesname = path.basename(resultFiles.fName);
