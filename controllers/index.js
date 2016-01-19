@@ -32,8 +32,6 @@ exports.doUploader = function(req,res){
     var $ftpSwitch = req.body.ftpSwitch;
     var $tinyImgSwitch = req.body.tinyImgSwitch || "youtu";
 
-    console.log("$currentConfig$currentConfig::::");
-    console.log($ftpSwitch);
 
 
     var $ftpFiles =[];
@@ -74,12 +72,16 @@ exports.doUploader = function(req,res){
         ftpFiles.forEach(function(data){
             var $destPathSize = data.replace(/\//g, '\\').indexOf($currentConfig.destPath+$currentConfig.destPath);
 
+
+
             if($destPathSize < 0) {
                 $ftp.push(data);
             }
         });
 
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
+
+            //console.log($ftp);
 
             tools.ftpUtil($ftp, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
@@ -147,18 +149,20 @@ exports.doUploader = function(req,res){
     var destPath = function(data){
 
         data.forEach(function(result){
-            //console.log("destPath success:::::::::::::::::::::::::::");
 
-            var $localPath = result.fName.replace(/\//g,'\\');
+            //判断操作系统，linux无需替换路径“/”
+            if(path.sep != "/"){
+                var $localPath = result.fName.replace(/\//g,'\\');
+            }else{
+                var $localPath = result.fName.replace(/\//g,'\/');
+            }
+
 
             if($ftpSwitch == "false" && result.status){//关闭ftp后直接输出成功压缩后的文件数组
-
                 $successFiles.push(result.fName);
             }else if($ftpSwitch == "true" && result.status){
                 $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
-                //console.log($errorMessage);
-
                 $errorFiles.push(result.fName);
                 $errorMessage.push(result.message);
             }
@@ -187,7 +191,10 @@ exports.doUploader = function(req,res){
             });
         }else if($tinyImgSwitch == "youtu"){
             console.log("youtu:::::::::::::::");
+
             tools.youtu($imgFiles, $currentConfig,Config, function (result) {
+
+                console.log(result);
 
                 //拼接dest的路劲文件
                 destPath(result);
@@ -430,6 +437,11 @@ exports.doConfig = function(req,res){
 
         $obj.cssNameSwitch = req.body.cssNameSwitch;
         $obj.cssName = req.body.cssName  || "";
+
+
+        console.log("test::::");
+        console.log($obj);
+
 
 
         //判断是否是新增项目

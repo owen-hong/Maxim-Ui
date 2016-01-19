@@ -47,14 +47,14 @@ define(function(require, exports, module) {
 
 
     //TODO 选择文件夹
-    $(".choose-local").on("change", function () {
+    $("#chooseLocal").on("change", function () {
         var $val = $(this).val();
-        $(".local-path").val($val);
+        $("#localPath").val($val);
     });
 
-    $(".choose-dest").on("change", function () {
+    $("#choosedest").on("change", function () {
         var $val = $(this).val();
-        $(".dest-path").val($val);
+        $("#destPath").val($val);
     });
 
     //TODO 自定义dest目录
