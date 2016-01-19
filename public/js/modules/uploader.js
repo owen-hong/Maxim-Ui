@@ -16,52 +16,75 @@ define(function(require, exports, module) {
         //console.log(result)
 
         var $fileBox = $("#drag-and-drop-zone");
+        var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
 
         //隐藏loading
         $("#loadding-box").hide();
 
         //提交时间更新
         var myDate = new Date();
-        var $currentDate = myDate.getHours() + ' : ' + myDate.getMinutes() + ' : ' + myDate.getSeconds();
+        var $currentDate = myDate.getHours() + ':' + myDate.getMinutes() + ':' + myDate.getSeconds();
 
         if (result.status===true && result.ftpSuccess===true) {
             var $copyContent = '';
             var $testUrl = result.testPath;
             var $releaseUrl = result.releasePath;
 
-            var $releasePath = "<div class='logs-box'><h3 class='releasePath'>提单路径</h3><div class='logs-text-box'>";
-            var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
+            if($ftpSwitch == "true"){
+                var $releasePath = "<div class='logs-box'><h3 class='releasePath'>提单路径</h3><div class='logs-text-box'>";
+                var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
 
-            var $errorMessage="";
-            if (result.errorMessage.length > 0) {
-                $errorMessage = "<p><em style='color:#06c'>error log: </em>" + result.errorMessage + "</p>";
+                var $errorMessage="";
+                if (result.errorMessage.length > 0) {
+                    $errorMessage = "<p><em style='color:#06c'>error log: </em>" + result.errorMessage + "</p>";
+                }
+
+                $.each(result.successFiles, function (i, value) {
+                    $releasePath += $releaseUrl + value + '\n';
+                    $copyContent += $releaseUrl + value + '\n';
+
+                    $testPath += "<a data-href='" + $testUrl + value + "'>" + $testUrl + value + "</a>";
+                });
+
+                $.each(result.errorFiles, function (i, value) {
+                    $releasePath += '<p class="red">' + $releaseUrl + value + '</p>';
+                    $testPath += '<p class="red">' + $testUrl + value + '</p>';
+                });
+
+                $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" id="copy1" class="copy-input"></textarea></div>'
+                $testPath += '</div></div>'
+
+
+                //隐藏提示
+                $(".drop-tips").hide();
+
+                if($testUrl==""){
+                    $testPath="";
+                }
+
+                //输出到客户端
+                $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $errorMessage +'</div></div>')
+
+                //输出提单复制路径到input.hidden
+                $fileBox.children(".logs-wrap").last().find(".copy-input").val($copyContent);
+            }else{
+
+                var $DestPath = "<div class='logs-box'><h3 class='releasePath'>临时目录文件列表</h3><div class='logs-text-box'>";
+                var $UserDest = result.destPath;
+
+                $.each(result.successFiles, function (i, value) {
+                    var $value = value.replace(/\//g,'\\');
+
+                    console.log($value);
+
+                    $DestPath += "<a data-href='" + $UserDest + $value + "'>" + $UserDest + $value + "</a>";
+                });
+
+                $DestPath += '</div></div>'
+                //输出到客户端
+                $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+ $DestPath +'</div></div>')
+
             }
-
-            $.each(result.successFiles, function (i, value) {
-                $releasePath += $releaseUrl + value + '\n';
-                $copyContent += $releaseUrl + value + '\n';
-
-                $testPath += "<a data-href='" + $testUrl + value + "'>" + $testUrl + value + "</a>";
-            });
-
-            $.each(result.errorFiles, function (i, value) {
-                $releasePath += '<p class="red">' + $releaseUrl + value + '</p>';
-                $testPath += '<p class="red">' + $testUrl + value + '</p>';
-            });
-
-            $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" id="copy1" class="copy-input"></textarea></div>'
-            $testPath += '</div></div>'
-
-
-            //隐藏提示
-            $(".drop-tips").hide();
-
-            //输出到客户端
-            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $errorMessage +'</div></div>')
-
-            //输出提单复制路径到input.hidden
-            $fileBox.children(".logs-wrap").last().find(".copy-input").val($copyContent);
-
         } else if(result.ftpSuccess === false) {
             $(".drop-tips").hide();
             $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs"><p class="red">FTP链接失败，请检查FTP服务器是否能正常链接或者检查FTP配置是否正确</p>');
@@ -140,7 +163,7 @@ define(function(require, exports, module) {
                         if (event.keyCode == "116" || event.which == 1) {
                             if ($repeatfiles.length > 0) {
                                 //获取各个任务的开关
-                                var $ftpSwitch = $("#ftpSwitch").prop("checked");
+                                var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
                                 var $imgSwitch = $("input[name='imgSwitch']:checked").val();
                                 var $itemsIndex = $("input[name='itemsIndex']").val();
 

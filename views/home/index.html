@@ -78,8 +78,8 @@
                                 <!--测试地址-->
                             <!--</h3>-->
                             <!--<div class="logs-text-box">-->
-                                <!--<a data-href="http://10.198.14.14/open_proj/proj_qcloud_v2/gateway/documentation/css/sprite/documentation.png">-->
-                                    <!--http://10.198.14.14/open_proj/proj_qcloud_v2/gateway/documentation/css/sprite/documentation.png-->
+                                <!--<a data-href="F:\proj_qcloud_v2\gateway\documentation\css">-->
+                                    <!--F:\proj_qcloud_v2\gateway\documentation\css-->
                                 <!--</a>-->
                                 <!--<a data-href="http://10.198.14.14/open_proj/proj_qcloud_v2/gateway/documentation/css/documentation.css">-->
                                     <!--http://10.198.14.14/open_proj/proj_qcloud_v2/gateway/documentation/css/documentation.css-->
@@ -140,12 +140,18 @@
             <hr/>
 
             <% if(configItemes[0].ftpSwitch =="true"){ %>
-            <label class="check-inline">
-                <input type="checkbox" id="ftpSwitch" class="checkbox" checked>FTP上传
+            <label class="radio-inline">
+                <input type="radio" name="ftpSwitch" checked class="radio" value="true">上传服务器
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ftpSwitch" class="radio" value="false">生成到临时目录
             </label>
             <% } else {%>
-            <label class="check-inline">
-                <input type="checkbox" id="ftpSwitch" class="checkbox">FTP上传
+            <label class="radio-inline">
+                <input type="radio" name="ftpSwitch" class="radio" value="true">上传服务器
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ftpSwitch" checked class="radio" value="false">生成到临时目录
             </label>
             <% } %>
             <hr/>

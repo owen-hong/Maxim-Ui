@@ -253,7 +253,7 @@ define(function(require, exports, module) {
             }
 
             //获取各个任务的开关
-            var $ftpSwitch = $("#ftpSwitch").prop("checked");
+            var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
             var $imgSwitch = $("input[name='imgSwitch']:checked").val();
             var $itemsIndex = $("input[name='itemsIndex']").val();
 

@@ -135,10 +135,19 @@ define(function(require, exports, module) {
 
     //TODO 浏览器打开窗口 超链接
     $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
+        var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
         var $url = $(this).data("href");
-        if (!$url == undefined || !$url == "") {
-            gui.Shell.openExternal($url);
+
+        if($ftpSwitch == "true"){
+            if (!$url == undefined || !$url == "") {
+                gui.Shell.openExternal($url);
+            }
+        }else{
+            if (!$url == undefined || !$url == "") {
+                gui.Shell.showItemInFolder($url);
+            }
         }
+
     });
 
 
@@ -227,9 +236,11 @@ define(function(require, exports, module) {
 
 
             if($ftpSwitch == "true"){
-                $("#ftpSwitch").prop("checked",true);
+                $("input[name='ftpSwitch']").eq(0).prop("checked",true);
+                $("input[name='ftpSwitch']").eq(1).prop("checked",false);
             }else{
-                $("#ftpSwitch").prop("checked",false);
+                $("input[name='ftpSwitch']").eq(0).prop("checked",false);
+                $("input[name='ftpSwitch']").eq(1).prop("checked",true);
             }
 
             var $imgSwitch = data.imgSwitch;
@@ -295,7 +306,7 @@ define(function(require, exports, module) {
         var $cssName = $("input[name='cssName']").val();
 
 
-        var $ftpSwitch = $("#ftpSwitch").prop("checked");
+        var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
         var $imgSwitch = $("input[name='imgSwitch']:checked").val();
 
 
@@ -314,10 +325,9 @@ define(function(require, exports, module) {
     }
 
     //监听spriteNameSwitch cssNameSwitch
-    $("input[name='spriteNameSwitch'],input[name='cssNameSwitch'],input[name='imgSwitch'],#ftpSwitch").on("change",function(){
+    $("input[name='spriteNameSwitch'],input[name='cssNameSwitch'],input[name='imgSwitch'],input[name='ftpSwitch']").on("change",function(){
         ajaxCssSprite();
     });
-
 
 
 

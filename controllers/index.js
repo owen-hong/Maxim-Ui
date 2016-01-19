@@ -28,12 +28,13 @@ exports.doUploader = function(req,res){
     var $itemsIndex = req.body.itemsIndex || 0;
     var $currentConfig = Config.itemsConfig[$itemsIndex];
 
-    //console.log("$currentConfig$currentConfig::::");
-    //console.log($currentConfig);
-
 
     var $ftpSwitch = req.body.ftpSwitch;
     var $tinyImgSwitch = req.body.tinyImgSwitch || "youtu";
+
+    console.log("$currentConfig$currentConfig::::");
+    console.log($ftpSwitch);
+
 
     var $ftpFiles =[];
     var $errorFiles = [];
@@ -98,6 +99,7 @@ exports.doUploader = function(req,res){
                         status: true,
                         releasePath: $currentConfig.releasePath,
                         testPath: $currentConfig.testPath,
+                        destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
                         errorFiles: $error,
@@ -110,6 +112,7 @@ exports.doUploader = function(req,res){
                         status: false,
                         releasePath: $currentConfig.releasePath,
                         testPath: $currentConfig.testPath,
+                        destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
                         errorFiles: $error,
@@ -124,6 +127,7 @@ exports.doUploader = function(req,res){
                 status: true,
                 releasePath: $currentConfig.releasePath,
                 testPath: $currentConfig.testPath,
+                destPath: $currentConfig.destPath,
                 repeatFiles : $repeatfiles,
                 repeatfilesType : $repeatfilesType,
                 errorFiles: $error,
@@ -143,7 +147,7 @@ exports.doUploader = function(req,res){
     var destPath = function(data){
 
         data.forEach(function(result){
-            console.log("destPath success:::::::::::::::::::::::::::");
+            //console.log("destPath success:::::::::::::::::::::::::::");
 
             var $localPath = result.fName.replace(/\//g,'\\');
 
@@ -153,7 +157,7 @@ exports.doUploader = function(req,res){
             }else if($ftpSwitch == "true" && result.status){
                 $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
-                console.log($errorMessage);
+                //console.log($errorMessage);
 
                 $errorFiles.push(result.fName);
                 $errorMessage.push(result.message);
@@ -184,7 +188,6 @@ exports.doUploader = function(req,res){
         }else if($tinyImgSwitch == "youtu"){
             console.log("youtu:::::::::::::::");
             tools.youtu($imgFiles, $currentConfig,Config, function (result) {
-                //console.log(result);
 
                 //拼接dest的路劲文件
                 destPath(result);
@@ -243,11 +246,6 @@ exports.doUploader = function(req,res){
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
 
-                console.log("sprite!!!!!!!!!");
-                console.log(result);
-
-
-
                 result.forEach(function(resultFiles){
                     var $imgLocalFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
                     var $filesname = path.basename(resultFiles.fName);
@@ -264,14 +262,10 @@ exports.doUploader = function(req,res){
 
                 if($imgFiles.length > 0){
 
-                    console.log('img > 0::::::: '+$imgFiles);
-
                     //TODO tiny img
                     tinyImg();
 
                 }else{
-
-                    console.log('img < 0::::::: '+ $imgFiles);
 
                     //ftp 上传文件
                     ftpUploader($ftpFiles, res);
@@ -279,8 +273,6 @@ exports.doUploader = function(req,res){
                 }
             });
         }else if($imgFiles.length > 0){
-
-            console.log('img2::::::: '+$imgFiles);
 
             //TODO tiny img
             tinyImg();
@@ -299,7 +291,6 @@ exports.doUploader = function(req,res){
 
 exports.addProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
-    //console.log($itemsConfigSize);
 
     res.render('home/add-project-config',{
         title: '新增项目',
@@ -310,7 +301,6 @@ exports.addProject = function(req,res){
 }
 exports.editProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
-    console.log($itemsConfigSize);
 
     res.render('home/edit-project-config',{
         title: '修改项目配置',
@@ -443,13 +433,10 @@ exports.doConfig = function(req,res){
 
         //判断是否是新增项目
         var $itemsConfigSize = Config.itemsConfig.length || 0;
-        console.log("abcccc:::::!!!!");
-        console.log($currentIndex);
 
         if($itemsConfigSize <= $currentIndex){
 
             //新增项目
-            console.log("11111111111111");
 
             var $date = Math.round(new Date().getTime() / 1000);
 
@@ -465,7 +452,6 @@ exports.doConfig = function(req,res){
             Config.itemsConfig.push($obj);
         }else{
             //编辑项目
-            console.log("22222222222222");
 
             Config.itemsConfig[$currentIndex].itemsName = req.body.itemsName;
             Config.itemsConfig[$currentIndex].localPath = req.body.localPath;
