@@ -27,7 +27,7 @@
             <div class="controls">
                 <div class="input-append">
                     <input type="text" style="width:280px;" name="tinyApi" class="form-control" placeholder="dpv0q0x3DnmxsTMSxjnSbnhk1LJXqiap" value="<%= config.tinyApi %>">
-                    <span class="add-on">
+                    <span class="">
                         <a data-href="https://tinypng.com/developers" id="apply-tiny-api">申请地址</a>
                     </span>
                 </div>
@@ -59,6 +59,9 @@
     // seajs 的简单配置
     seajs.config({
         base: "/js/modules/",
+        paths:{
+            'modules':'/js/modules/'
+        },
         alias: {
             "jquery": "/js/jquery/2.1.4/jquery"
         },
@@ -66,7 +69,7 @@
     })
 
     // 加载入口模块
-    seajs.use("/js/global.js")
+    seajs.use(["jquery","/js/global.js"]);
 </script>
 </body>
 </html>

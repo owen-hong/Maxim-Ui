@@ -18,7 +18,9 @@ body{
     -webkit-box-orient: vertical;
      overflow: hidden;
 }
-
+.no-drag{
+    -webkit-app-region: no-drag;
+}
 .red{
     color: red;
 }
@@ -133,9 +135,9 @@ menu .menu-list a:hover{
 menu .menu-list li .arrow-left{
     display: none;
 }
-menu .menu-list li:hover{
-    background-color: #3D4F5D;
-}
+/*menu .menu-list li:hover{*/
+    /*background-color: #3D4F5D;*/
+/*}*/
 menu .menu-list li.cur{
     background-color: #2D3945;
 }
@@ -175,7 +177,6 @@ main{
     text-align: right;
     box-sizing: border-box;
     border-top: 1px solid #e6e6e6;
-    /* border-right: 1px solid #e6e6e6; */
     z-index: 9;
 }
 .global-operations.alert-box{
@@ -186,20 +187,13 @@ main{
     border: 1px solid #2D3945;
 }
 .global-operations.alert-box h1{
-
-text-align: left;
-
-display: inline-block;
-
-float: left;
-
-color: #fff;
-
-font-size: 16px;
-
-padding-left: 20px;
-
-margin-top: 14px;
+    text-align: left;
+    display: inline-block;
+    float: left;
+    color: #fff;
+    font-size: 16px;
+    padding-left: 20px;
+    margin-top: 14px;
 }
 
 .global-operations .minimize-btn,
@@ -209,6 +203,7 @@ margin-top: 14px;
     width: 30px;
     height: 30px;
     display: inline-block;
+    -webkit-app-region: no-drag;
 }
 .global-operations .minimize-btn{
     background: url("img/minimize-hover-icon.png") no-repeat center 18px;
@@ -324,6 +319,8 @@ main .shortcut-operations a{
 }
 .drop-files-box .logs-box .copy-input{
     opacity: 0;
+    width: 0;
+    height: 0;
 }
 .drop-files-box .logs-box .copy-btn .copy-icon,
 .drop-files-box .logs-box .success-icon
@@ -449,8 +446,43 @@ main .shortcut-operations a{
 
 
 
+.tab-side{
+    width: 150px;
+    background-color: #F5F5F5;
+    font-size: 14px;
+}
+.tab-side li a{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 34px;
+    color: #444444;
+    margin-top: 15px;
+}
+.tab-side li a.cur,
+.tab-side li a:hover{
+    background-color: #EBEBEB;
+    text-decoration:inherit;
+}
 
-
+.tab-content{
+    padding-top:30px;
+}
+.tab-content.hide{
+    display: none;
+}
+/*footer*/
+.footer{
+    height: 48px;
+    line-height: 48px;
+    background-color: #FBFBFB;
+    text-align: center;
+    border-top: 1px solid #e6e6e6;
+}
+.footer .btn-default{
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 
 

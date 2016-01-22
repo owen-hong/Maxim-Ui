@@ -21,7 +21,7 @@
   "single-instance": true,
   "window": {
     "frame": false,
-    "toolbar": true,
+    "toolbar": false,
     "title": "node-webkit demo",
     "icon": "maxim-logo.png",
     "position": "center",

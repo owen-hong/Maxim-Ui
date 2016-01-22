@@ -30,12 +30,12 @@
             <menu>
                 <ul class="menu-list">
                     <% configItemes.forEach(function(result,i){ %>
-                    <% if(i===0){ %>
+                    <% if(i===0 && result.itemsName!="" ){ %>
                     <li class="cur">
                         <a href="javascript:void(0);"><%= result.itemsName %></a>
                         <i class="arrow-left"></i>
                     </li>
-                    <% }else{ %>
+                    <% }else if(result.itemsName!=""){ %>
                     <li>
                         <a href="javascript:void(0);"><%= result.itemsName %></a>
                         <i class="arrow-left"></i>
@@ -205,6 +205,9 @@
     // seajs 的简单配置
     seajs.config({
         base: "/js/modules/",
+        paths:{
+            'modules':'/js/modules/'
+        },
         alias: {
             "jquery": "/js/jquery/2.1.4/jquery"
         },
@@ -212,7 +215,7 @@
     })
 
     // 加载入口模块
-    seajs.use("/js/global.js")
+    seajs.use(["jquery","/js/global.js"]);
 </script>
 
 </body>

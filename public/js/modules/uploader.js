@@ -9,11 +9,10 @@ define(function(require, exports, module) {
     /*
      * TODO dmUploader
      * */
-
+    var $dmuploader = require('dmuploader');
 
     //返回ajax数据函数处理
     var uploadAjaxSuccess = function (result) {
-        //console.log(result)
 
         var $fileBox = $("#drag-and-drop-zone");
         var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
@@ -94,7 +93,7 @@ define(function(require, exports, module) {
     }
 
     //TODO 初始化拖拽上传组件
-    exports.initDmUploader = function() {
+    exports.initDmUploader = function(updateCssSprite) {
         var $fileBox = $("#drag-and-drop-zone");
         var $repeatfiles = [];
         var $repeatfilesType = [];
@@ -102,7 +101,8 @@ define(function(require, exports, module) {
         $fileBox.click(function (event) {
             event.preventDefault();
         });
-        $fileBox.dmUploader({
+
+        $dmuploader(updateCssSprite,$fileBox,{
             url: 'http://localhost:3030/tools/doUploader',
             dataType: 'json',
             allowedTypes: '*',
@@ -110,8 +110,7 @@ define(function(require, exports, module) {
                 console.log('init success!');
             },
             onBeforeUpload: function (id) {
-                console.log('onBeforeUpload: ' + id);
-                $("#loadding-box").show();
+
             },
             onNewFile: function (id, file) {
                 //console.log("onNewFile~");
@@ -217,6 +216,5 @@ define(function(require, exports, module) {
             var lastTime;
             repeatLastfiles(event);
         });
-
-    }
+    };
 });

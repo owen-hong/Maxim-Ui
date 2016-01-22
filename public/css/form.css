@@ -5,7 +5,7 @@ fieldset{
 .form-control {
     height: 26px;
     padding: 0px 12px;
-    font-size: 14px;
+    font-size: 12px;
     box-sizing: border-box;
     line-height: 1.42857143;
     color: #555;
@@ -31,20 +31,25 @@ legend + .control-group {
     -webkit-margin-top-collapse: separate
 }
 .form-horizontal{
-    padding-top:10px;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     -webkit-box-flex: 1;
     overflow: auto;
     border: 1px solid #e6e6e6;
     border-top: none;
+    border-left: none;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 .form-horizontal.xl .form-control{
-    width: 400px;
+    width: 200px;
+    vertical-align: middle;
 }
 
 
 .form-horizontal .control-group {*zoom:1;
     padding-bottom: 10px;
+    font-size: 12px;
 }
 .form-horizontal hr{
     border-style: dashed;
@@ -73,10 +78,11 @@ legend + .control-group {
 }
 
 .form-horizontal .control-label {
-    width: 100px;
+    width: 90px;
     text-align: right;
     display: table-cell;
     padding-right: 15px;
+    font-size: 14px;
 }
 .form-horizontal .control-label.title{
     font-weight: bold;
@@ -91,6 +97,7 @@ legend + .control-group {
     padding-left: 20px;
     margin-left: 0;
     display: table-cell;
+    font-size: 14px;
 }
 
 .form-horizontal .controls .input-append{
@@ -98,11 +105,12 @@ legend + .control-group {
 }
 .form-horizontal .controls .input-append .control-file{
     position: absolute;
-    width: 200px;
-    left: 0;
+    width: 109px;
+    left: 204px;
     opacity: 0;
     height: 26px;
-    top: 0;
+    top: 30px;
+    z-index: -1;
 }
 
 
@@ -112,7 +120,8 @@ legend + .control-group {
 
 .form-horizontal .help-block {
     margin-top: 10px;
-    margin-bottom: 0
+    margin-bottom: 0;
+    color: red;
 }
 
 .form-horizontal .form-actions {
@@ -124,7 +133,15 @@ legend + .control-group {
 .radio-inline{
     display: block;
 }
-.check-inline .checkbox{
+.check-block{
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.check-inline .checkbox,
+.check-block .checkbox
+{
     margin-right: 5px;
 }
 
@@ -133,4 +150,9 @@ legend + .control-group {
 }
 .form-group .control-label{
     font-weight: bold;
+}
+
+.add-on{
+    margin-bottom: 10px;
+    display: block;
 }

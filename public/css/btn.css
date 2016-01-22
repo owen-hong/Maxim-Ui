@@ -13,6 +13,7 @@
     -webkit-user-select: none;
     background-image: none;
     border: 1px solid transparent;
+    -webkit-app-region: no-drag;
 }
 .btn.active.focus,.btn.active:focus,.btn.focus,.btn:active.focus,.btn:active:focus,.btn:focus {
     outline: thin dotted;
@@ -343,7 +344,7 @@ a.btn.disabled,fieldset[disabled] a.btn {
 }
 
 .btn-group-sm>.btn,.btn-sm {
-    padding: 5px 10px;
+    padding: 3px 30px;
     font-size: 12px;
     line-height: 1.5;
 }

@@ -10,8 +10,8 @@
  * http://www.daniel.com.uy/doc/license/
  */
 
-define(function(require, exports, module) {
-    return function ($) {
+define(function(requires, exports, module) {
+    //return function ($) {
         var pluginName = 'dmUploader';
 
         // These are the plugin defaults values
@@ -53,9 +53,10 @@ define(function(require, exports, module) {
         };
 
 
-        var DmUploader = function (element, options) {
+        var DmUploader = function (updateCssSprite,element, options) {
 
-            this.element = $(element);
+            this.element = element;
+            this.updateCssSprite = updateCssSprite;
 
             this.settings = $.extend({}, defaults, options);
 
@@ -213,9 +214,71 @@ define(function(require, exports, module) {
             //if (this.queue.length == j) {
             //    return false;
             //}
+            var $this = this;
+            var $DialogConfig = {
+                frame:true,
+                toolbar:true,
+                position: 'center',
+                height:500,
+                width:640
+            }
 
-            this.processQueue();
+            //判断是否项目为空
+            var $menuListSite = $(".menu-list li").size();
+            if($menuListSite <= 0){
 
+                alert("请先配置你的项目");
+
+                var addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
+                    frame:$DialogConfig.frame,
+                    toolbar:$DialogConfig.toolbar,
+                    position: $DialogConfig.position,
+                    width:$DialogConfig.width,
+                    height: $DialogConfig.height,
+                    focus:true
+                });
+
+                addProjectWin.on('close', function () {
+                    this.hide(); // PRETEND TO BE CLOSED ALREADY
+                    $this.updateCssSprite(true,$menuListSite);
+                    this.close(true);
+                });
+                return false;
+            }
+
+
+            //判断FTP是否开启，开启就做FTP配置校验，未开启就弹出FTP配置让用户完善
+            var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
+            var $itemsIndex = $("input[name='itemsIndex']").val();
+
+            if($ftpSwitch=="true"){
+                $.get("/validateFtp?itemsIndex="+$itemsIndex).done(function(data){
+                    if(data.ftpNull===false){
+                        $("#loadding-box").show();
+                        $this.processQueue();
+                    }else{
+                        alert("请完善FTP配置.");
+                        var editProjectWin = gui.Window.open('editProject?tabIndex=1&itemsIndex=' + $itemsIndex,{
+                            frame:$DialogConfig.frame,
+                            toolbar:$DialogConfig.toolbar,
+                            position: $DialogConfig.position,
+                            width:$DialogConfig.width,
+                            height: $DialogConfig.height,
+                            focus:true
+                        });
+
+                        editProjectWin.on('close', function () {
+                            this.hide(); // PRETEND TO BE CLOSED ALREADY
+                            $this.updateCssSprite(false,$itemsIndex);
+                            this.close(true);
+                        });
+                        return false;
+                    }
+                });
+            }else{
+                $("#loadding-box").show();
+                $this.processQueue();
+            }
             return true;
         };
 
@@ -308,14 +371,20 @@ define(function(require, exports, module) {
             });
         }
 
-        $.fn.dmUploader = function (options) {
-            return this.each(function () {
-                if (!$.data(this, pluginName)) {
-                    $.data(this, pluginName, new DmUploader(this, options));
-                }
-            });
-        };
 
+        module.exports = function(updateCssSprite,element,options){
+            return new DmUploader(updateCssSprite,element,options);
+        }
+
+
+        //$.fn.dmUploader = function (options) {
+        //    return this.each(function () {
+        //        if (!$.data(this, pluginName)) {
+        //            $.data(this, pluginName, new DmUploader(this, options));
+        //        }
+        //    });
+        //};
+        //
         // -- Disable Document D&D events to prevent opening the file on browser when we drop them
         $(document).on('dragenter', function (e) {
             e.stopPropagation();
@@ -329,5 +398,6 @@ define(function(require, exports, module) {
             e.stopPropagation();
             e.preventDefault();
         });
-    }
+
+    //}
 });

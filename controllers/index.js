@@ -3,10 +3,14 @@
  */
 
 var fs = require('fs');
-var Maxim = require('maxim-workflow');
 var path = require('path');
+var OS = require("os");
 var Config = require('../config.js');
+var Maxim = require('maxim-workflow');
 var tools = new Maxim();
+
+
+
 
 
 exports.index = function(req,res){
@@ -28,11 +32,8 @@ exports.doUploader = function(req,res){
     var $itemsIndex = req.body.itemsIndex || 0;
     var $currentConfig = Config.itemsConfig[$itemsIndex];
 
-
     var $ftpSwitch = req.body.ftpSwitch;
     var $tinyImgSwitch = req.body.tinyImgSwitch || "youtu";
-
-
 
     var $ftpFiles =[];
     var $errorFiles = [];
@@ -309,27 +310,31 @@ exports.addProject = function(req,res){
 }
 exports.editProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
+    var $tabIndex = req.query.tabIndex || 0;
+
+    console.log(Config.itemsConfig[$itemsConfigSize]);
 
     res.render('home/edit-project-config',{
         title: '修改项目配置',
         currentIndex:$itemsConfigSize,
-        config:Config.itemsConfig[$itemsConfigSize]
+        config:Config.itemsConfig[$itemsConfigSize],
+        tabIndex:$tabIndex
     });
 }
 exports.updateProject = function(req,res){
-
     var $itemsIndex = req.query.itemsIndex;
 
     if(Config.itemsConfig[$itemsIndex]){
         res.json({
             Config: Config.itemsConfig[$itemsIndex],
-            status:true
+            status:true,
+            itemsLength:Config.itemsConfig.length
         })
     }else{
         res.json({
             Config: Config.itemsConfig[$itemsIndex - 1],
-            status:false
-
+            status:false,
+            itemsLength:Config.itemsConfig.length
         })
     }
 }
@@ -411,46 +416,72 @@ exports.deleteProject = function(req,res){
 }
 
 
+//查询FTP是否为空
+exports.validateFtp = function(req,res){
+    var $itemsIndex = req.query.itemsIndex;
+    var $currentItemes = Config.itemsConfig[$itemsIndex];
+
+    var $null = false;
+    var $switchNull = function(data){
+        if(data ==""){
+            $null = true;
+        }
+    }
+
+    $switchNull($currentItemes.ftpHost);
+    $switchNull($currentItemes.ftpPort);
+    $switchNull($currentItemes.ftpRemotePath);
+    $switchNull($currentItemes.testPath);
+    $switchNull($currentItemes.ftpUser);
+    $switchNull($currentItemes.ftpPassword);
+
+    if($null === true){
+        res.json({
+            ftpNull:true
+        });
+    }else{
+        res.json({
+            ftpNull:false
+        });
+    }
+}
+
+
+//新增或编辑配置文件
 exports.doConfig = function(req,res){
     var configJsPath = __dirname.split('controllers')[0] + 'config.js';
     var $panelBox = req.body.panelBox;
 
     var $currentIndex = Number(req.body.currentIndex);
+
+    var DefaultDestPath = OS.homedir() + path.sep + "Dest";
     var $obj = {};
     if($panelBox =="1"){
         //更新配置信息
+
         $obj.itemsName = req.body.itemsName;
         $obj.localPath = req.body.localPath;
-        $obj.destPath = req.body.destPath || "C:\\Dest\\";
+        $obj.destPath = req.body.destPath || DefaultDestPath;
+
         $obj.releasePath = req.body.releasePath;
         $obj.testPath = req.body.testPath;
+
         $obj.ftpHost = req.body.ftpHost;
         $obj.ftpPort = req.body.ftpPort;
         $obj.ftpRemotePath = req.body.ftpRemotePath;
         $obj.ftpUser = req.body.ftpUser;
         $obj.ftpPassword = req.body.ftpPassword;
 
-
-
         $obj.spriteNameSwitch = req.body.spriteNameSwitch;
         $obj.spriteName = req.body.spriteName  || "";
-
         $obj.cssNameSwitch = req.body.cssNameSwitch;
         $obj.cssName = req.body.cssName  || "";
 
-
-        console.log("test::::");
-        console.log($obj);
-
-
-
         //判断是否是新增项目
         var $itemsConfigSize = Config.itemsConfig.length || 0;
-
         if($itemsConfigSize <= $currentIndex){
 
             //新增项目
-
             var $date = Math.round(new Date().getTime() / 1000);
 
             $obj.spriteNameSwitch = "true";
@@ -459,16 +490,15 @@ exports.doConfig = function(req,res){
             $obj.cssNameSwitch = "false";
             $obj.cssName = $date;
 
-            $obj.ftpSwitch = "true";
+            $obj.ftpSwitch = "false";
             $obj.imgSwitch = "youtu";
 
             Config.itemsConfig.push($obj);
         }else{
             //编辑项目
-
             Config.itemsConfig[$currentIndex].itemsName = req.body.itemsName;
             Config.itemsConfig[$currentIndex].localPath = req.body.localPath;
-            Config.itemsConfig[$currentIndex].destPath = req.body.destPath || "C:\\Dest\\";
+            Config.itemsConfig[$currentIndex].destPath = req.body.destPath || DefaultDestPath;
             Config.itemsConfig[$currentIndex].releasePath = req.body.releasePath;
             Config.itemsConfig[$currentIndex].testPath = req.body.testPath;
             Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost;

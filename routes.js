@@ -20,6 +20,9 @@ exports.handle = function (app) {
     app.post('/updateCssSprite', Home.updateCssSprite);
 
     app.post('/tools/doUploader', Home.doUploader);
+
+
+    app.get('/validateFtp', Home.validateFtp);
     app.post('/tools/doConfig', Home.doConfig);
 
 }

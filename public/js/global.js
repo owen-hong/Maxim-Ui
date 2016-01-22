@@ -6,21 +6,12 @@
 var gui = require('nw.gui');
 var win = gui.Window.get();
 
-define(function(require, exports, module) {
-
-    var $ = require('jquery');
-
+define(function(require) {
     //初始化复制功能
-    require('Copy')($);
-
-    //加载dmuploader
-    require('dmuploader')($);
+    require('Copy');
 
     //TODO初始化上传组件
-    var $dmUploader = require('uploader');
-    $dmUploader.initDmUploader();
-
-
+    var $uoloader = require('uploader');
 
     //TODO 全局控制
     $("#closeSortware").click(function(){
@@ -59,25 +50,27 @@ define(function(require, exports, module) {
 
     //TODO 自定义dest目录
     var $destPathVal = $("#destPath").val();
-    if ($destPathVal == "C:\\Dest\\" || $destPathVal == "C:\\Dest") {
+    if ($destPathVal == "") {
         $(".choose-dest").parent().hide();
         $(".dest-path").prop("disabled", true);
+        $(".file-dest").hide();
     } else {
+
         $(".choose-dest").parent().show();
         $(".dest-path").prop("disabled", "");
+        $(".file-dest").show();
         $("#destPathSwitch").prop("checked", true);
     }
-
-
     $("#destPathSwitch").on("change", function () {
         var $val = $(this).prop("checked");
-
         if ($val) {
             $(".choose-dest").parent().show();
             $(".dest-path").prop("disabled", "");
+            $(".file-dest").show();
         } else {
             $(".choose-dest").parent().hide();
             $(".dest-path").prop("disabled", "disabled");
+            $(".file-dest").hide();
         }
     });
 
@@ -162,9 +155,26 @@ define(function(require, exports, module) {
     });
 
     //TODO 配置信息异步提交
-    $(".form-horizontal").submit(function () {
-        var $val = $("#destPathSwitch").prop("checked");
 
+
+    $(".form-horizontal").submit(function () {
+        console.log("abc");
+
+        var $itemsName = $.trim($("input[name='itemsName']").val());
+        var $localPath = $.trim($("input[name='localPath']").val());
+
+        console.log($itemsName,$localPath);
+
+        if($itemsName==""){
+            $("input[name='itemsName']").siblings(".help-block").html("请输入项目名称");
+            return false;
+        }
+        if($localPath==""){
+            $("input[name='localPath']").parent().siblings(".help-block").html("请输入项目目录");
+            return false;
+        }
+
+        var $val = $("#destPathSwitch").prop("checked");
         var formdata = new FormData(this);
         $.ajax({
             type: 'post',
@@ -199,14 +209,11 @@ define(function(require, exports, module) {
         }
 
         $.get("/updateProject?itemsIndex=" + $itemsIndex).done(function(result){
-
+            var $menuList = $(".menu-list li").length;
             var data = result.Config;
-
-            newConfig ? newConfig : false;
-
             if(newConfig===true){
                 //新增项目
-                $itemsIndex = itemsIndex;
+                //$itemsIndex = itemsIndex;
 
                 if(result.status===true){
                     var $li = '<li class="cur"><a href="javascript:void(0);">'+ data.itemsName +'</a><i class="arrow-left"></i></li>';
@@ -220,9 +227,16 @@ define(function(require, exports, module) {
             }else{
                 //编辑项目
                 if(result.status ===true){
-                    $(".menu-list li").eq($itemsIndex).children("a").text(data.itemsName);
-                    $(".itemes-info .text").text(data.itemsName);
-                }else{
+                    if($menuList-result.itemsLength > 0){//删除不是最后一个项目的判断
+                        $(".menu-list li").eq($itemsIndex).remove();
+                        $(".menu-list li").eq($itemsIndex).addClass("cur").children("a").text(data.itemsName);
+                        $(".itemes-info .text").text(data.itemsName);
+                        $("input[name='itemsIndex']").val($itemsIndex);
+                    }else{
+                        $(".menu-list li").eq($itemsIndex).children("a").text(data.itemsName);
+                        $(".itemes-info .text").text(data.itemsName);
+                    }
+                }else{//删除最后一个项目
                     $(".menu-list li").eq($itemsIndex).remove();
 
                     $(".menu-list li").eq($itemsIndex-1).addClass("cur").children("a").text(data.itemsName);
@@ -231,10 +245,8 @@ define(function(require, exports, module) {
                 }
             }
 
-
+            //FTP信息更新
             var $ftpSwitch = data.ftpSwitch;
-
-
             if($ftpSwitch == "true"){
                 $("input[name='ftpSwitch']").eq(0).prop("checked",true);
                 $("input[name='ftpSwitch']").eq(1).prop("checked",false);
@@ -243,6 +255,7 @@ define(function(require, exports, module) {
                 $("input[name='ftpSwitch']").eq(1).prop("checked",true);
             }
 
+            //图片更新
             var $imgSwitch = data.imgSwitch;
             if($imgSwitch == "youtu"){
                 $("input[name='imgSwitch']").eq(0).prop("checked",false);
@@ -252,7 +265,7 @@ define(function(require, exports, module) {
                 $("input[name='imgSwitch']").eq(1).prop("checked",false);
             }
 
-
+            //样式和sprites更新
             var $spriteNameSwitch = data.spriteNameSwitch;
             if ($spriteNameSwitch == "true") {
                 $("input[name='spriteNameSwitch']").prop("checked",true);
@@ -263,7 +276,6 @@ define(function(require, exports, module) {
                 $("input[name='spriteName']").prop("disabled", "disabled").val(data.spriteName);
                 $("#changeSpriteKey").hide();
             }
-
             var $cssNameSwitch = data.cssNameSwitch;
             if ($cssNameSwitch == "true") {
                 $("input[name='cssNameSwitch']").prop("checked",true);
@@ -275,9 +287,12 @@ define(function(require, exports, module) {
                 $("input[name='cssName']").prop("disabled", "disabled").val(data.cssName);
                 $("#changeCssKey").hide();
             }
-
         });
     }
+
+
+    //初始化 initDmUploader
+    $uoloader.initDmUploader(updateCssSprite);
 
     //TODO 切换项目
     $("body").on("click",".menu-list li",function(){
@@ -343,16 +358,27 @@ define(function(require, exports, module) {
         ajaxCssSprite();
     });
 
+
+
+    //TODO dialog config
+    var $DialogConfig = {
+        frame:true,
+        toolbar:true,
+        position: 'center',
+        height:500,
+        width:640
+    }
+
     //TODO 新增项目
     $("#addProject").click(function(){
         var $menuListSite = $(".menu-list li").size();
 
         var addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
-            frame:false,
-            toolbar:false,
-            position: 'center',
-            width:600,
-            height: 700,
+            frame:$DialogConfig.frame,
+            toolbar:$DialogConfig.toolbar,
+            position: $DialogConfig.position,
+            width:$DialogConfig.width,
+            height: $DialogConfig.height,
             focus:true
         });
 
@@ -362,15 +388,16 @@ define(function(require, exports, module) {
             this.close(true);
         });
     });
+
+    //TODO 编辑项目
     $(".edit-btn").click(function() {
         var $currentItems = $("input[name='itemsIndex']").val();
-
         var editProjectWin = gui.Window.open('editProject?itemsIndex=' + $currentItems,{
-                frame:false,
-                toolbar:false,
-                position: 'center',
-                width:600,
-                height: 700,
+                frame:$DialogConfig.frame,
+                toolbar:$DialogConfig.toolbar,
+                position: $DialogConfig.position,
+                width:$DialogConfig.width,
+                height: $DialogConfig.height,
                 focus:true
         });
 
@@ -390,7 +417,6 @@ define(function(require, exports, module) {
         var r = confirm("是否确认删除该项目！")
         if(r==true){
             $.get("/deleteProject?itemsIndex=" + $currentItems).done(function(data){
-                console.log("ok delet");
                 alert('删除成功！');
                 win.close();
             }).fail(function(data){
@@ -403,9 +429,9 @@ define(function(require, exports, module) {
     //TODO 全局设置
     $("#settingBtn").click(function(){
         var globalSetting = gui.Window.open('globalSetting',{
-            frame:false,
-            toolbar:false,
-            position: 'center',
+            frame:$DialogConfig.frame,
+            toolbar:$DialogConfig.toolbar,
+            position: $DialogConfig.position,
             width:512,
             height: 370,
             focus:true
@@ -423,6 +449,30 @@ define(function(require, exports, module) {
         e.preventDefault();
         win.close();
     });
+
+
+    // TODO 编辑新增项目切换
+    var $tabIndex = $(".tab-side ul").data("index");
+    $(".tab-side li").eq($tabIndex).children("a").addClass("cur");
+    $(".tab-side li").eq($tabIndex).siblings().children("a").removeClass("cur");
+    $(".tab-content").eq($tabIndex).show().siblings().hide();
+
+
+    $(".tab-side li").click(function(){
+        var $index = $(this).index();
+        $(this).children("a").addClass("cur");
+        $(this).siblings().children("a").removeClass("cur");
+
+        $(".tab-content").eq($index).show().siblings().hide();
+    });
+
+    $(".file-local").click(function(){
+        $("#chooseLocal").click();
+    });
+    $(".file-dest").click(function(){
+        $("#choosedest").click();
+    });
+
 });
 
 
