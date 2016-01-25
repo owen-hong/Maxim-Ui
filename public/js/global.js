@@ -140,7 +140,6 @@ define(function(require) {
                 gui.Shell.showItemInFolder($url);
             }
         }
-
     });
 
 
@@ -155,25 +154,20 @@ define(function(require) {
     });
 
     //TODO 配置信息异步提交
-
-
     $(".form-horizontal").submit(function () {
-        console.log("abc");
-
         var $itemsName = $.trim($("input[name='itemsName']").val());
         var $localPath = $.trim($("input[name='localPath']").val());
 
-        console.log($itemsName,$localPath);
-
-        if($itemsName==""){
-            $("input[name='itemsName']").siblings(".help-block").html("请输入项目名称");
-            return false;
+        if($("input[name='itemsName']").val() != undefined) {
+            if ($itemsName == "") {
+                $("input[name='itemsName']").siblings(".help-block").html("请输入项目名称");
+                return false;
+            }
+            if ($localPath == "") {
+                $("input[name='localPath']").parent().siblings(".help-block").html("请输入项目目录");
+                return false;
+            }
         }
-        if($localPath==""){
-            $("input[name='localPath']").parent().siblings(".help-block").html("请输入项目目录");
-            return false;
-        }
-
         var $val = $("#destPathSwitch").prop("checked");
         var formdata = new FormData(this);
         $.ajax({
@@ -188,12 +182,11 @@ define(function(require) {
                 win.close();
             } else {
                 alert("配置信息保存失败！");
-                console.log("Updata config data fail!");
-                window.location.reload();
+                win.close();
             }
         }).fail(function (data) {
-            alert(data);
-            Window.reload();
+            console.log("保存失败！");
+            win.close();
         });
 
         return false;
@@ -210,12 +203,11 @@ define(function(require) {
 
         $.get("/updateProject?itemsIndex=" + $itemsIndex).done(function(result){
             var $menuList = $(".menu-list li").length;
-            var data = result.Config;
+            var data = result.Config || "";
+
             if(newConfig===true){
                 //新增项目
-                //$itemsIndex = itemsIndex;
-
-                if(result.status===true){
+                if(result.status===true && data.itemsName !==""){
                     var $li = '<li class="cur"><a href="javascript:void(0);">'+ data.itemsName +'</a><i class="arrow-left"></i></li>';
                     $(".menu-list li").removeClass("cur");
                     $(".menu-list").append($li);
@@ -239,14 +231,19 @@ define(function(require) {
                 }else{//删除最后一个项目
                     $(".menu-list li").eq($itemsIndex).remove();
 
-                    $(".menu-list li").eq($itemsIndex-1).addClass("cur").children("a").text(data.itemsName);
-                    $(".itemes-info .text").text(data.itemsName);
-                    $("input[name='itemsIndex']").val($itemsIndex-1);
+                    if($(".menu-list li").size() > 0){
+                        $(".menu-list li").eq($itemsIndex-1).addClass("cur").children("a").text(data.itemsName);
+                        $(".itemes-info .text").text(data.itemsName);
+                        $("input[name='itemsIndex']").val($itemsIndex-1);
+                    }else{
+                        $(".itemes-info .text").text("");
+                        $("input[name='itemsIndex']").val("");
+                    }
                 }
             }
 
             //FTP信息更新
-            var $ftpSwitch = data.ftpSwitch;
+            var $ftpSwitch = data.ftpSwitch || "false";
             if($ftpSwitch == "true"){
                 $("input[name='ftpSwitch']").eq(0).prop("checked",true);
                 $("input[name='ftpSwitch']").eq(1).prop("checked",false);
@@ -256,7 +253,7 @@ define(function(require) {
             }
 
             //图片更新
-            var $imgSwitch = data.imgSwitch;
+            var $imgSwitch = data.imgSwitch || "youtu";
             if($imgSwitch == "youtu"){
                 $("input[name='imgSwitch']").eq(0).prop("checked",false);
                 $("input[name='imgSwitch']").eq(1).prop("checked",true);
@@ -266,7 +263,7 @@ define(function(require) {
             }
 
             //样式和sprites更新
-            var $spriteNameSwitch = data.spriteNameSwitch;
+            var $spriteNameSwitch = data.spriteNameSwitch || "false";
             if ($spriteNameSwitch == "true") {
                 $("input[name='spriteNameSwitch']").prop("checked",true);
                 $("input[name='spriteName']").prop("disabled", "").val(data.spriteName);
@@ -276,7 +273,7 @@ define(function(require) {
                 $("input[name='spriteName']").prop("disabled", "disabled").val(data.spriteName);
                 $("#changeSpriteKey").hide();
             }
-            var $cssNameSwitch = data.cssNameSwitch;
+            var $cssNameSwitch = data.cssNameSwitch || "false";
             if ($cssNameSwitch == "true") {
                 $("input[name='cssNameSwitch']").prop("checked",true);
                 $("input[name='cssName']").prop("disabled", "").val(data.cssName);
@@ -362,15 +359,15 @@ define(function(require) {
 
     //TODO dialog config
     var $DialogConfig = {
-        frame:true,
-        toolbar:true,
+        frame:false,
+        toolbar:false,
         position: 'center',
         height:500,
         width:640
     }
 
     //TODO 新增项目
-    $("#addProject").click(function(){
+    var addProjectWin = function(){
         var $menuListSite = $(".menu-list li").size();
 
         var addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
@@ -387,18 +384,22 @@ define(function(require) {
             updateCssSprite(true,$menuListSite);
             this.close(true);
         });
+    }
+
+    $("#addProject").click(function(){
+        addProjectWin();
     });
 
     //TODO 编辑项目
-    $(".edit-btn").click(function() {
+    var editProjectWin = function(){
         var $currentItems = $("input[name='itemsIndex']").val();
         var editProjectWin = gui.Window.open('editProject?itemsIndex=' + $currentItems,{
-                frame:$DialogConfig.frame,
-                toolbar:$DialogConfig.toolbar,
-                position: $DialogConfig.position,
-                width:$DialogConfig.width,
-                height: $DialogConfig.height,
-                focus:true
+            frame:$DialogConfig.frame,
+            toolbar:$DialogConfig.toolbar,
+            position: $DialogConfig.position,
+            width:$DialogConfig.width,
+            height: $DialogConfig.height,
+            focus:true
         });
 
         editProjectWin.on('close', function () {
@@ -406,6 +407,13 @@ define(function(require) {
             updateCssSprite(false,$currentItems);
             this.close(true);
         });
+    }
+    $(".edit-btn").click(function() {
+        if($(".menu-list li").size() > 0){
+            editProjectWin();
+        }else{
+            addProjectWin();
+        }
     });
 
     //删除项目

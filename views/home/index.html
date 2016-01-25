@@ -29,6 +29,7 @@
             <div class="logo"></div>
             <menu>
                 <ul class="menu-list">
+                    <% if(configItemes.length > 0){ %>
                     <% configItemes.forEach(function(result,i){ %>
                     <% if(i===0 && result.itemsName!="" ){ %>
                     <li class="cur">
@@ -41,6 +42,7 @@
                         <i class="arrow-left"></i>
                     </li>
                     <% } })%>
+                    <% } %>
                 </ul>
                 <input type="hidden" name="itemsIndex" value="0"/>
             </menu>
@@ -56,7 +58,11 @@
         </aside>
         <main>
             <div class="itemes-info">
-                <span class="text"><%= configItemes[0].itemsName %></span>
+                <span class="text">
+                    <% if(configItemes.length > 0){ %>
+                    <%= configItemes[0].itemsName %>
+                    <% } %>
+                </span>
                 <a href="javascript:void(0);" class="edit-btn" title="编辑当前项目">
                     <i class="edit-icon"></i>
                 </a>
@@ -121,7 +127,9 @@
             <a href="javascript:void(0)" class="close-btn" id="close-btn">
                 <i class="arrow-icon"></i>
             </a>
-            <% if(configItemes[0].imgSwitch =="youtu"){ %>
+
+
+            <% if(configItemes.length > 0 && configItemes[0].imgSwitch =="youtu"){ %>
             <label class="radio-inline">
                 <input type="radio" name="imgSwitch" class="radio" value="tinyimg">tinyimg压缩
             </label>
@@ -139,7 +147,7 @@
 
             <hr/>
 
-            <% if(configItemes[0].ftpSwitch =="true"){ %>
+            <% if(configItemes.length > 0 && configItemes[0].ftpSwitch =="true"){ %>
             <label class="radio-inline">
                 <input type="radio" name="ftpSwitch" checked class="radio" value="true">上传至服务器
             </label>
@@ -159,7 +167,7 @@
                 <label class="control-label">Sprites：</label>
                 <div class="col-sm-8">
                     <div style="margin-bottom:10px;">
-                        <% if(configItemes[0].spriteNameSwitch =="true"){ %>
+                        <% if(configItemes.length > 0 && configItemes[0].spriteNameSwitch =="true"){ %>
                         <label class="check-inline">
                             <input type="checkbox" class="checkbox" checked name="spriteNameSwitch" checked>新名规则：CSS名-版本号
                         </label>
@@ -170,7 +178,11 @@
                         <% } %>
                     </div>
                     <div class="col-xs-8">
+                        <% if(configItemes.length > 0){ %>
                         <input type="text" disabled name="spriteName" class="form-control" placeholder="" value="<%= configItemes[0].spriteName %>">
+                        <% }else{ %>
+                        <input type="text" disabled name="spriteName" class="form-control" placeholder="" value="">
+                        <% } %>
                         <a href="javascript:void(0);" id="changeSpriteKey" style="display: none;">换一个</a>
                     </div>
                 </div>
@@ -180,7 +192,7 @@
                 <label class="control-label">CSS命名：</label>
                 <div class="col-sm-8">
                     <div style="margin-bottom:10px;">
-                        <% if(configItemes[0].cssNameSwitch =="true"){ %>
+                        <% if(configItemes.length > 0 && configItemes[0].cssNameSwitch =="true"){ %>
                         <label class="check-inline">
                             <input type="checkbox" class="checkbox" checked name="cssNameSwitch" checked>新名规则：原名-版本号
                         </label>
@@ -191,7 +203,11 @@
                         <% } %>
                     </div>
                     <div class="col-xs-8">
+                        <% if(configItemes.length > 0){ %>
                         <input type="text" disabled name="cssName" class="form-control" placeholder="" value="<%= configItemes[0].cssName %>">
+                        <% }else{ %>
+                        <input type="text" disabled name="cssName" class="form-control" placeholder="" value="">
+                        <% } %>
                         <a href="javascript:void(0);" id="changeCssKey" style="display: none;">换一个</a>
                     </div>
                 </div>

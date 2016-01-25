@@ -4,13 +4,11 @@
 
 var fs = require('fs');
 var path = require('path');
-var OS = require("os");
+var os = require("os");
+var osHomedir = require('os-homedir');
 var Config = require('../config.js');
 var Maxim = require('maxim-workflow');
 var tools = new Maxim();
-
-
-
 
 
 exports.index = function(req,res){
@@ -81,9 +79,6 @@ exports.doUploader = function(req,res){
         });
 
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
-
-            //console.log($ftp);
-
             tools.ftpUtil($ftp, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
@@ -231,7 +226,7 @@ exports.doUploader = function(req,res){
     if($fileUrl[0].indexOf($currentConfig.localPath) < 0){
         res.json({
             status:false,
-            errorMessage:'请上传设置的根目录下的文件！'
+            errorMessage:'请您上传此项目配置：“项目目录”下的文件！'
         });
     }else{
         //TODO 不需要处理的文件直接调用 copyFiles
@@ -322,7 +317,7 @@ exports.editProject = function(req,res){
     });
 }
 exports.updateProject = function(req,res){
-    var $itemsIndex = req.query.itemsIndex;
+    var $itemsIndex = req.query.itemsIndex || 0;
 
     if(Config.itemsConfig[$itemsIndex]){
         res.json({
@@ -409,7 +404,8 @@ exports.deleteProject = function(req,res){
             });
         }else{
             res.json({
-                status: true
+                status: true,
+                configItemes:Config.itemsConfig
             });
         }
     });
@@ -453,8 +449,9 @@ exports.doConfig = function(req,res){
     var $panelBox = req.body.panelBox;
 
     var $currentIndex = Number(req.body.currentIndex);
+    var DefaultDestPath = osHomedir() + path.sep + "Dest";
 
-    var DefaultDestPath = OS.homedir() + path.sep + "Dest";
+
     var $obj = {};
     if($panelBox =="1"){
         //更新配置信息

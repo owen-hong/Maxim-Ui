@@ -31,7 +31,6 @@ legend + .control-group {
     -webkit-margin-top-collapse: separate
 }
 .form-horizontal{
-    /* padding-bottom: 10px; */
     -webkit-box-flex: 1;
     overflow: auto;
     border: 1px solid #e6e6e6;
@@ -40,6 +39,9 @@ legend + .control-group {
     flex: 1;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+}
+.form-horizontal fieldset{
+    padding-top: 15px;
 }
 .form-horizontal.xl .form-control{
     width: 200px;

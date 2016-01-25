@@ -19,6 +19,7 @@ define(function(require, exports, module) {
 
         //隐藏loading
         $("#loadding-box").hide();
+        $(".drop-tips").hide();
 
         //提交时间更新
         var myDate = new Date();
@@ -35,14 +36,21 @@ define(function(require, exports, module) {
 
                 var $errorMessage="";
                 if (result.errorMessage.length > 0) {
-                    $errorMessage = "<p><em style='color:#06c'>error log: </em>" + result.errorMessage + "</p>";
+                    $errorMessage += "<div class='logs-box'><p><em style='color:red'>Error log: </em></p>";
+
+                    $.unique(result.errorMessage);//去除重复错误
+                    $.each(result.errorMessage, function (i, value) {
+                        var $value = value.replace(/\//g, '\\');
+                        $errorMessage += "<p>"+ $value +"</p>"
+                    });
+                    $errorMessage += "</div>";
                 }
 
                 $.each(result.successFiles, function (i, value) {
                     $releasePath += $releaseUrl + value + '\n';
                     $copyContent += $releaseUrl + value + '\n';
 
-                    $testPath += "<a data-href='" + $testUrl + value + "'>" + $testUrl + value + "</a>";
+                    $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
                 });
 
                 $.each(result.errorFiles, function (i, value) {
@@ -68,18 +76,36 @@ define(function(require, exports, module) {
                 $fileBox.children(".logs-wrap").last().find(".copy-input").val($copyContent);
             }else{
 
+                console.log(result);
+
                 var $DestPath = "<div class='logs-box'><h3 class='releasePath'>临时目录文件列表</h3><div class='logs-text-box'>";
                 var $UserDest = result.destPath;
+
+                var $errorMessage="";
+                if (result.errorMessage.length > 0) {
+                    $errorMessage += "<div class='logs-box'><p><em style='color:red'>Error log: </em></p>";
+
+                    $.unique(result.errorMessage);//去除重复错误
+                    $.each(result.errorMessage, function (i, value) {
+                        var $value = value.replace(/\//g, '\\');
+                        $errorMessage += "<p>"+ $value +"</p>"
+                    });
+                    $errorMessage += "</div>";
+                }
 
                 $.each(result.successFiles, function (i, value) {
                     var $value = value.replace(/\//g,'\\');
 
                     console.log($value);
 
-                    $DestPath += "<a data-href='" + $UserDest + $value + "'>" + $UserDest + $value + "</a>";
+                    $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
 
-                $DestPath += '</div></div>'
+                $.each(result.errorFiles, function (i, value) {
+                    $DestPath += '<p class="red">' + $releaseUrl + value + '</p>';
+                });
+
+                $DestPath += '</div></div>'+$errorMessage;
                 //输出到客户端
                 $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+ $DestPath +'</div></div>')
 
@@ -88,7 +114,7 @@ define(function(require, exports, module) {
             $(".drop-tips").hide();
             $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs"><p class="red">FTP链接失败，请检查FTP服务器是否能正常链接或者检查FTP配置是否正确</p>');
         }else{
-            alert('请上传本地目录下的文件！');
+            alert(result.errorMessage);
         }
     }
 
