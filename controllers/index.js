@@ -71,13 +71,12 @@ exports.doUploader = function(req,res){
         ftpFiles.forEach(function(data){
             var $destPathSize = data.replace(/\//g, '\\').indexOf($currentConfig.destPath+$currentConfig.destPath);
 
-
-
             if($destPathSize < 0) {
                 $ftp.push(data);
             }
         });
 
+        var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
             tools.ftpUtil($ftp, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
@@ -95,6 +94,7 @@ exports.doUploader = function(req,res){
                     res.json({
                         ftpSuccess:true,
                         status: true,
+                        osType:osType,
                         releasePath: $currentConfig.releasePath,
                         testPath: $currentConfig.testPath,
                         destPath: $currentConfig.destPath,
@@ -108,6 +108,7 @@ exports.doUploader = function(req,res){
                     res.json({
                         ftpSuccess:false,
                         status: false,
+                        osType:osType,
                         releasePath: $currentConfig.releasePath,
                         testPath: $currentConfig.testPath,
                         destPath: $currentConfig.destPath,
@@ -123,6 +124,7 @@ exports.doUploader = function(req,res){
             res.json({
                 ftpSuccess:true,
                 status: true,
+                osType:osType,
                 releasePath: $currentConfig.releasePath,
                 testPath: $currentConfig.testPath,
                 destPath: $currentConfig.destPath,
@@ -160,7 +162,13 @@ exports.doUploader = function(req,res){
                 $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
                 $errorFiles.push(result.fName);
-                $errorMessage.push(result.message);
+
+
+                if(result.message !== undefined){
+                    $errorMessage.push(result.message);
+                }else{
+                    $errorMessage.push(result.message);
+                }
             }
         });
     }
@@ -232,7 +240,6 @@ exports.doUploader = function(req,res){
         //TODO 不需要处理的文件直接调用 copyFiles
         if($copyFile.length > 0){
             tools.copyFiles($copyFile,$currentConfig,function(result){
-                console.log("img copy tiny::::::");
 
                 //拼接dest的路径文件
                 destPath(result);
@@ -248,8 +255,6 @@ exports.doUploader = function(req,res){
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
-                console.log("abc:::::::");
-                console.log(result);
                 result.forEach(function(resultFiles){
                     var $imgLocalFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
                     var $filesname = path.basename(resultFiles.fName);

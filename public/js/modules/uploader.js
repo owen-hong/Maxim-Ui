@@ -25,90 +25,83 @@ define(function(require, exports, module) {
         var myDate = new Date();
         var $currentDate = myDate.getHours() + ':' + myDate.getMinutes() + ':' + myDate.getSeconds();
 
-        if (result.status===true && result.ftpSuccess===true) {
+
+        //输出路径处理
+        var PathExport = function(pathType){
             var $copyContent = '';
             var $testUrl = result.testPath;
             var $releaseUrl = result.releasePath;
+            var $UserDest = result.destPath;
 
-            if($ftpSwitch == "true"){
-                var $releasePath = "<div class='logs-box'><h3 class='releasePath'>提单路径</h3><div class='logs-text-box'>";
-                var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
+            var $DestPath = "<div class='logs-box'><h3 class='releasePath'>临时目录文件列表</h3><div class='logs-text-box'>";
+            var $releasePath = "<div class='logs-box'><h3 class='releasePath'>提单路径</h3><div class='logs-text-box'>";
+            var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
+            var $errorMessage="";
 
-                var $errorMessage="";
-                if (result.errorMessage.length > 0) {
-                    $errorMessage += "<div class='logs-box'><p><em style='color:red'>Error log: </em></p>";
+            if (result.errorMessage.length > 0) {
+                $errorMessage += "<div class='logs-box'><div class='logs-text-box'><p><em style='color:red'>Error log: </em></p>";
 
-                    $.unique(result.errorMessage);//去除重复错误
-                    $.each(result.errorMessage, function (i, value) {
-                        var $value = value.replace(/\//g, '\\');
-                        $errorMessage += "<p>"+ $value +"</p>"
-                    });
-                    $errorMessage += "</div>";
+                $.unique(result.errorMessage);//去除重复错误
+                $.each(result.errorMessage, function (i, value) {
+                    var $value = value;
+                    if(result.osType =="Windows_NT"){
+                        $value = value.replace(/\//g,'\\');
+                    }
+                    $errorMessage += "<p>"+ $value +"</p>"
+                });
+
+                $errorMessage += "</div></div>";
+            }
+
+            $.each(result.successFiles, function (i, value) {
+                var $value = value;
+                if(result.osType =="Windows_NT"){
+                    $value = value.replace(/\//g,'\\');
                 }
 
-                $.each(result.successFiles, function (i, value) {
-                    $releasePath += $releaseUrl + value + '\n';
-                    $copyContent += $releaseUrl + value + '\n';
+                $copyContent += $releaseUrl + value + '\n';
+                $releasePath += '<p>'+$releaseUrl + value + '</p>';
+                $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
+                $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
 
-                    $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
-                });
+            });
 
-                $.each(result.errorFiles, function (i, value) {
-                    $releasePath += '<p class="red">' + $releaseUrl + value + '</p>';
-                    $testPath += '<p class="red">' + $testUrl + value + '</p>';
-                });
+            $.each(result.errorFiles, function (i, value) {
+                $releasePath += '<p class="red">' + $releaseUrl + value + '</p>';
+                $testPath += '<p class="red">' + $testUrl + value + '</p>';
+            });
 
+            if(pathType =="local"){
+                $releasePath ='';
+                $testPath = '';
+                $DestPath += '</div></div>';
+            }else{
                 $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" id="copy1" class="copy-input"></textarea></div>'
-                $testPath += '</div></div>'
-
-
-                //隐藏提示
-                $(".drop-tips").hide();
-
                 if($testUrl==""){
                     $testPath="";
+                }else{
+                    $testPath += '</div></div>'
                 }
+                $DestPath = '';
+            }
 
-                //输出到客户端
-                $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $errorMessage +'</div></div>')
+            //隐藏提示
+            $(".drop-tips").hide();
 
-                //输出提单复制路径到input.hidden
+            //输出到客户端
+            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $DestPath + $errorMessage +'</div></div>')
+
+            //输出提单复制路径到input.hidden
+            if($releasePath != ""){
                 $fileBox.children(".logs-wrap").last().find(".copy-input").val($copyContent);
+            }
+        }
+
+        if (result.status===true && result.ftpSuccess===true) {
+            if($ftpSwitch == "true"){
+                PathExport("network");
             }else{
-
-                console.log(result);
-
-                var $DestPath = "<div class='logs-box'><h3 class='releasePath'>临时目录文件列表</h3><div class='logs-text-box'>";
-                var $UserDest = result.destPath;
-
-                var $errorMessage="";
-                if (result.errorMessage.length > 0) {
-                    $errorMessage += "<div class='logs-box'><p><em style='color:red'>Error log: </em></p>";
-
-                    $.unique(result.errorMessage);//去除重复错误
-                    $.each(result.errorMessage, function (i, value) {
-                        var $value = value.replace(/\//g, '\\');
-                        $errorMessage += "<p>"+ $value +"</p>"
-                    });
-                    $errorMessage += "</div>";
-                }
-
-                $.each(result.successFiles, function (i, value) {
-                    var $value = value.replace(/\//g,'\\');
-
-                    console.log($value);
-
-                    $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
-                });
-
-                $.each(result.errorFiles, function (i, value) {
-                    $DestPath += '<p class="red">' + $releaseUrl + value + '</p>';
-                });
-
-                $DestPath += '</div></div>'+$errorMessage;
-                //输出到客户端
-                $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+ $DestPath +'</div></div>')
-
+                PathExport("local");
             }
         } else if(result.ftpSuccess === false) {
             $(".drop-tips").hide();

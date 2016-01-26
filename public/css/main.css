@@ -286,7 +286,7 @@ main .shortcut-operations a{
 }
 .drop-files-box .logs-box{
     padding-bottom: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     position: relative;
     border-bottom: 1px dashed #e6e6e6;
 }
