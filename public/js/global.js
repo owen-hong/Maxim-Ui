@@ -93,7 +93,7 @@ define(function(require) {
         $("#changeCssKey").hide();
     }
 
-    //开启关闭状态切换
+    //TODO 开启关闭状态切换
     $("input[name='spriteNameSwitch']").on("change", function () {
         var $spriteNameSwitch = $(this).prop('checked');
         if ($spriteNameSwitch === true) {
@@ -114,7 +114,18 @@ define(function(require) {
             $("#changeCssKey").hide();
         }
     });
+    $("input[name='pxToRemSwitch']").on("change", function () {
+        var $switch = $(this).prop('checked');
+        if ($switch === true) {
+            $("input[name='rootValue']").prop("disabled", "");
+            $("input[name='propertyBlackList']").prop("disabled", "");
+        } else {
+            $("input[name='rootValue']").prop("disabled", "disabled");
+            $("input[name='propertyBlackList']").prop("disabled", "disabled");
+        }
 
+
+    });
     /******************end**********************/
 
     //TODO 阻止文件拖拽进窗口
@@ -284,6 +295,22 @@ define(function(require) {
                 $("input[name='cssName']").prop("disabled", "disabled").val(data.cssName);
                 $("#changeCssKey").hide();
             }
+
+            // px2rem 信息更新
+            var $pxToRemSwitch = data.pxToRemSwitch || "false";
+            var $rootValue = data.rootValue || "75";
+            var $propertyBlackList = data.propertyBlackList || "";
+            if($pxToRemSwitch == "true"){
+                $("input[name='pxToRemSwitch']").prop("checked",true);
+                $("input[name='rootValue']").prop("disabled", "");
+                $("input[name='propertyBlackList']").prop("disabled", "");
+            }else{
+                $("input[name='pxToRemSwitch']").prop("checked",false);
+                $("input[name='rootValue']").prop("disabled", "disabled");
+                $("input[name='propertyBlackList']").prop("disabled", "disabled");
+            }
+            $("input[name='rootValue']").val($rootValue);
+            $("input[name='propertyBlackList']").val($propertyBlackList);
         });
     }
 
@@ -317,9 +344,12 @@ define(function(require) {
         var $cssNameSwitch = $("input[name='cssNameSwitch']").prop("checked");
         var $cssName = $("input[name='cssName']").val();
 
-
         var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
         var $imgSwitch = $("input[name='imgSwitch']:checked").val();
+
+        var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
+        var $rootValue = $("input[name='rootValue']").val();
+        var $propertyBlackList = $("input[name='propertyBlackList']").val();
 
 
         $.post("/updateCssSprite",{
@@ -329,15 +359,20 @@ define(function(require) {
             cssNameSwitch:$cssNameSwitch,
             cssName:$cssName,
             ftpSwitch:$ftpSwitch,
-            imgSwitch:$imgSwitch
+            imgSwitch:$imgSwitch,
+            pxToRemSwitch:$pxToRemSwitch,
+            rootValue:$rootValue,
+            propertyBlackList:$propertyBlackList
         }).done(function(data){
-            //console.log(data);
             console.log('右侧操作栏更新成功!');
         });
     }
 
     //监听spriteNameSwitch cssNameSwitch
-    $("input[name='spriteNameSwitch'],input[name='cssNameSwitch'],input[name='imgSwitch'],input[name='ftpSwitch']").on("change",function(){
+    $("input[name='spriteNameSwitch'],input[name='cssNameSwitch'],input[name='imgSwitch'],input[name='ftpSwitch'],input[name='pxToRemSwitch']").on("change",function(){
+        ajaxCssSprite();
+    });
+    $("input[name='rootValue'],input[name='propertyBlackList']").blur(function(){
         ajaxCssSprite();
     });
 

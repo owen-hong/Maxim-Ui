@@ -6,8 +6,8 @@
     outline: none;
     background: none\0;
     background-image: url(img/slice/form/radio.png);
-    -webkit-appearance: none;
-    *background: none;
+    -webkit-appearance: none;*
+    background: none;
 }
 .radio[type=radio]:hover,
 .radio[type=radio]:focus {

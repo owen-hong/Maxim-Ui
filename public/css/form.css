@@ -134,6 +134,10 @@ legend + .control-group {
 /*form*/
 .radio-inline{
     display: block;
+    cursor: pointer;
+}
+.check-inline{
+    cursor: pointer;
 }
 .check-block{
     display: block;
@@ -145,10 +149,12 @@ legend + .control-group {
 .check-block .checkbox
 {
     margin-right: 5px;
+    vertical-align: -4px;
 }
 
 .radio-inline .radio{
     margin-right: 5px;
+    vertical-align: -4px;
 }
 .form-group .control-label{
     font-weight: bold;

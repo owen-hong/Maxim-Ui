@@ -318,11 +318,19 @@ define(function(requires, exports, module) {
             //获取各个任务的开关
             var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
             var $imgSwitch = $("input[name='imgSwitch']:checked").val();
+
             var $itemsIndex = $("input[name='itemsIndex']").val();
+
+            var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
+
+
 
             widget.settings.extraData.ftpSwitch = $ftpSwitch;
             widget.settings.extraData.tinyImgSwitch = $imgSwitch;
+
             widget.settings.extraData.itemsIndex = $itemsIndex;
+
+            widget.settings.extraData.pxToRemSwitch = $pxToRemSwitch;
 
 
             $.each(widget.settings.extraData, function (exKey, exVal) {

@@ -368,11 +368,11 @@ main .shortcut-operations a{
     box-sizing: border-box;
     width: 240px;
     background-color: #FAFAFA;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 26px;
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 20px;
+    padding-top: 5px;
     border: 1px solid #e6e6e6;
     border-right: none;
     -webkit-app-region: no-drag;
@@ -404,8 +404,8 @@ main .shortcut-operations a{
     border-color: #e6e6e6;
     border-width: 1px;
     font-size: 0;
-    margin-top: 14px;
-    margin-bottom: 14px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 .operations-box .form-control{
     line-height: 26px;
@@ -414,6 +414,7 @@ main .shortcut-operations a{
     margin-right: 5px;
     box-sizing: border-box;
     width: 110px;
+    margin-bottom: 4px;
 }
 
 /*other*/

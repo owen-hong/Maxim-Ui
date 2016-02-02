@@ -11,7 +11,19 @@ var Maxim = require('maxim-workflow');
 var tools = new Maxim();
 
 
+
+var unique = function(array){
+    var n = [];//临时数组
+    array.forEach(function(data){
+        if(n.indexOf(data) == -1) n.push(data);
+    });
+    return n;
+}
+
 exports.index = function(req,res){
+
+    console.log(unique([1,2,4,1,1,1,1,1]));
+
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
@@ -33,6 +45,8 @@ exports.doUploader = function(req,res){
     var $ftpSwitch = req.body.ftpSwitch;
     var $tinyImgSwitch = req.body.tinyImgSwitch || "youtu";
 
+    var $pxToRemSwitch = req.body.pxToRemSwitch;
+
     var $ftpFiles =[];
     var $errorFiles = [];
     var $errorMessage = [];
@@ -40,6 +54,7 @@ exports.doUploader = function(req,res){
     var $copyFile =[];
     var $cssFiles = [];
     var $imgFiles = [];
+    var $destCssFiles = [];
 
     //console.log('$tinyImgSwitch::::::' + $tinyImgSwitch);
 
@@ -49,45 +64,24 @@ exports.doUploader = function(req,res){
      *
      * */
     var ftpUploader = function(ftpFiles,res){
-        //过滤successfiles文件路径
-        var $success = [];
-        $successFiles.forEach(function(data){
-            var $destPathSize = data.replace(/\//g, '\\').indexOf($currentConfig.destPath);
+        //去除重复
+        $successFiles = unique($successFiles);
+        $errorFiles = unique($errorFiles);
+        ftpFiles = unique(ftpFiles);
 
-            if($destPathSize < 0) {
-                $success.push(data);
-            }
-        });
-        var $error = [];
-        $errorFiles.forEach(function(data){
-            var $destPathSize = data.replace(/\//g, '\\').indexOf($currentConfig.destPath);
-
-            if($destPathSize < 0) {
-                $error.push(data);
-            }
-        });
-
-        var $ftp = [];
-        ftpFiles.forEach(function(data){
-            var $destPathSize = data.replace(/\//g, '\\').indexOf($currentConfig.destPath+$currentConfig.destPath);
-
-            if($destPathSize < 0) {
-                $ftp.push(data);
-            }
-        });
 
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
-            tools.ftpUtil($ftp, $currentConfig, function (result) {
+            tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
                 if(result.success===true){
                     $ftpFiles.forEach(function(ftpData){
                         if(ftpData.status===true){
-                            $success.push(ftpData.fName);
+                            $successFiles.push(ftpData.fName);
                         }else{
                             //console.log(ftpData);
-                            $error.push(ftpData.fName);
+                            $errorFiles.push(ftpData.fName);
                         }
                     });
 
@@ -100,8 +94,8 @@ exports.doUploader = function(req,res){
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
-                        errorFiles: $error,
-                        successFiles: $success,
+                        errorFiles: $errorFiles,
+                        successFiles: $successFiles,
                         errorMessage:$errorMessage
                     });
                 }else{
@@ -114,8 +108,8 @@ exports.doUploader = function(req,res){
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
-                        errorFiles: $error,
-                        successFiles: $success,
+                        errorFiles: $errorFiles,
+                        successFiles: $successFiles,
                         errorMessage:$errorMessage
                     });
                 }
@@ -130,8 +124,8 @@ exports.doUploader = function(req,res){
                 destPath: $currentConfig.destPath,
                 repeatFiles : $repeatfiles,
                 repeatfilesType : $repeatfilesType,
-                errorFiles: $error,
-                successFiles: $success,
+                errorFiles: $errorFiles,
+                successFiles: $successFiles,
                 errorMessage:$errorMessage
             });
         }
@@ -145,7 +139,6 @@ exports.doUploader = function(req,res){
     *
     * */
     var destPath = function(data){
-
         data.forEach(function(result){
 
             //判断操作系统，linux无需替换路径“/”
@@ -155,14 +148,12 @@ exports.doUploader = function(req,res){
                 var $localPath = result.fName.replace(/\//g,'\/');
             }
 
-
             if($ftpSwitch == "false" && result.status){//关闭ftp后直接输出成功压缩后的文件数组
                 $successFiles.push(result.fName);
             }else if($ftpSwitch == "true" && result.status){
                 $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
                 $errorFiles.push(result.fName);
-
 
                 if(result.message !== undefined){
                     $errorMessage.push(result.message);
@@ -190,25 +181,45 @@ exports.doUploader = function(req,res){
                 //拼接dest的路劲文件
                 destPath(result);
 
-                //ftp 上传文件
-                ftpUploader($ftpFiles, res);
+                //px2rem处理
+                Px2rem();
             });
         }else if($tinyImgSwitch == "youtu"){
             console.log("youtu:::::::::::::::");
 
             tools.youtu($imgFiles, $currentConfig,Config, function (result) {
 
-                console.log(result);
+                //拼接dest的路劲文件
+                destPath(result);
 
+                //px2rem处理
+                Px2rem();
+            });
+        }
+    }
+
+    /*
+     *
+     *
+     * TODO Px2rem
+     *
+     *
+     * */
+    var Px2rem  = function(){
+        if($destCssFiles.length > 0 && $pxToRemSwitch == "true"){
+            tools.px2rem($destCssFiles,$currentConfig,function(result){
                 //拼接dest的路劲文件
                 destPath(result);
 
                 //ftp 上传文件
                 ftpUploader($ftpFiles, res);
-
             });
+        }else{
+            //ftp 上传文件
+            ftpUploader($ftpFiles, res);
         }
     }
+
 
 
     //TODO 文件分类
@@ -256,13 +267,14 @@ exports.doUploader = function(req,res){
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
                 result.forEach(function(resultFiles){
-                    var $imgLocalFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
-                    var $filesname = path.basename(resultFiles.fName);
-                    var $img = $filesname.split(".")[1];
+                    var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
+                    var $filesName = path.basename(resultFiles.fName);
+                    var $fileType = $filesName.split(".")[1];
 
-                    if($img.indexOf("png") >= 0 || $img.indexOf("jpg") >= 0 ){
-
-                        $imgFiles.push($imgLocalFile);
+                    if($fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 ){
+                        $imgFiles.push($DestFile);
+                    }else if($fileType.indexOf("css") >= 0){
+                        $destCssFiles.push($DestFile);
                     }
                 });
 
@@ -270,13 +282,10 @@ exports.doUploader = function(req,res){
                 destPath(result);
 
                 if($imgFiles.length > 0){
-
                     //TODO tiny img
                     tinyImg();
-
                 }else{
-
-                    //ftp 上传文件
+                    //TODO ftp 上传文件
                     ftpUploader($ftpFiles, res);
 
                 }
@@ -311,8 +320,6 @@ exports.addProject = function(req,res){
 exports.editProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
     var $tabIndex = req.query.tabIndex || 0;
-
-    console.log(Config.itemsConfig[$itemsConfigSize]);
 
     res.render('home/edit-project-config',{
         title: '修改项目配置',
@@ -361,6 +368,13 @@ exports.updateCssSprite = function(req,res){
     var $imgSwitch = req.body.imgSwitch;
 
 
+    var $pxToRemSwitch = req.body.pxToRemSwitch;
+    var $rootValue = req.body.rootValue;
+    var $propertyBlackList = req.body.propertyBlackList;
+
+
+
+
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
     Config.itemsConfig[$itemsIndex].imgSwitch = $imgSwitch;
 
@@ -370,6 +384,9 @@ exports.updateCssSprite = function(req,res){
     Config.itemsConfig[$itemsIndex].cssNameSwitch = $cssNameSwitch;
     Config.itemsConfig[$itemsIndex].cssName = $cssName;
 
+    Config.itemsConfig[$itemsIndex].pxToRemSwitch = $pxToRemSwitch;
+    Config.itemsConfig[$itemsIndex].rootValue = $rootValue;
+    Config.itemsConfig[$itemsIndex].propertyBlackList = $propertyBlackList;
 
 
     //拼接字符串
@@ -478,6 +495,10 @@ exports.doConfig = function(req,res){
         $obj.spriteName = req.body.spriteName  || "";
         $obj.cssNameSwitch = req.body.cssNameSwitch;
         $obj.cssName = req.body.cssName  || "";
+
+        $obj.pxToRemSwitch = "false";
+        $obj.rootValue = "75";
+        $obj.propertyBlackList = "";
 
         //判断是否是新增项目
         var $itemsConfigSize = Config.itemsConfig.length || 0;

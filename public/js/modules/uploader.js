@@ -97,6 +97,7 @@ define(function(require, exports, module) {
             }
         }
 
+        //判断返回状态
         if (result.status===true && result.ftpSuccess===true) {
             if($ftpSwitch == "true"){
                 PathExport("network");
@@ -122,7 +123,7 @@ define(function(require, exports, module) {
         });
 
         $dmuploader(updateCssSprite,$fileBox,{
-            url: 'http://localhost:3030/tools/doUploader',
+            url: '/tools/doUploader',
             dataType: 'json',
             allowedTypes: '*',
             onInit: function () {
@@ -184,6 +185,7 @@ define(function(require, exports, module) {
                                 var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
                                 var $imgSwitch = $("input[name='imgSwitch']:checked").val();
                                 var $itemsIndex = $("input[name='itemsIndex']").val();
+                                var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
 
                                 var formdata = new FormData();
                                 formdata.append("filesUrl", $repeatfiles);
@@ -191,13 +193,14 @@ define(function(require, exports, module) {
                                 formdata.append("ftpSwitch", $ftpSwitch);
                                 formdata.append("tinyImgSwitch", $imgSwitch);
                                 formdata.append("itemsIndex", $itemsIndex);
+                                formdata.append("pxToRemSwitch", $pxToRemSwitch);
 
                                 //显示loading
                                 $("#loadding-box").show();
 
                                 // Ajax Submit
                                 $.ajax({
-                                    url: "http://localhost:3030/tools/doUploader",
+                                    url: "/tools/doUploader",
                                     type: "post",
                                     dataType: "json",
                                     data: formdata,
