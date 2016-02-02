@@ -82,15 +82,8 @@ Routes.handle(app);
  *
  * */
 if(Config.debug){
-    console.log('abc');
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
     });
 
-}else{
-    exports.startServer = function(){
-        app.listen(app.get('port'),function(){
-            console.log('Node listening on port:' + app.get('port'));
-        });
-    }
 }

@@ -21,9 +21,6 @@ var unique = function(array){
 }
 
 exports.index = function(req,res){
-
-    console.log(unique([1,2,4,1,1,1,1,1]));
-
     res.render('home/index',{
         title: 'owen tools',
         config:Config,

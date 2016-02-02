@@ -286,13 +286,14 @@ main .shortcut-operations a{
 }
 .drop-files-box .logs-box{
     padding-bottom: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     position: relative;
     border-bottom: 1px dashed #e6e6e6;
 }
 .drop-files-box .logs-box:last-child{
     border-bottom: none;
     margin-bottom: 0;
+    padding-bottom: 0;
 }
 .drop-files-box .logs-box:last-child .logs-text-box{
     padding-bottom: 0;

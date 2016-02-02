@@ -74,48 +74,9 @@
             <div class="drop-files-box" id="drag-and-drop-zone">
                 <!-- logs -->
                 <em class="drop-tips">请拖拽文件到此区域</em>
-                <!--<div class="logs-wrap">-->
-                    <!--<p class="time">-->
-                        <!--15 : 29 : 43-->
-                    <!--</p>-->
-                    <!--<div class="logs">-->
-                        <!--<div class="logs-box">-->
-                            <!--<h3>-->
-                                <!--测试地址-->
-                            <!--</h3>-->
-                            <!--<div class="logs-text-box">-->
-                                <!--<a data-href="F:\proj_qcloud_v2\gateway\documentation\css">-->
-                                    <!--F:\proj_qcloud_v2\gateway\documentation\css-->
-                                <!--</a>-->
-                                <!--<a data-href="http://10.198.14.14/open_proj/proj_qcloud_v2/gateway/documentation/css/documentation.css">-->
-                                    <!--http://10.198.14.14/open_proj/proj_qcloud_v2/gateway/documentation/css/documentation.css-->
-                                <!--</a>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="logs-box">-->
-                            <!--<h3 class="releasePath">-->
-                                <!--提单路径-->
-                            <!--</h3>-->
-                            <!--<div class="logs-text-box">-->
-                                <!--/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2/gateway/documentation/css/sprite/documentation.png-->
-                                <!--/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2/gateway/documentation/css/documentation.css-->
-                            <!--</div>-->
-                            <!--<a href="javascript:void(0)" class="copy-btn">-->
-                                <!--<i class="copy-icon">-->
-                                <!--</i>-->
-                                <!--复制-->
-                            <!--</a>-->
-                            <!--<div class="copy-tips">-->
-                                <!--<i class="success-icon">-->
-                                <!--</i>-->
-                                <!--复制成功-->
-                            <!--</div>-->
-                            <!--<input type="text" id="copyInput" class="copy-input" value="1/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2/gateway/documentation/css/sprite/documentation.png-->
-                    <!--2/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2/gateway/documentation/css/documentation.css-->
-                    <!--" />-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <!--内容区域 -->
+
+                <!--end -->
             </div>
         </main>
         <div class="global-operations">
@@ -223,7 +184,7 @@
                         </label>
                         <br/>
                         <label class="check-inline">
-                            html font size：<input type="text" style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0].rootValue || 75 %>">
+                            html font size：<input type="text" style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0].rootValue || '75' %>">
                         </label>
                     </div>
                     <div class="col-xs-8">
@@ -237,12 +198,12 @@
                         </label>
                         <br/>
                         <label class="check-inline">
-                            html font size：<input type="text" disabled style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0].rootValue || 75 %>">
+                            html font size：<input type="text" disabled style="width:45px;" name="rootValue" class="form-control" placeholder="" value="75">
                         </label>
                     </div>
                     <div class="col-xs-8">
                         转换不包含：
-                        <input type="text" disabled name="propertyBlackList" class="form-control" placeholder="font-size,font" value="<%= configItemes[0].propertyBlackList || '' %>">
+                        <input type="text" disabled name="propertyBlackList" class="form-control" placeholder="font-size,font" value="">
                     </div>
                     <% }%>
                 </div>
