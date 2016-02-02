@@ -285,9 +285,8 @@ exports.doUploader = function(req,res){
                     //TODO tiny img
                     tinyImg();
                 }else{
-                    //TODO ftp 上传文件
-                    ftpUploader($ftpFiles, res);
-
+                    //TODO px2rem
+                    Px2rem();
                 }
             });
         }else if($imgFiles.length > 0){
