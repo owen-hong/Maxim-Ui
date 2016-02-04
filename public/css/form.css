@@ -4,7 +4,6 @@ fieldset{
 
 .form-control {
     height: 26px;
-    padding: 0px 12px;
     font-size: 12px;
     box-sizing: border-box;
     line-height: 1.42857143;
@@ -13,6 +12,7 @@ fieldset{
     background-image: none;
     border: 1px solid #ccc;
     -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    padding-left: 5px;
 }
 .operations-box .form-control.form-control-text{
 border: none;

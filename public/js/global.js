@@ -6,12 +6,12 @@
 var gui = require('nw.gui');
 var win = gui.Window.get();
 
-define(function(require) {
+seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
     //初始化复制功能
-    require('Copy');
+    Copy.init();
 
     //TODO初始化上传组件
-    var $uoloader = require('uploader');
+    var $uoloader = Uoloader;
 
     //TODO 全局控制
     $("#closeSortware").click(function(){
@@ -24,7 +24,6 @@ define(function(require) {
     $("#minimize").click(function(){
         win.minimize();
     });
-
 
 
     //TODO 关闭右侧工具栏
@@ -49,13 +48,13 @@ define(function(require) {
     });
 
     //TODO 自定义dest目录
-    var $destPathVal = $("#destPath").val();
-    if ($destPathVal == "") {
+    var $destPathVal = $.trim($("#destPath").val());
+    var $defaultDestPath = $("#destPath").data("path");
+    if ($destPathVal == $defaultDestPath) {
         $(".choose-dest").parent().hide();
         $(".dest-path").prop("disabled", true);
         $(".file-dest").hide();
     } else {
-
         $(".choose-dest").parent().show();
         $(".dest-path").prop("disabled", "");
         $(".file-dest").show();
@@ -74,48 +73,6 @@ define(function(require) {
         }
     });
 
-
-    /*****TODO 初始化雪碧图规则和CSS规则 ******/
-    //var $spriteNameSwitch = $("input[name='spriteNameSwitch']").prop('checked');
-    //if ($spriteNameSwitch === true) {
-    //    $("input[name='spriteName']").prop("disabled", "");
-    //    $("#changeSpriteKey").show();
-    //}else{
-    //    $("input[name='spriteName']").prop("disabled", "disabled");
-    //    $("#changeSpriteKey").hide();
-    //}
-
-    // var $cssNameSwitch = $("input[name='cssNameSwitch']").prop('checked');
-    //if ($cssNameSwitch === true) {
-    //    $("input[name='cssName']").prop("disabled", "");
-    //    $("#changeCssKey").show();
-    //}else{
-    //    $("input[name='cssName']").prop("disabled", "disabled");
-    //    $("#changeCssKey").hide();
-    //}
-
-    //TODO 开启关闭状态切换
-    //$("input[name='spriteNameSwitch']").on("change", function () {
-    //    var $spriteNameSwitch = $(this).prop('checked');
-    //
-    //    if ($spriteNameSwitch === true) {
-    //        $("input[name='spriteName']").prop("disabled", "");
-    //        $("#changeSpriteKey").show();
-    //    } else {
-    //        $("input[name='spriteName']").prop("disabled", "disabled");
-    //        $("#changeSpriteKey").hide();
-    //    }
-    //})
-    //$("input[name='cssNameSwitch']").on("change", function () {
-    //    var $cssNameSwitch = $(this).prop('checked');
-    //    if ($cssNameSwitch === true) {
-    //        $("input[name='cssName']").prop("disabled", "");
-    //        $("#changeCssKey").show();
-    //    } else {
-    //        $("input[name='cssName']").prop("disabled", "disabled");
-    //        $("#changeCssKey").hide();
-    //    }
-    //});
     $("input[name='pxToRemSwitch']").on("change", function () {
         var $switch = $(this).prop('checked');
         if ($switch === true) {
@@ -125,8 +82,6 @@ define(function(require) {
             $("input[name='rootValue']").prop("disabled", "disabled");
             $("input[name='propertyBlackList']").prop("disabled", "disabled");
         }
-
-
     });
     /******************end**********************/
 
@@ -144,7 +99,7 @@ define(function(require) {
         var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
         var $url = $(this).data("href");
 
-        if($ftpSwitch == "true"){
+        if($ftpSwitch === true){
             if (!$url == undefined || !$url == "") {
                 gui.Shell.openExternal($url);
             }
@@ -171,16 +126,25 @@ define(function(require) {
         var $itemsName = $.trim($("input[name='itemsName']").val());
         var $localPath = $.trim($("input[name='localPath']").val());
 
+        //判断是否为空
         if($("input[name='itemsName']").val() != undefined) {
             if ($itemsName == "") {
                 $("input[name='itemsName']").siblings(".help-block").html("请输入项目名称");
+
+                $(".tab-side li a").removeClass("cur");
+                $(".tab-side li").eq(0).children("a").addClass("cur");
+                $(".tab-content").eq(0).show().siblings().hide();
                 return false;
             }
             if ($localPath == "") {
                 $("input[name='localPath']").parent().siblings(".help-block").html("请输入项目目录");
+                $(".tab-side li a").removeClass("cur");
+                $(".tab-side li").eq(0).children("a").addClass("cur");
+                $(".tab-content").eq(0).show().siblings().hide();
                 return false;
             }
         }
+
         var $val = $("#destPathSwitch").prop("checked");
         var formdata = new FormData(this);
         $.ajax({
@@ -283,35 +247,39 @@ define(function(require) {
             var $spriteNameSwitch = data.spriteNameSwitch || "false";
             if ($spriteNameSwitch == "true") {
                 $("input[name='spriteNameSwitch']").prop("checked",true);
-                $("input[name='spriteName']").prop("disabled", "").val(data.spriteName);
                 //$("#changeSpriteKey").show();
             } else {
                 $("input[name='spriteNameSwitch']").prop("checked",false);
-                $("input[name='spriteName']").prop("disabled", "disabled").val(data.spriteName);
                 //$("#changeSpriteKey").hide();
             }
+            $("input[name='spriteName']").val(data.spriteName);
 
             var $cssNameSwitch = data.cssNameSwitch || "false";
             if ($cssNameSwitch == "true") {
                 $("input[name='cssNameSwitch']").prop("checked",true);
-                $("input[name='cssName']").prop("disabled", "").val(data.cssName);
-
                 //$("#changeCssKey").show();
             } else {
                 $("input[name='cssNameSwitch']").prop("checked",false);
-                $("input[name='cssName']").prop("disabled", "disabled").val(data.cssName);
                 //$("#changeCssKey").hide();
             }
+            $("input[name='cssName']").val(data.cssName);
 
             var $imgSyncSwitch = data.imgSyncSwitch || "false";
             if ($cssNameSwitch == "true") {
                 $("input[name='imgSyncSwitch']").prop("checked",true);
-                $("input[name='imgSyncName']").prop("disabled", "").val(data.imgSyncName);
             } else {
                 $("input[name='imgSyncSwitch']").prop("checked",false);
-                $("input[name='imgSyncName']").prop("disabled", "disabled").val(data.imgSyncName);
             }
+            $("input[name='imgSyncName']").val(data.imgSyncName);
+            $("#updataTimeVal").val(data.imgSyncName);
 
+
+            var $resourceSyncSwitch = data.resourceSyncSwitch || "false";
+            if ($cssNameSwitch == "true") {
+                $("input[name='resourceSyncSwitch']").prop("checked",true);
+            } else {
+                $("input[name='resourceSyncSwitch']").prop("checked",false);
+            }
 
             // px2rem 信息更新
             var $pxToRemSwitch = data.pxToRemSwitch || "false";
@@ -353,72 +321,53 @@ define(function(require) {
 
     //更新css 和 sprite 版本号和状态
     var ajaxCssSprite = function(){
-        var $index = $("input[name='itemsIndex']").val();
+        $("#controlPanelFrome").submit(function(){
+            var $spriteName = $("input[name='spriteName']").val();
+            var $cssName = $("input[name='cssName']").val();
+            var $imgSyncName = $("input[name='imgSyncName']").val();
 
-        var $spriteNameSwitch = $("input[name='spriteNameSwitch']").prop("checked");
-        var $spriteName = $("input[name='spriteName']").val();
+            var formdata = new FormData(this);
+            //由于表单禁用formdata无法读取input数据，所以动态传入
+            formdata.append("spriteName",$spriteName);
+            formdata.append("cssName",$cssName);
+            formdata.append("imgSyncName",$imgSyncName);
 
-        var $cssNameSwitch = $("input[name='cssNameSwitch']").prop("checked");
-        var $cssName = $("input[name='cssName']").val();
+            $.ajax({
+                type: 'post',
+                url: '/updateCssSprite',
+                data: formdata,
+                contentType: false,
+                processData: false
+            }).done(function (data) {
+                console.log("更新右侧操作面板成功");
+            })
 
-        var $imgSyncSwitch = $("input[name='imgSyncSwitch']").prop("checked");
-        var $imgSyncName = $("input[name='imgSyncName']").val();
-
-        var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
-
-        var $imgSwitch = $("input[name='imgSwitch']:checked").val();
-        var $masterSwitch = $("input[name='masterSwitch']").prop("checked");
-
-        var $resourceSyncSwitch = $("input[name='resourceSyncSwitch']").prop("checked");
-
-
-
-        var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
-        var $rootValue = $("input[name='rootValue']").val();
-        var $propertyBlackList = $("input[name='propertyBlackList']").val();
-
-
-        $.post("/updateCssSprite",{
-            itemsIndex:$index,
-            spriteNameSwitch:$spriteNameSwitch,
-            spriteName:$spriteName,
-            cssNameSwitch:$cssNameSwitch,
-            cssName:$cssName,
-            imgSyncSwitch:$imgSyncSwitch,
-            imgSyncName:$imgSyncName,
-            ftpSwitch:$ftpSwitch,
-            imgSwitch:$imgSwitch,
-            masterSwitch:$masterSwitch,
-            pxToRemSwitch:$pxToRemSwitch,
-            rootValue:$rootValue,
-            propertyBlackList:$propertyBlackList
-        }).done(function(data){
-            console.log('右侧操作栏更新成功!');
+            return false;
         });
-    }
+    }();
 
     //监听右侧操作栏Input是否被修改
     $(".operations-box input").change(function(){
-        ajaxCssSprite();
+        $("#controlPanelFrome").submit();
     });
 
     $("input[name='rootValue'],input[name='propertyBlackList']").blur(function(){
-        ajaxCssSprite();
+        $("#controlPanelFrome").submit();
     });
 
 
-    //TODO 换一个时间戳
-    $("#changeSpriteKey").click(function () {
+    //TODO 更新时间戳
+    $("#updataTimeBtn").click(function () {
         var $date = Math.round(new Date().getTime() / 1000);
-        $("input[name='spriteName']").val($date);
-        ajaxCssSprite();
+        $("#updataTimeVal").val($date);
+        $("input[name='spriteName'],input[name='cssName'],input[name='imgSyncName']").val($date);
+        $("#controlPanelFrome").submit();
     });
-    $("#changeCssKey").click(function () {
-        var $date = Math.round(new Date().getTime() / 1000);
-        $("input[name='cssName']").val($date);
-        ajaxCssSprite();
+    $("#updataTimeVal").blur(function(){
+        var $val = $(this).val();
+        $("input[name='spriteName'],input[name='cssName'],input[name='imgSyncName']").val($val);
+        $("#controlPanelFrome").submit();
     });
-
 
 
     //TODO dialog config

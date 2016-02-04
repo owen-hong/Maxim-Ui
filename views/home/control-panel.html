@@ -1,0 +1,172 @@
+<form id="controlPanelFrome" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="itemsIndex" value="0"/>
+
+    <a href="javascript:void(0)" class="close-btn" id="close-btn">
+        <i class="arrow-icon"></i>
+    </a>
+
+    <!--  上传服务器或者本地 -->
+    <div class="check-block border">
+        <span class="info-text">上传至服务器</span>
+        <label class="switch" title="上传至服务器">
+            <% if(configItemes.length > 0 && configItemes[0].ftpSwitch =="true"){ %>
+            <input type="checkbox" name="ftpSwitch" checked class="switch-input">
+            <% } else {%>
+            <input type="checkbox" name="ftpSwitch" class="switch-input">
+            <% } %>
+            <span class="switch-helper">开启</span>
+        </label>
+    </div>
+
+    <hr/>
+
+    <!-- 图片压缩 -->
+    <div class="check-block border">
+        <span class="info-text">图片压缩</span>
+        <label class="switch" title="图片压缩">
+            <% if(configItemes.length > 0 && configItemes[0].masterSwitch =="true"){ %>
+            <input type="checkbox" name="masterSwitch" checked class="switch-input">
+            <% }else{ %>
+            <input type="checkbox" name="masterSwitch" class="switch-input">
+            <% } %>
+            <span class="switch-helper">开启</span>
+        </label>
+    </div>
+    <% if(configItemes.length > 0 && configItemes[0].masterSwitch =="true"){ %>
+    <div class="radio-box" id="imgRadioBox">
+        <% }else{ %>
+        <div class="radio-box hide" id="imgRadioBox">
+            <% } %>
+            <% if(configItemes.length > 0 && configItemes[0].imgSwitch =="tinyimg"){ %>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" checked class="radio" value="tinyimg">tinyimg
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="youtu">优图
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="imagemin">本地
+            </label>
+            <% } else if(configItemes.length > 0 && configItemes[0].imgSwitch =="youtu"){%>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="tinyimg">tinyimg
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" checked class="radio" value="youtu">优图
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="imagemin">本地
+            </label>
+            <% } else { %>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="tinyimg">tinyimg
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" class="radio" value="youtu">优图
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="imgSwitch" checked class="radio" value="imagemin">本地
+            </label>
+            <% } %>
+        </div>
+        <hr/>
+        <!--  样式处理 -->
+        <div class="form-group">
+            <label class="control-label">文件重命名：</label>
+            <div class="col-sm-8">
+                <div style="margin-bottom:5px;margin-top:10px;">
+                    <label class="check-inline">
+                        时间戳：<input style="width:84px;" id="updataTimeVal" type="text" class="form-control" placeholder="" value="<%= configItemes[0].spriteName %>">
+                        <a href="javascript:void(0)" id="updataTimeBtn" class="updata-btn"></a>
+                    </label>
+                    <% if(configItemes.length > 0 && configItemes[0].spriteNameSwitch =="true"){ %>
+                    <label class="check-block">
+                        <input type="checkbox" class="checkbox" checked name="spriteNameSwitch" checked>sprite规则:CSS名-
+                        <input type="text" disabled name="spriteName" class="form-control form-control-text" placeholder="" value="<%= configItemes[0].spriteName %>">
+                    </label>
+                    <% } else {%>
+                    <label class="check-block">
+                        <input type="checkbox" class="checkbox" name="spriteNameSwitch">sprite规则:CSS名-
+                        <input type="text" disabled name="spriteName" class="form-control form-control-text" placeholder="" value="<%= configItemes[0].spriteName %>">
+                    </label>
+                    <% } %>
+
+                    <% if(configItemes.length > 0 && configItemes[0].cssNameSwitch =="true"){ %>
+                    <label class="check-block">
+                        <input type="checkbox" class="checkbox" checked name="cssNameSwitch" checked>CSS规则:原名-
+                        <input type="text" disabled name="cssName" class="form-control form-control-text" placeholder="" value="<%= configItemes[0].cssName %>">
+                    </label>
+                    <% } else {%>
+                    <label class="check-block">
+                        <input type="checkbox" class="checkbox" name="cssNameSwitch">CSS规则:原名-
+                        <input type="text" disabled name="cssName" class="form-control form-control-text" placeholder="" value="<%= configItemes[0].cssName %>">
+                    </label>
+                    <% } %>
+
+                    <% if(configItemes.length > 0 && configItemes[0].imgSyncSwitch =="true"){ %>
+                    <label class="check-block">
+                        <input type="checkbox" class="checkbox" checked name="imgSyncSwitch" checked>图片规则:原名-
+                        <input type="text" disabled name="imgSyncName" class="form-control form-control-text" placeholder="" value="<%= configItemes[0].imgSyncName %>">
+                    </label>
+                    <% } else {%>
+                    <label class="check-block">
+                        <input type="checkbox" class="checkbox" name="imgSyncSwitch">图片规则:原名-
+                        <input type="text" disabled name="imgSyncName" class="form-control form-control-text" placeholder="" value="<%= configItemes[0].imgSyncName %>">
+                    </label>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <hr/>
+
+        <!-- 资源同步 -->
+        <div class="check-block border">
+            <span class="info-text">资源同步</span>
+            <label class="switch" title="资源同步">
+                <% if(configItemes.length > 0 && configItemes[0].resourceSyncSwitch =="true"){ %>
+                <input type="checkbox" name="resourceSyncSwitch" checked class="switch-input">
+                <% } else {%>
+                <input type="checkbox" name="resourceSyncSwitch" class="switch-input">
+                <% } %>
+                <span class="switch-helper">开启</span>
+            </label>
+        </div>
+
+        <hr/>
+        <!-- px转rem -->
+        <div class="form-group">
+            <% if(configItemes.length > 0 && configItemes[0].pxToRemSwitch =="false"){ %>
+            <div class="check-block border">
+                <span class="info-text">px转rem</span>
+                <label class="switch" title="px转rem">
+                    <input type="checkbox" name="pxToRemSwitch" class="switch-input">
+                    <span class="switch-helper">开启</span>
+                </label>
+            </div>
+            <label class="check-inline">
+                html font size：<input disabled type="text" style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0].rootValue || '75' %>">
+            </label>
+            <br/>
+            <label class="check-inline">
+                转换不包含：<input disabled type="text" name="propertyBlackList" class="form-control" placeholder="font-size,font" value="<%= configItemes[0].propertyBlackList || '' %>">
+            </label>
+            <% } else {%>
+            <div class="check-block border">
+                <span class="info-text">px转rem</span>
+                <label class="switch" title="px转rem">
+                    <input type="checkbox" name="pxToRemSwitch" checked class="switch-input">
+                    <span class="switch-helper">开启</span>
+                </label>
+            </div>
+            <label class="check-inline">
+                html font size：<input type="text" style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0].rootValue || '75' %>">
+            </label>
+            <br/>
+            <label class="check-inline">
+                转换不包含：<input type="text" name="propertyBlackList" class="form-control" placeholder="font-size,font" value="<%= configItemes[0].propertyBlackList || '' %>">
+            </label>
+            <% }%>
+        </div>
+        <hr/>
+    </div>
+</form>

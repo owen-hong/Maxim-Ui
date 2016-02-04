@@ -15,7 +15,7 @@ define(function(require, exports, module) {
     var uploadAjaxSuccess = function (result) {
 
         var $fileBox = $("#drag-and-drop-zone");
-        var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
+        var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
 
         //隐藏loading
         $("#loadding-box").hide();
@@ -99,7 +99,7 @@ define(function(require, exports, module) {
 
         //判断返回状态
         if (result.status===true && result.ftpSuccess===true) {
-            if($ftpSwitch == "true"){
+            if($ftpSwitch === true){
                 PathExport("network");
             }else{
                 PathExport("local");
@@ -182,9 +182,9 @@ define(function(require, exports, module) {
                         if (event.keyCode == "116" || event.which == 1) {
                             if ($repeatfiles.length > 0) {
                                 //获取各个任务的开关
-                                var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
-                                var $imgSwitch = $("input[name='imgSwitch']:checked").val();
                                 var $itemsIndex = $("input[name='itemsIndex']").val();
+                                var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
+                                var $imgSwitch = $("input[name='imgSwitch']:checked").val();
                                 var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
 
                                 var formdata = new FormData();

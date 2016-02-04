@@ -130,7 +130,7 @@ define(function(requires, exports, module) {
             });
 
             //-- Optional File input to make a clickable area
-            widget.element.find('input[type=file]').on('change', function (evt) {
+            $("#multipleFile").on('change', function (evt) {
                 var files = evt.target.files;
 
                 widget.queueFiles(files);
@@ -316,7 +316,7 @@ define(function(requires, exports, module) {
             }
 
             //获取各个任务的开关
-            var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
+            var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
             var $imgSwitch = $("input[name='imgSwitch']:checked").val();
 
             var $itemsIndex = $("input[name='itemsIndex']").val();

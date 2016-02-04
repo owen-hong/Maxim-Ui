@@ -37,7 +37,6 @@ body{
      display: flex;
      -webkit-box-flex: 1;
      border-right: 1px solid #e6e6e6;
-     /* border-bottom: 1px solid #e6e6e6; */
      overflow: hidden;
 }
 .content aside{
@@ -411,7 +410,7 @@ main .shortcut-operations a{
 .operations-box .form-control{
     line-height: 26px;
     height: 26px;
-    padding-left:10px;
+    padding-left: 5px;
     margin-right: 5px;
     box-sizing: border-box;
     width: 110px;
@@ -445,8 +444,6 @@ main .shortcut-operations a{
     top: 50%;
     left: 50%;
 }
-
-
 
 .tab-side{
     width: 150px;
@@ -488,9 +485,35 @@ main .shortcut-operations a{
 
 
 
+.updata-btn{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url(img/slice/updata-icon.svg);
+    background-size: 16px 16px;
+    vertical-align: -4px;
+}
 
+.multipleFile-box{
 
+cursor: pointer;
 
+color: #006eff;
+
+font-weight: bold;
+
+display: inline-block;
+
+position: relative;
+}
+.multipleFile-box .multipleFile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+}
 
 
 

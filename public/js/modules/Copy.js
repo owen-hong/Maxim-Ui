@@ -12,6 +12,7 @@ define(function(require, exports, module) {
         return copysuccess
     }
 
+
     $.fn.selectRange = function (start, end) {
         var e = $(this)[0];
         if (!e) return;
@@ -32,12 +33,17 @@ define(function(require, exports, module) {
         }
     };
 
-    $("body").on("click", ".copy-btn", function () {
-        var $copyInput = $(this).siblings(".copy-input");
-        $copyInput.selectRange(0, $copyInput.val().length);
-        var copysuccess = copySelectionText();
-        if (copysuccess) {
-            $(this).siblings(".copy-tips").css("display", "inline-block").fadeOut(1500);
-        }
-    });
+
+    var init = function(){
+        $("body").on("click", ".copy-btn", function () {
+            var $copyInput = $(this).siblings(".copy-input");
+            $copyInput.selectRange(0, $copyInput.val().length);
+            var copysuccess = copySelectionText();
+            if (copysuccess) {
+                $(this).siblings(".copy-tips").css("display", "inline-block").fadeOut(1500);
+            }
+        });
+    }
+
+    exports.init = init;
 });

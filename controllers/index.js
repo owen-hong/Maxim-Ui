@@ -69,6 +69,9 @@ exports.doUploader = function(req,res){
 
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
+
+            console.log("true:::::::::::");
+
             tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
@@ -193,9 +196,12 @@ exports.doUploader = function(req,res){
                 Px2rem();
             });
         }else if($tinyImgSwitch == "imagemin") {
-            console.log("imagemin:::::::::::::::");
+            //console.log("imagemin:::::::::::::::");
+            console.log($imgFiles);
 
             tools.imagemin($imgFiles, $currentConfig,Config, function (result) {
+
+                //console.log("imagemin sucesss:::::");
 
                 //拼接dest的路劲文件
                 destPath(result);
@@ -231,23 +237,18 @@ exports.doUploader = function(req,res){
 
 
     //TODO 文件分类
+
     for (var i in $filesType) {
         if ($filesType[i] == "text\/html" || $filesType[i] == "application\/javascript") {
-
             $copyFile.push($fileUrl[i]);
-
         } else if($filesType[i]=="text\/css"){
-
             $cssFiles.push($fileUrl[i]);
-
         }else if($filesType[i]=="image\/jpeg" || $filesType[i]=="image\/png"){
-
             $imgFiles.push($fileUrl[i]);
         }else{
             $copyFile.push($fileUrl[i]);
         }
     }
-
 
     //判断是否正确从配置的根元素拉取文件
     if($fileUrl[0].indexOf($currentConfig.localPath) < 0){
@@ -273,6 +274,8 @@ exports.doUploader = function(req,res){
 
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
+            console.log($cssFiles);
+
             tools.sprite($cssFiles, $currentConfig, function (result) {
                 result.forEach(function(resultFiles){
                     var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
@@ -316,23 +319,27 @@ exports.doUploader = function(req,res){
 
 exports.addProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
+    var DefaultDestPath = osHomedir() + path.sep + "Dest";
 
     res.render('home/add-project-config',{
         title: '新增项目',
         currentIndex:$itemsConfigSize,
         config:Config.itemsConfig[$itemsConfigSize],
-        configItemes:Config.itemsConfig
+        configItemes:Config.itemsConfig,
+        DefaultDestPath:DefaultDestPath
     });
 }
 exports.editProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
     var $tabIndex = req.query.tabIndex || 0;
+    var DefaultDestPath = osHomedir() + path.sep + "Dest";
 
     res.render('home/edit-project-config',{
         title: '修改项目配置',
         currentIndex:$itemsConfigSize,
         config:Config.itemsConfig[$itemsConfigSize],
-        tabIndex:$tabIndex
+        tabIndex:$tabIndex,
+        DefaultDestPath:DefaultDestPath
     });
 }
 exports.updateProject = function(req,res){
@@ -363,25 +370,29 @@ exports.globalSetting = function(req,res){
 
 //更新css 和 sprite 版本号和状态
 exports.updateCssSprite = function(req,res){
+
+    console.log(req.body);
     var $itemsIndex = req.body.itemsIndex;
 
-    var $spriteNameSwitch = req.body.spriteNameSwitch;
-    var $spriteName = req.body.spriteName;
+    var $ftpSwitch = req.body.ftpSwitch == "on" ? "true" : "false";
 
-    var $cssNameSwitch = req.body.cssNameSwitch;
-    var $cssName = req.body.cssName;
-
-    var $imgSyncSwitch = req.body.imgSyncSwitch;
-    var $imgSyncName = req.body.imgSyncName;
-
-    var $ftpSwitch = req.body.ftpSwitch;
-
-    var $masterSwitch = req.body.masterSwitch;
+    var $masterSwitch = req.body.masterSwitch == "on" ? "true" : "false";
     var $imgSwitch = req.body.imgSwitch;
 
-    var $pxToRemSwitch = req.body.pxToRemSwitch;
-    var $rootValue = req.body.rootValue;
-    var $propertyBlackList = req.body.propertyBlackList;
+    var $spriteNameSwitch = req.body.spriteNameSwitch == "on" ? "true" : "false";
+    var $spriteName = req.body.spriteName;
+
+    var $cssNameSwitch = req.body.cssNameSwitch == "on" ? "true" : "false";
+    var $cssName = req.body.cssName;
+
+    var $imgSyncSwitch = req.body.imgSyncSwitch == "on" ? "true" : "false";
+    var $imgSyncName = req.body.imgSyncName;
+
+    var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? "true" : "false";
+
+    var $pxToRemSwitch = req.body.pxToRemSwitch == "on" ? "true" : "false";
+    var $rootValue = req.body.rootValue ? req.body.rootValue : Config.itemsConfig[$itemsIndex].rootValue;
+    var $propertyBlackList = req.body.propertyBlackList ? req.body.propertyBlackList : Config.itemsConfig[$itemsIndex].propertyBlackList;
 
 
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
@@ -397,6 +408,8 @@ exports.updateCssSprite = function(req,res){
 
     Config.itemsConfig[$itemsIndex].imgSyncSwitch = $imgSyncSwitch;
     Config.itemsConfig[$itemsIndex].imgSyncName = $imgSyncName;
+
+    Config.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
 
     Config.itemsConfig[$itemsIndex].pxToRemSwitch = $pxToRemSwitch;
     Config.itemsConfig[$itemsIndex].rootValue = $rootValue;
@@ -527,6 +540,9 @@ exports.doConfig = function(req,res){
             $obj.cssNameSwitch = "false";
             $obj.cssName = $date;
 
+            $obj.imgSyncSwitch = "false";
+            $obj.imgSyncName = $date;
+
             $obj.ftpSwitch = "false";
 
             $obj.masterSwitch = "true";
@@ -549,7 +565,7 @@ exports.doConfig = function(req,res){
 
     }else{
         //全局设置
-        Config.youtuQuality = req.body.youtuQuality || "70";
+        Config.youtuQuality = req.body.youtuQuality || "85";
         Config.tinyApi = req.body.tinyApi;
         Config.proxy = req.body.proxy;
     }
