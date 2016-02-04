@@ -76,44 +76,46 @@ define(function(require) {
 
 
     /*****TODO 初始化雪碧图规则和CSS规则 ******/
-    var $spriteNameSwitch = $("input[name='spriteNameSwitch']").prop('checked');
-    var $cssNameSwitch = $("input[name='cssNameSwitch']").prop('checked');
-    if ($spriteNameSwitch === true) {
-        $("input[name='spriteName']").prop("disabled", "");
-        $("#changeSpriteKey").show();
-    }else{
-        $("input[name='spriteName']").prop("disabled", "disabled");
-        $("#changeSpriteKey").hide();
-    }
-    if ($cssNameSwitch === true) {
-        $("input[name='cssName']").prop("disabled", "");
-        $("#changeCssKey").show();
-    }else{
-        $("input[name='cssName']").prop("disabled", "disabled");
-        $("#changeCssKey").hide();
-    }
+    //var $spriteNameSwitch = $("input[name='spriteNameSwitch']").prop('checked');
+    //if ($spriteNameSwitch === true) {
+    //    $("input[name='spriteName']").prop("disabled", "");
+    //    $("#changeSpriteKey").show();
+    //}else{
+    //    $("input[name='spriteName']").prop("disabled", "disabled");
+    //    $("#changeSpriteKey").hide();
+    //}
+
+    // var $cssNameSwitch = $("input[name='cssNameSwitch']").prop('checked');
+    //if ($cssNameSwitch === true) {
+    //    $("input[name='cssName']").prop("disabled", "");
+    //    $("#changeCssKey").show();
+    //}else{
+    //    $("input[name='cssName']").prop("disabled", "disabled");
+    //    $("#changeCssKey").hide();
+    //}
 
     //TODO 开启关闭状态切换
-    $("input[name='spriteNameSwitch']").on("change", function () {
-        var $spriteNameSwitch = $(this).prop('checked');
-        if ($spriteNameSwitch === true) {
-            $("input[name='spriteName']").prop("disabled", "");
-            $("#changeSpriteKey").show();
-        } else {
-            $("input[name='spriteName']").prop("disabled", "disabled");
-            $("#changeSpriteKey").hide();
-        }
-    })
-    $("input[name='cssNameSwitch']").on("change", function () {
-        var $cssNameSwitch = $(this).prop('checked');
-        if ($cssNameSwitch === true) {
-            $("input[name='cssName']").prop("disabled", "");
-            $("#changeCssKey").show();
-        } else {
-            $("input[name='cssName']").prop("disabled", "disabled");
-            $("#changeCssKey").hide();
-        }
-    });
+    //$("input[name='spriteNameSwitch']").on("change", function () {
+    //    var $spriteNameSwitch = $(this).prop('checked');
+    //
+    //    if ($spriteNameSwitch === true) {
+    //        $("input[name='spriteName']").prop("disabled", "");
+    //        $("#changeSpriteKey").show();
+    //    } else {
+    //        $("input[name='spriteName']").prop("disabled", "disabled");
+    //        $("#changeSpriteKey").hide();
+    //    }
+    //})
+    //$("input[name='cssNameSwitch']").on("change", function () {
+    //    var $cssNameSwitch = $(this).prop('checked');
+    //    if ($cssNameSwitch === true) {
+    //        $("input[name='cssName']").prop("disabled", "");
+    //        $("#changeCssKey").show();
+    //    } else {
+    //        $("input[name='cssName']").prop("disabled", "disabled");
+    //        $("#changeCssKey").hide();
+    //    }
+    //});
     $("input[name='pxToRemSwitch']").on("change", function () {
         var $switch = $(this).prop('checked');
         if ($switch === true) {
@@ -139,7 +141,7 @@ define(function(require) {
 
     //TODO 浏览器打开窗口 超链接
     $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
-        var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
+        var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
         var $url = $(this).data("href");
 
         if($ftpSwitch == "true"){
@@ -256,21 +258,25 @@ define(function(require) {
             //FTP信息更新
             var $ftpSwitch = data.ftpSwitch || "false";
             if($ftpSwitch == "true"){
-                $("input[name='ftpSwitch']").eq(0).prop("checked",true);
-                $("input[name='ftpSwitch']").eq(1).prop("checked",false);
+                $("input[name='ftpSwitch']").prop("checked",true);
             }else{
-                $("input[name='ftpSwitch']").eq(0).prop("checked",false);
-                $("input[name='ftpSwitch']").eq(1).prop("checked",true);
+                $("input[name='ftpSwitch']").prop("checked",false);
             }
 
             //图片更新
             var $imgSwitch = data.imgSwitch || "youtu";
-            if($imgSwitch == "youtu"){
-                $("input[name='imgSwitch']").eq(0).prop("checked",false);
-                $("input[name='imgSwitch']").eq(1).prop("checked",true);
-            }else{
+            if($imgSwitch == "tinyimg"){
                 $("input[name='imgSwitch']").eq(0).prop("checked",true);
                 $("input[name='imgSwitch']").eq(1).prop("checked",false);
+                $("input[name='imgSwitch']").eq(2).prop("checked",false);
+            }else if($imgSwitch == "youtu"){
+                $("input[name='imgSwitch']").eq(0).prop("checked",false);
+                $("input[name='imgSwitch']").eq(1).prop("checked",true);
+                $("input[name='imgSwitch']").eq(2).prop("checked",false);
+            }else{
+                $("input[name='imgSwitch']").eq(0).prop("checked",false);
+                $("input[name='imgSwitch']").eq(1).prop("checked",false);
+                $("input[name='imgSwitch']").eq(2).prop("checked",true);
             }
 
             //样式和sprites更新
@@ -278,23 +284,34 @@ define(function(require) {
             if ($spriteNameSwitch == "true") {
                 $("input[name='spriteNameSwitch']").prop("checked",true);
                 $("input[name='spriteName']").prop("disabled", "").val(data.spriteName);
-                $("#changeSpriteKey").show();
+                //$("#changeSpriteKey").show();
             } else {
                 $("input[name='spriteNameSwitch']").prop("checked",false);
                 $("input[name='spriteName']").prop("disabled", "disabled").val(data.spriteName);
-                $("#changeSpriteKey").hide();
+                //$("#changeSpriteKey").hide();
             }
+
             var $cssNameSwitch = data.cssNameSwitch || "false";
             if ($cssNameSwitch == "true") {
                 $("input[name='cssNameSwitch']").prop("checked",true);
                 $("input[name='cssName']").prop("disabled", "").val(data.cssName);
 
-                $("#changeCssKey").show();
+                //$("#changeCssKey").show();
             } else {
                 $("input[name='cssNameSwitch']").prop("checked",false);
                 $("input[name='cssName']").prop("disabled", "disabled").val(data.cssName);
-                $("#changeCssKey").hide();
+                //$("#changeCssKey").hide();
             }
+
+            var $imgSyncSwitch = data.imgSyncSwitch || "false";
+            if ($cssNameSwitch == "true") {
+                $("input[name='imgSyncSwitch']").prop("checked",true);
+                $("input[name='imgSyncName']").prop("disabled", "").val(data.imgSyncName);
+            } else {
+                $("input[name='imgSyncSwitch']").prop("checked",false);
+                $("input[name='imgSyncName']").prop("disabled", "disabled").val(data.imgSyncName);
+            }
+
 
             // px2rem 信息更新
             var $pxToRemSwitch = data.pxToRemSwitch || "false";
@@ -344,8 +361,17 @@ define(function(require) {
         var $cssNameSwitch = $("input[name='cssNameSwitch']").prop("checked");
         var $cssName = $("input[name='cssName']").val();
 
-        var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
+        var $imgSyncSwitch = $("input[name='imgSyncSwitch']").prop("checked");
+        var $imgSyncName = $("input[name='imgSyncName']").val();
+
+        var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
+
         var $imgSwitch = $("input[name='imgSwitch']:checked").val();
+        var $masterSwitch = $("input[name='masterSwitch']").prop("checked");
+
+        var $resourceSyncSwitch = $("input[name='resourceSyncSwitch']").prop("checked");
+
+
 
         var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
         var $rootValue = $("input[name='rootValue']").val();
@@ -358,8 +384,11 @@ define(function(require) {
             spriteName:$spriteName,
             cssNameSwitch:$cssNameSwitch,
             cssName:$cssName,
+            imgSyncSwitch:$imgSyncSwitch,
+            imgSyncName:$imgSyncName,
             ftpSwitch:$ftpSwitch,
             imgSwitch:$imgSwitch,
+            masterSwitch:$masterSwitch,
             pxToRemSwitch:$pxToRemSwitch,
             rootValue:$rootValue,
             propertyBlackList:$propertyBlackList
@@ -368,17 +397,17 @@ define(function(require) {
         });
     }
 
-    //监听spriteNameSwitch cssNameSwitch
-    $("input[name='spriteNameSwitch'],input[name='cssNameSwitch'],input[name='imgSwitch'],input[name='ftpSwitch'],input[name='pxToRemSwitch']").on("change",function(){
+    //监听右侧操作栏Input是否被修改
+    $(".operations-box input").change(function(){
         ajaxCssSprite();
     });
+
     $("input[name='rootValue'],input[name='propertyBlackList']").blur(function(){
         ajaxCssSprite();
     });
 
 
-
-    //换一个时间戳
+    //TODO 换一个时间戳
     $("#changeSpriteKey").click(function () {
         var $date = Math.round(new Date().getTime() / 1000);
         $("input[name='spriteName']").val($date);
@@ -516,8 +545,12 @@ define(function(require) {
         $("#choosedest").click();
     });
 
-});
+    //图压缩开关
+    $("input[name='masterSwitch']").on("change",function(){
+        $("#imgRadioBox").slideToggle();
+    });
 
+});
 
 
 

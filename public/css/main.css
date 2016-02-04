@@ -3,6 +3,7 @@
 @import url("form.css");
 @import url("radio.css");
 @import url("btn.css");
+@import url("switch.css");
 
 a{
     -webkit-app-region: no-drag !important;
@@ -373,7 +374,7 @@ main .shortcut-operations a{
     line-height: 26px;
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 5px;
+    padding-top: 8px;
     border: 1px solid #e6e6e6;
     border-right: none;
     -webkit-app-region: no-drag;
@@ -401,12 +402,11 @@ main .shortcut-operations a{
     background-image: url("img/slice/open-arrow.png");
 }
 .operations-box hr{
-    border-style: dashed;
-    border-color: #e6e6e6;
-    border-width: 1px;
     font-size: 0;
     margin-top: 7px;
     margin-bottom: 7px;
+    border: none;
+    border-bottom: 1px solid #ebebeb;
 }
 .operations-box .form-control{
     line-height: 26px;

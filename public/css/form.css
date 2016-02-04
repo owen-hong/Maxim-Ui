@@ -14,6 +14,15 @@ fieldset{
     border: 1px solid #ccc;
     -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
 }
+.operations-box .form-control.form-control-text{
+border: none;
+background-color: #FAFAFA;
+position: absolute;
+/* left: 119px; */
+padding-left: 0;
+cursor: default;
+}
+
 
 .form-control[disabled],fieldset[disabled] .form-control {
     cursor: not-allowed;
@@ -143,13 +152,34 @@ legend + .control-group {
     display: block;
     margin-bottom: 10px;
     cursor: pointer;
+    position: relative;
 }
+.check-block.border{
+    /* border-bottom: 1px dashed #B3B3B3; */
+    /* padding-top: 10px; */
+    margin-bottom: 0;
+}
+.radio-box.hide{
+    display: none;
+}
+
+.check-block .info-text{
+    font-size: 12px;
+    font-weight: bold;
+}
+.check-block .switch{
+    float: right;
+    margin-top: 1px;
+}
+
+
+
 
 .check-inline .checkbox,
 .check-block .checkbox
 {
     margin-right: 5px;
-    vertical-align: -4px;
+    vertical-align: -3px;
 }
 
 .radio-inline .radio{

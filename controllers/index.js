@@ -11,7 +11,7 @@ var Maxim = require('maxim-workflow');
 var tools = new Maxim();
 
 
-
+//去重复公共方法
 var unique = function(array){
     var n = [];//临时数组
     array.forEach(function(data){
@@ -192,6 +192,17 @@ exports.doUploader = function(req,res){
                 //px2rem处理
                 Px2rem();
             });
+        }else if($tinyImgSwitch == "imagemin") {
+            console.log("imagemin:::::::::::::::");
+
+            tools.imagemin($imgFiles, $currentConfig,Config, function (result) {
+
+                //拼接dest的路劲文件
+                destPath(result);
+
+                //px2rem处理
+                Px2rem();
+            });
         }
     }
 
@@ -360,18 +371,22 @@ exports.updateCssSprite = function(req,res){
     var $cssNameSwitch = req.body.cssNameSwitch;
     var $cssName = req.body.cssName;
 
-    var $ftpSwitch = req.body.ftpSwitch;
-    var $imgSwitch = req.body.imgSwitch;
+    var $imgSyncSwitch = req.body.imgSyncSwitch;
+    var $imgSyncName = req.body.imgSyncName;
 
+    var $ftpSwitch = req.body.ftpSwitch;
+
+    var $masterSwitch = req.body.masterSwitch;
+    var $imgSwitch = req.body.imgSwitch;
 
     var $pxToRemSwitch = req.body.pxToRemSwitch;
     var $rootValue = req.body.rootValue;
     var $propertyBlackList = req.body.propertyBlackList;
 
 
-
-
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
+
+    Config.itemsConfig[$itemsIndex].masterSwitch = $masterSwitch;
     Config.itemsConfig[$itemsIndex].imgSwitch = $imgSwitch;
 
     Config.itemsConfig[$itemsIndex].spriteNameSwitch = $spriteNameSwitch;
@@ -379,6 +394,9 @@ exports.updateCssSprite = function(req,res){
 
     Config.itemsConfig[$itemsIndex].cssNameSwitch = $cssNameSwitch;
     Config.itemsConfig[$itemsIndex].cssName = $cssName;
+
+    Config.itemsConfig[$itemsIndex].imgSyncSwitch = $imgSyncSwitch;
+    Config.itemsConfig[$itemsIndex].imgSyncName = $imgSyncName;
 
     Config.itemsConfig[$itemsIndex].pxToRemSwitch = $pxToRemSwitch;
     Config.itemsConfig[$itemsIndex].rootValue = $rootValue;
@@ -510,7 +528,9 @@ exports.doConfig = function(req,res){
             $obj.cssName = $date;
 
             $obj.ftpSwitch = "false";
-            $obj.imgSwitch = "youtu";
+
+            $obj.masterSwitch = "true";
+            $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin
 
             Config.itemsConfig.push($obj);
         }else{
