@@ -53,8 +53,6 @@ exports.doUploader = function(req,res){
     var $imgFiles = [];
     var $destCssFiles = [];
 
-    //console.log('$tinyImgSwitch::::::' + $tinyImgSwitch);
-
     /*
      *
      * TODO 上传文件 ftpUploader
@@ -69,9 +67,6 @@ exports.doUploader = function(req,res){
 
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
-
-            console.log("true:::::::::::");
-
             tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
@@ -80,7 +75,6 @@ exports.doUploader = function(req,res){
                         if(ftpData.status===true){
                             $successFiles.push(ftpData.fName);
                         }else{
-                            //console.log(ftpData);
                             $errorFiles.push(ftpData.fName);
                         }
                     });
@@ -172,10 +166,11 @@ exports.doUploader = function(req,res){
      *
      * */
     var tinyImg = function() {
+
+        //去重复
+        $imgFiles = unique($imgFiles);
         if ($tinyImgSwitch == "tinyimg") {
-
             console.log("tiny img::::::::::::");
-
             tools.tinyImg($imgFiles, $currentConfig,Config, function (result) {
 
                 //拼接dest的路劲文件
@@ -186,7 +181,6 @@ exports.doUploader = function(req,res){
             });
         }else if($tinyImgSwitch == "youtu"){
             console.log("youtu:::::::::::::::");
-
             tools.youtu($imgFiles, $currentConfig,Config, function (result) {
 
                 //拼接dest的路劲文件
@@ -196,12 +190,8 @@ exports.doUploader = function(req,res){
                 Px2rem();
             });
         }else if($tinyImgSwitch == "imagemin") {
-            //console.log("imagemin:::::::::::::::");
-            console.log($imgFiles);
-
+            console.log("imagemin:::::::::::::::");
             tools.imagemin($imgFiles, $currentConfig,Config, function (result) {
-
-                //console.log("imagemin sucesss:::::");
 
                 //拼接dest的路劲文件
                 destPath(result);
@@ -274,8 +264,6 @@ exports.doUploader = function(req,res){
 
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
-            console.log($cssFiles);
-
             tools.sprite($cssFiles, $currentConfig, function (result) {
                 result.forEach(function(resultFiles){
                     var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
@@ -370,8 +358,6 @@ exports.globalSetting = function(req,res){
 
 //更新css 和 sprite 版本号和状态
 exports.updateCssSprite = function(req,res){
-
-    console.log(req.body);
     var $itemsIndex = req.body.itemsIndex;
 
     var $ftpSwitch = req.body.ftpSwitch == "on" ? "true" : "false";
