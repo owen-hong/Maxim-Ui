@@ -50,7 +50,7 @@ body{
 }
 .content aside .logo{
     height: 49px;
-    background: url(img/logo.png) no-repeat 20px center;
+    background: url(img/logo-full.svg) no-repeat 20px center;
     border-bottom: 1px solid #2D3945;
     display: block;
     -webkit-app-region:drag;
@@ -513,6 +513,7 @@ position: relative;
     width: 100%;
     cursor: pointer;
     opacity: 0;
+    z-index: -1;
 }
 
 

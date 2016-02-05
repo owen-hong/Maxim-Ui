@@ -495,8 +495,13 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
     });
 
     //图压缩开关
-    $("input[name='masterSwitch']").on("change",function(){
+    $("input[name='imgMasterSwitch']").on("change",function(){
         $("#imgRadioBox").slideToggle();
+    });
+
+    //触发选择文件开关
+    $(".multipleFile-box .text").click(function(){
+        $("#multipleFile").click();
     });
 
 });

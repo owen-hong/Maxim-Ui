@@ -166,34 +166,44 @@ exports.doUploader = function(req,res){
      *
      * */
     var tinyImg = function() {
-
         //去重复
         $imgFiles = unique($imgFiles);
-        if ($tinyImgSwitch == "tinyimg") {
-            console.log("tiny img::::::::::::");
-            tools.tinyImg($imgFiles, $currentConfig,Config, function (result) {
+        if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true") {
+            if ($tinyImgSwitch == "tinyimg") {
+                console.log("tiny img::::::::::::");
+                tools.tinyImg($imgFiles, $currentConfig, Config, function (result) {
 
-                //拼接dest的路劲文件
-                destPath(result);
+                    //拼接dest的路劲文件
+                    destPath(result);
 
-                //px2rem处理
-                Px2rem();
-            });
-        }else if($tinyImgSwitch == "youtu"){
-            console.log("youtu:::::::::::::::");
-            tools.youtu($imgFiles, $currentConfig,Config, function (result) {
+                    //px2rem处理
+                    Px2rem();
+                });
+            } else if ($tinyImgSwitch == "youtu") {
+                console.log("youtu:::::::::::::::");
+                tools.youtu($imgFiles, $currentConfig, Config, function (result) {
 
-                //拼接dest的路劲文件
-                destPath(result);
+                    //拼接dest的路劲文件
+                    destPath(result);
 
-                //px2rem处理
-                Px2rem();
-            });
-        }else if($tinyImgSwitch == "imagemin") {
-            console.log("imagemin:::::::::::::::");
-            tools.imagemin($imgFiles, $currentConfig,Config, function (result) {
+                    //px2rem处理
+                    Px2rem();
+                });
+            } else if ($tinyImgSwitch == "imagemin") {
+                console.log("imagemin:::::::::::::::");
+                tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
-                //拼接dest的路劲文件
+                    //拼接dest的路劲文件
+                    destPath(result);
+
+                    //px2rem处理
+                    Px2rem();
+                });
+            }
+        }else{
+            tools.copyFiles($imgFiles,$currentConfig,function(result){
+
+                //拼接dest的路径文件
                 destPath(result);
 
                 //px2rem处理
@@ -227,7 +237,6 @@ exports.doUploader = function(req,res){
 
 
     //TODO 文件分类
-
     for (var i in $filesType) {
         if ($filesType[i] == "text\/html" || $filesType[i] == "application\/javascript") {
             $copyFile.push($fileUrl[i]);
@@ -362,7 +371,7 @@ exports.updateCssSprite = function(req,res){
 
     var $ftpSwitch = req.body.ftpSwitch == "on" ? "true" : "false";
 
-    var $masterSwitch = req.body.masterSwitch == "on" ? "true" : "false";
+    var $imgMasterSwitch = req.body.imgMasterSwitch == "on" ? "true" : "false";
     var $imgSwitch = req.body.imgSwitch;
 
     var $spriteNameSwitch = req.body.spriteNameSwitch == "on" ? "true" : "false";
@@ -383,7 +392,7 @@ exports.updateCssSprite = function(req,res){
 
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
 
-    Config.itemsConfig[$itemsIndex].masterSwitch = $masterSwitch;
+    Config.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
     Config.itemsConfig[$itemsIndex].imgSwitch = $imgSwitch;
 
     Config.itemsConfig[$itemsIndex].spriteNameSwitch = $spriteNameSwitch;
@@ -531,7 +540,7 @@ exports.doConfig = function(req,res){
 
             $obj.ftpSwitch = "false";
 
-            $obj.masterSwitch = "true";
+            $obj.imgMasterSwitch = "true";
             $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin
 
             Config.itemsConfig.push($obj);

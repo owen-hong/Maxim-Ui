@@ -24,15 +24,15 @@
     <div class="check-block border">
         <span class="info-text">图片压缩</span>
         <label class="switch" title="图片压缩">
-            <% if(configItemes.length > 0 && configItemes[0].masterSwitch =="true"){ %>
-            <input type="checkbox" name="masterSwitch" checked class="switch-input">
+            <% if(configItemes.length > 0 && configItemes[0].imgMasterSwitch =="true"){ %>
+            <input type="checkbox" name="imgMasterSwitch" checked class="switch-input">
             <% }else{ %>
-            <input type="checkbox" name="masterSwitch" class="switch-input">
+            <input type="checkbox" name="imgMasterSwitch" class="switch-input">
             <% } %>
             <span class="switch-helper">开启</span>
         </label>
     </div>
-    <% if(configItemes.length > 0 && configItemes[0].masterSwitch =="true"){ %>
+    <% if(configItemes.length > 0 && configItemes[0].imgMasterSwitch =="true"){ %>
     <div class="radio-box" id="imgRadioBox">
         <% }else{ %>
         <div class="radio-box hide" id="imgRadioBox">
