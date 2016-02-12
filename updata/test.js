@@ -11,27 +11,19 @@
  */
 
 var gui = require('nw.gui');
-var pkg = require('./updata/package.json'); // Insert your app's manifest here
+var pkg = require('../package.json'); // Insert your app's manifest here
 var updater = require('node-webkit-updater');
 var upd = new updater(pkg);
 var copyPath, execPath;
 
-
 // Args passed when new app is launched from temp dir during update
 if(gui.App.argv.length) {
-    console.log("abc");
     // ------------- Step 5 -------------
     copyPath = gui.App.argv[0];
     execPath = gui.App.argv[1];
 
-    console.log(copyPath);
-    console.log(execPath);
-
     // Replace old app, Run updated app from original location and close temp instance
     upd.install(copyPath, function(err) {
-
-        console.log(err);
-
         if(!err) {
 
             // ------------- Step 6 -------------
@@ -41,16 +33,8 @@ if(gui.App.argv.length) {
     });
 }else { // if no arguments were passed to the app
 
-    console.log("ued");
-
     // ------------- Step 1 -------------
     upd.checkNewVersion(function(error, newVersionExists, manifest) {
-        console.log(error);
-        console.log(newVersionExists);
-        console.log(manifest);
-
-
-
         if (!error && newVersionExists) {
 
             // ------------- Step 2 -------------
