@@ -1,17 +1,17 @@
 {
-  "name": "updapp",
-  "version": "0.0.2",
-  "author": "Eldar Djafarov <djkojb@gmail.com>",
-  "manifestUrl": "http://localhost:3000/package.json",
+  "name": "Maxim-updata",
+  "version": "0.0.3",
+  "author": "owen hong <520ued.com@gmail.com>",
+  "manifestUrl": "http://localhost/Maxim-updata/package.json",
   "packages": {
     "mac": {
-      "url": "http://localhost:3000/releases/updapp/mac/updapp.zip"
+      "url": "http://localhost/releases/updapp/mac/updapp.zip"
     },
     "win": {
-      "url": "http://localhost:3000/releases/updapp/win/updapp.zip"
+      "url": "http://localhost/Maxim-updata/win/updapp.zip"
     },
     "linux32": {
-      "url": "http://localhost:3000/releases/updapp/linux32/updapp.tar.gz"
+      "url": "http://localhost/releases/updapp/linux32/updapp.tar.gz"
     }
   }
 }

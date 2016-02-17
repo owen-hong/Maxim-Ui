@@ -270,12 +270,12 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
             } else {
                 $("input[name='imgSyncSwitch']").prop("checked",false);
             }
-            $("input[name='imgSyncName']").val(data.imgSyncName);
-            $("#updataTimeVal").val(data.imgSyncName);
+            $("input[name='imgSyncName']").val(data.spriteName);
+            $("#updataTimeVal").val(data.spriteName);
 
 
             var $resourceSyncSwitch = data.resourceSyncSwitch || "false";
-            if ($cssNameSwitch == "true") {
+            if ($resourceSyncSwitch == "true") {
                 $("input[name='resourceSyncSwitch']").prop("checked",true);
             } else {
                 $("input[name='resourceSyncSwitch']").prop("checked",false);

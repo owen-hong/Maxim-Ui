@@ -380,10 +380,12 @@ exports.updateCssSprite = function(req,res){
     var $cssNameSwitch = req.body.cssNameSwitch == "on" ? "true" : "false";
     var $cssName = req.body.cssName;
 
-    var $imgSyncSwitch = req.body.imgSyncSwitch == "on" ? "true" : "false";
-    var $imgSyncName = req.body.imgSyncName;
+    //var $imgSyncSwitch = req.body.imgSyncSwitch == "on" ? "true" : "false";
+    //var $imgSyncName = req.body.imgSyncName;
 
     var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? "true" : "false";
+
+    console.log($resourceSyncSwitch);
 
     var $pxToRemSwitch = req.body.pxToRemSwitch == "on" ? "true" : "false";
     var $rootValue = req.body.rootValue ? req.body.rootValue : Config.itemsConfig[$itemsIndex].rootValue;
@@ -401,8 +403,8 @@ exports.updateCssSprite = function(req,res){
     Config.itemsConfig[$itemsIndex].cssNameSwitch = $cssNameSwitch;
     Config.itemsConfig[$itemsIndex].cssName = $cssName;
 
-    Config.itemsConfig[$itemsIndex].imgSyncSwitch = $imgSyncSwitch;
-    Config.itemsConfig[$itemsIndex].imgSyncName = $imgSyncName;
+    //Config.itemsConfig[$itemsIndex].imgSyncSwitch = $imgSyncSwitch;
+    //Config.itemsConfig[$itemsIndex].imgSyncName = $imgSyncName;
 
     Config.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
 
@@ -535,8 +537,8 @@ exports.doConfig = function(req,res){
             $obj.cssNameSwitch = "false";
             $obj.cssName = $date;
 
-            $obj.imgSyncSwitch = "false";
-            $obj.imgSyncName = $date;
+            //$obj.imgSyncSwitch = "false";
+            //$obj.imgSyncName = $date;
 
             $obj.ftpSwitch = "false";
 
