@@ -81,13 +81,13 @@ if(gui.App.argv.length) {
 
 
                                 //更新成功文件后删除临时目录
-                                fse.remove($dirPath, function (err) {
-                                    if (err){
-                                        gui.App.quit();
-                                    }
-
-                                    //gui.App.quit();
-                                });
+                                //fse.remove($dirPath, function (err) {
+                                //    if (err){
+                                //        gui.App.quit();
+                                //    }
+                                //
+                                //    //gui.App.quit();
+                                //});
 
                             });
 
