@@ -53,35 +53,34 @@ define(function(require, exports, module) {
                 $errorMessage += "</div></div>";
             }
             $.unique(result.errorFiles);//去除重复错误
-            $.each(result.successFiles, function (i, value) {
-                var $value = value;
+            if(result.successFiles >0){
+                $.each(result.successFiles, function (i, value) {
+                    var $value = value;
 
-                if(result.osType =="Windows_NT"){
-                    $value = value.replace(/\//g,'\\');
-                }
-
-                $copyContent += $releaseUrl + value + '\n';
-                $releasePath += '<p>'+$releaseUrl + value + '</p>';
-                $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
-
-
-                $.each(result.errorFiles, function (i, errorValue) {
-                    console.log(errorValue);
-
-                    if($value == errorValue){
-                        $DestPath += '<a class="red" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
-                    }else{
-                        $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
+                    if(result.osType =="Windows_NT"){
+                        $value = value.replace(/\//g,'\\');
                     }
+
+                    $copyContent += $releaseUrl + value + '\n';
+                    $releasePath += '<p>'+$releaseUrl + value + '</p>';
+                    $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
+
+
+                    $.each(result.errorFiles, function (i, errorValue) {
+                        if($value == errorValue){
+                            $DestPath += '<a class="red" data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                        }else{
+                            $DestPath += '<a data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                        }
+                    });
                 });
-            });
-
-
-            $.each(result.errorFiles, function (i, value) {
-                $releasePath += '<p class="red">' + $releaseUrl + value + '</p>';
-                $testPath += '<p class="red">' + $testUrl + value + '</p>';
-                //$DestPath += '<p class="red"><a class="red" data-href="'+ value + '">'+ value + '</a></p>';
-            });
+            }else{
+                $.each(result.errorFiles, function (i, errorValue) {
+                    $releasePath += '<p class="red">' + $releaseUrl + errorValue + '</p>';
+                    $testPath += '<p class="red">' + $testUrl + errorValue + '</p>';
+                    $DestPath += '<a class="red" data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                });
+            }
 
             if(pathType =="local"){
                 $releasePath ='';

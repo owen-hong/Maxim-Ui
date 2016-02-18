@@ -21,10 +21,14 @@ var unique = function(array){
 }
 
 exports.index = function(req,res){
+
+    var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
+
+    console.log(itemsConfig)
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
-        configItemes:Config.itemsConfig
+        configItemes:itemsConfig
     });
 };
 
@@ -292,7 +296,6 @@ exports.doUploader = function(req,res){
                     }else{
                         var $DestFile = $currentConfig.destPath + resultFiles.fName;
                     }
-
 
                     var $filesName = path.basename(resultFiles.fName);
                     var $fileType = $filesName.split(".")[1];
