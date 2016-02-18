@@ -53,7 +53,8 @@ define(function(require, exports, module) {
                 $errorMessage += "</div></div>";
             }
             $.unique(result.errorFiles);//去除重复错误
-            if(result.successFiles >0){
+            if(result.successFiles.length > 0){
+                console.log("a");
                 $.each(result.successFiles, function (i, value) {
                     var $value = value;
 
@@ -65,14 +66,19 @@ define(function(require, exports, module) {
                     $releasePath += '<p>'+$releaseUrl + value + '</p>';
                     $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
 
+                    if(result.errorFiles.length > 0){
+                        $.each(result.errorFiles, function (i, errorValue) {
+                            if($value == errorValue){
+                                $DestPath += '<a class="red" data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                            }else{
+                                $DestPath += '<a data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                            }
+                        });
+                    }else{
+                        $DestPath += '<a data-href="' + $UserDest + value + '">' + $UserDest + value + '</a>';
+                        console.log(value);
+                    }
 
-                    $.each(result.errorFiles, function (i, errorValue) {
-                        if($value == errorValue){
-                            $DestPath += '<a class="red" data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
-                        }else{
-                            $DestPath += '<a data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
-                        }
-                    });
                 });
             }else{
                 $.each(result.errorFiles, function (i, errorValue) {

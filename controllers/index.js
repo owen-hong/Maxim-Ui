@@ -24,7 +24,6 @@ exports.index = function(req,res){
 
     var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
 
-    console.log(itemsConfig)
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
@@ -286,8 +285,6 @@ exports.doUploader = function(req,res){
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
-                console.log("sprite:::::::::");
-                console.log(result);
 
                 result.forEach(function(resultFiles){
 
