@@ -64,7 +64,6 @@ exports.doUploader = function(req,res){
         $errorFiles = unique($errorFiles);
         ftpFiles = unique(ftpFiles);
 
-
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
             tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
@@ -148,7 +147,6 @@ exports.doUploader = function(req,res){
                 $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
                 $errorFiles.push(result.fName);
-
                 if(result.message !== undefined){
                     $errorMessage.push(result.message);
                 }else{
@@ -168,6 +166,7 @@ exports.doUploader = function(req,res){
     var tinyImg = function() {
         //去重复
         $imgFiles = unique($imgFiles);
+
         if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true") {
             if ($tinyImgSwitch == "tinyimg") {
                 console.log("tiny img::::::::::::");
@@ -192,6 +191,8 @@ exports.doUploader = function(req,res){
             } else if ($tinyImgSwitch == "imagemin") {
                 console.log("imagemin:::::::::::::::");
                 tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
+
+                    //console.log(result);
 
                     //拼接dest的路劲文件
                     destPath(result);
@@ -275,7 +276,14 @@ exports.doUploader = function(req,res){
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
                 result.forEach(function(resultFiles){
-                    var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
+
+                    if(os.type() == "Windows_NT"){
+                        var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
+                    }else{
+                        var $DestFile = $currentConfig.destPath + resultFiles.fName;
+                    }
+
+
                     var $filesName = path.basename(resultFiles.fName);
                     var $fileType = $filesName.split(".")[1];
 
@@ -316,13 +324,16 @@ exports.doUploader = function(req,res){
 
 exports.addProject = function(req,res){
     var $itemsConfigSize = req.query.itemsIndex;
-    var DefaultDestPath = osHomedir() + path.sep + "Dest";
+    var DefaultPath = osHomedir() + path.sep;
+    var DefaultDestPath = DefaultPath + "Dest";
+
 
     res.render('home/add-project-config',{
         title: '新增项目',
         currentIndex:$itemsConfigSize,
         config:Config.itemsConfig[$itemsConfigSize],
         configItemes:Config.itemsConfig,
+        DefaultPath:DefaultPath,
         DefaultDestPath:DefaultDestPath
     });
 }
@@ -384,8 +395,6 @@ exports.updateCssSprite = function(req,res){
     //var $imgSyncName = req.body.imgSyncName;
 
     var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? "true" : "false";
-
-    console.log($resourceSyncSwitch);
 
     var $pxToRemSwitch = req.body.pxToRemSwitch == "on" ? "true" : "false";
     var $rootValue = req.body.rootValue ? req.body.rootValue : Config.itemsConfig[$itemsIndex].rootValue;

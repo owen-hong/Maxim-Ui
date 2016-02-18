@@ -9,7 +9,9 @@ a{
     -webkit-app-region: no-drag !important;
     outline: none;
 }
-
+a.red{
+    color:red;
+}
 html{
     height: 100%;
 }

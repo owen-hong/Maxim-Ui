@@ -28,10 +28,11 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
 
     //TODO 关闭右侧工具栏
     $("#close-btn").click(function(){
-        if($(this).parent().hasClass("in")){
-            $(this).parent().removeClass("in").animate({"margin-right":"0"},500);
+        var $parentBox = $(this).parent().parent();
+        if($parentBox.hasClass("in")){
+            $parentBox.removeClass("in").animate({"margin-right":0},500);
         }else{
-            $(this).parent().addClass("in").animate({"margin-right":"-240px"},500);
+            $parentBox.addClass("in").animate({"margin-right":"-240px"},500);
         }
     });
 
@@ -372,7 +373,7 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
 
     //TODO dialog config
     var $DialogConfig = {
-        frame:false,
+        frame:true,
         toolbar:false,
         position: 'center',
         height:500,
