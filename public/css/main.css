@@ -10,7 +10,7 @@ a{
     outline: none;
 }
 a.red{
-    color:red;
+    color:red !important;
 }
 html{
     height: 100%;

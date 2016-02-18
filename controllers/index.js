@@ -66,6 +66,10 @@ exports.doUploader = function(req,res){
 
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
+
+
+            console.log("22222222222222");
+
             tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
@@ -108,6 +112,7 @@ exports.doUploader = function(req,res){
                 }
             });
         }else{
+            console.log("111111111111111");
             res.json({
                 ftpSuccess:true,
                 status: true,
@@ -190,9 +195,10 @@ exports.doUploader = function(req,res){
                 });
             } else if ($tinyImgSwitch == "imagemin") {
                 console.log("imagemin:::::::::::::::");
+                console.log($imgFiles);
                 tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
-                    //console.log(result);
+                    console.log(result);
 
                     //拼接dest的路劲文件
                     destPath(result);
@@ -202,6 +208,7 @@ exports.doUploader = function(req,res){
                 });
             }
         }else{
+            console.log("no image min:::::::::::::::");
             tools.copyFiles($imgFiles,$currentConfig,function(result){
 
                 //拼接dest的路径文件
@@ -275,6 +282,9 @@ exports.doUploader = function(req,res){
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
+                console.log("sprite:::::::::");
+                console.log(result);
+
                 result.forEach(function(resultFiles){
 
                     if(os.type() == "Windows_NT"){
@@ -287,10 +297,13 @@ exports.doUploader = function(req,res){
                     var $filesName = path.basename(resultFiles.fName);
                     var $fileType = $filesName.split(".")[1];
 
-                    if($fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 ){
+                    var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0;
+                    if($fileTypeStatus && resultFiles.status){
                         $imgFiles.push($DestFile);
-                    }else if($fileType.indexOf("css") >= 0){
+                    }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
                         $destCssFiles.push($DestFile);
+                    }else{
+                        $errorFiles.push(resultFiles.fName);
                     }
                 });
 

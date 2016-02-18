@@ -56,8 +56,6 @@ define(function(require, exports, module) {
             $.each(result.successFiles, function (i, value) {
                 var $value = value;
 
-                console.log($value);
-
                 if(result.osType =="Windows_NT"){
                     $value = value.replace(/\//g,'\\');
                 }
@@ -68,7 +66,9 @@ define(function(require, exports, module) {
 
 
                 $.each(result.errorFiles, function (i, errorValue) {
-                    if($value==errorValue){
+                    console.log(errorValue);
+
+                    if($value == errorValue){
                         $DestPath += '<a class="red" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                     }else{
                         $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
