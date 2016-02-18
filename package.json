@@ -1,6 +1,6 @@
 {
   "name": "Maxim-Ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "qcloud front end workflow tools",
   "author": {
     "name": "Owen Hong",
@@ -15,13 +15,13 @@
     }
   ],
   "nodejs": true,
-  "main": "http://localhost:3030/",
+  "main": "index.html",
   "node-remote": "http://localhost:3030",
   "node-main": "",
   "single-instance": true,
   "window": {
-    "frame": false,
-    "toolbar": false,
+    "frame": true,
+    "toolbar": true,
     "title": "node-webkit demo",
     "icon": "maxim-logo.png",
     "position": "center",
@@ -46,9 +46,12 @@
     "connect-multiparty": "^2.0.0",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
+    "fs-extra": "^0.26.5",
     "log4js": "^0.6.28",
     "maxim-workflow": "^0.1.0",
-    "method-override": "^2.3.5"
+    "method-override": "^2.3.5",
+    "node-webkit-updater": "^0.3.2",
+    "os-homedir": "^1.0.1"
   },
   "files": [
     "index.js",
@@ -62,9 +65,5 @@
     "url": "https://github.com/owen-hong/Maxim-Ui/issues"
   },
   "homepage": "https://github.com/owen-hong/Maxim-Ui/",
-  "license": "MIT",
-  "devDependencies": {
-    "http-proxy": "^1.12.0",
-    "request": "^2.67.0"
-  }
+  "license": "MIT"
 }
