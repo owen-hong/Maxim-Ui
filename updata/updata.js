@@ -57,6 +57,7 @@ if(gui.App.argv.length) {
             // ------------- Step 2 -------------
             upd.download(function(error, filename) {
                 console.log("download...")
+                console.log(error);
                 console.log(filename);
 
                 if (!error) {
@@ -74,13 +75,12 @@ if(gui.App.argv.length) {
 
                             console.log($dirPath,$getAppPath);
 
-                            //¿½±´ÎÄ¼ş
+                            //æ‹·è´æ–‡ä»¶
                             fse.copy($dirPath, $getAppPath, function (err) {
                                 if (err) return console.error(err)
                                 console.log('copy success!')
 
-
-                                //¸üĞÂ³É¹¦ÎÄ¼şºóÉ¾³ıÁÙÊ±Ä¿Â¼
+                                //æ›´æ–°æˆåŠŸæ–‡ä»¶ååˆ é™¤ä¸´æ—¶ç›®å½•
                                 //fse.remove($dirPath, function (err) {
                                 //    if (err){
                                 //        gui.App.quit();

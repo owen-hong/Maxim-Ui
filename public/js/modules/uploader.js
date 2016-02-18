@@ -52,9 +52,12 @@ define(function(require, exports, module) {
 
                 $errorMessage += "</div></div>";
             }
-
+            $.unique(result.errorFiles);//去除重复错误
             $.each(result.successFiles, function (i, value) {
                 var $value = value;
+
+                console.log($value);
+
                 if(result.osType =="Windows_NT"){
                     $value = value.replace(/\//g,'\\');
                 }
@@ -62,13 +65,22 @@ define(function(require, exports, module) {
                 $copyContent += $releaseUrl + value + '\n';
                 $releasePath += '<p>'+$releaseUrl + value + '</p>';
                 $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
-                $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
 
+
+                $.each(result.errorFiles, function (i, errorValue) {
+                    if($value==errorValue){
+                        $DestPath += '<a class="red" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
+                    }else{
+                        $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
+                    }
+                });
             });
+
 
             $.each(result.errorFiles, function (i, value) {
                 $releasePath += '<p class="red">' + $releaseUrl + value + '</p>';
                 $testPath += '<p class="red">' + $testUrl + value + '</p>';
+                //$DestPath += '<p class="red"><a class="red" data-href="'+ value + '">'+ value + '</a></p>';
             });
 
             if(pathType =="local"){
