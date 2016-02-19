@@ -5,7 +5,7 @@
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
-      "url": "hhttp://115.159.36.96/maxim/Maxim-updada/mac/updapp.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp.zip"
     },
     "win": {
       "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp.zip"
