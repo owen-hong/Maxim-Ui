@@ -47,7 +47,9 @@ if(gui.App.argv.length) {
 
     // ------------- Step 1 -------------
     upd.checkNewVersion(function(error, newVersionExists, manifest) {
-        console.log(error);
+        if(error){
+            //window.location = 'http://localhost:3030';
+        }
         console.log(newVersionExists);
         console.log(manifest);
 
@@ -70,8 +72,7 @@ if(gui.App.argv.length) {
                         if (!error) {
                             console.log("runInstaller...");
                             var $dirPath = path.dirname(newAppPath);
-                            var $getAppPath = upd.getAppPath();
-                            var $getAppExec = upd.getAppExec();
+                            var $getAppPath = process.cwd(); //upd.getAppPath()由于此接口在osx10.10.5下面返回路径不对，所以暂时弃用
 
                             console.log($dirPath,$getAppPath);
 
@@ -80,7 +81,7 @@ if(gui.App.argv.length) {
                                 if (err) return console.error(err)
                                 console.log('copy success!')
 
-                                //更新成功文件后删除临时目录
+                                //更新成功文件后删除临时目�?
                                 //fse.remove($dirPath, function (err) {
                                 //    if (err){
                                 //        gui.App.quit();
@@ -88,7 +89,6 @@ if(gui.App.argv.length) {
                                 //
                                 //    //gui.App.quit();
                                 //});
-
                             });
 
                             // ------------- Step 4 -------------
