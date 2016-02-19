@@ -70,9 +70,6 @@ exports.doUploader = function(req,res){
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
 
-
-            console.log("22222222222222");
-
             tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
@@ -141,20 +138,19 @@ exports.doUploader = function(req,res){
     * */
     var destPath = function(data){
         data.forEach(function(result){
-
             //判断操作系统，linux无需替换路径“/”
-            if(path.sep != "/"){
+            if(os.type() == "Windows_NT"){
                 var $localPath = result.fName.replace(/\//g,'\\');
             }else{
-                var $localPath = result.fName.replace(/\//g,'\/');
+                var $localPath = result.fName;
             }
 
             if($ftpSwitch == "false" && result.status){//关闭ftp后直接输出成功压缩后的文件数组
-                $successFiles.push(result.fName);
+                $successFiles.push($localPath);
             }else if($ftpSwitch == "true" && result.status){
                 $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
-                $errorFiles.push(result.fName);
+                $errorFiles.push($localPath);
                 if(result.message !== undefined){
                     $errorMessage.push(result.message);
                 }else{
@@ -212,6 +208,7 @@ exports.doUploader = function(req,res){
             }
         }else{
             console.log("no image min:::::::::::::::");
+            console.log($imgFiles);
             tools.copyFiles($imgFiles,$currentConfig,function(result){
 
                 //拼接dest的路径文件
