@@ -48,7 +48,7 @@
     "express": "^4.13.3",
     "fs-extra": "^0.26.5",
     "log4js": "^0.6.28",
-    "maxim-workflow": "^0.1.0",
+    "maxim-workflow": "^0.2.1",
     "method-override": "^2.3.5",
     "node-webkit-updater": "^0.3.2",
     "os-homedir": "^1.0.1"
