@@ -9,9 +9,6 @@
     },
     "win": {
       "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp.zip"
-    },
-    "linux32": {
-      "url": "http://localhost/releases/updapp/linux32/updapp.tar.gz"
     }
   }
 }
