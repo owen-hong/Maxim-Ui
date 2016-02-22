@@ -1,4 +1,5 @@
 @import url("reset.css");
+@import url("icon.css");
 @import url("checkbox.css");
 @import url("form.css");
 @import url("radio.css");
@@ -50,13 +51,6 @@ body{
     position: relative;
     z-index: 9;
 }
-.content aside .logo{
-    height: 49px;
-    background: url(img/logo-full.svg) no-repeat 20px center;
-    border-bottom: 1px solid #2D3945;
-    display: block;
-    -webkit-app-region:drag;
-}
 .content .project-btn-box{
     font-size: 0;
     border-top: 1px solid #7D8F9D;
@@ -80,17 +74,8 @@ body{
 .content .project-btn-box .setting-icon,
 .content .project-btn-box .add-icon
 {
-    width: 16px;
-    height: 16px;
-    background-image: url("img/slice/set-icon.png");
-    display: inline-block;
     vertical-align: -2px;
     margin-right: 5px;
-}
-.content .project-btn-box .add-icon{
-    width: 13px;
-    height: 13px;
-    background-image: url("img/slice/add-icon.png");
 }
 
 .itemes-info{
@@ -108,13 +93,28 @@ body{
 {
     vertical-align: 2px;
 }
-.itemes-info .edit-icon{
-    width:15px;
-    height: 15px;
-    display: inline-block;
-    background-image: url(img/slice/edit-icon.png);
-    margin-left: 2px;
+
+.global-aside{
+    width: 50px;
+    position: relative;
+    background: #242E38;
+    border-bottom: 1px solid #2D3945;
+    -webkit-app-region: drag;
 }
+.global-aside .logo-box{
+    width: 50px;
+    height: 50px;
+    background: url("img/logo.svg") no-repeat center center;
+    box-sizing: border-box;
+    border-bottom: 1px solid #2D3945;
+}
+.global-aside .project-btn{
+
+}
+
+
+
+
 menu{
     -webkit-app-region: no-drag;
 }
@@ -137,9 +137,7 @@ menu .menu-list a:hover{
 menu .menu-list li .arrow-left{
     display: none;
 }
-/*menu .menu-list li:hover{*/
-    /*background-color: #3D4F5D;*/
-/*}*/
+
 menu .menu-list li.cur{
     background-color: #2D3945;
 }

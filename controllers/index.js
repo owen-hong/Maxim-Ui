@@ -4,6 +4,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var request = require('request');
 var os = require("os");
 var osHomedir = require('os-homedir');
 var Config = require('../config.js');
@@ -20,7 +21,50 @@ var unique = function(array){
     return n;
 }
 
+//Config.js更新写入
+var updataConfig = function(resSwitch,res,itemsIndex){
+    //拼接字符串
+    var configJsPath = __dirname.split('controllers')[0] + 'config.js';
+    var newData = 'var Config =' + JSON.stringify(Config) + '\nmodule.exports = Config;';
+
+    //写入文件
+    if(resSwitch === true) {
+        fs.writeFile(configJsPath, newData, function (err) {
+            if (err) {
+                res.json({
+                    status: false,
+                    messages: err
+                });
+            } else {
+                res.json(Config.itemsConfig[itemsIndex])
+            }
+        });
+    }else{
+        fs.writeFile(configJsPath, newData, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
+}
+
+
 exports.index = function(req,res){
+    //判断monitor是否开启
+    if(Config.monitor){
+        //http://520ued.com/maxim/downCount
+        request('http://520ued.com/maxim/downCount', function (error, response, result) {
+            if (!error && response.statusCode == 200) {
+                var result = JSON.parse(result);
+
+                if(result.status){
+                    Config.monitor = false;
+
+                    updataConfig(false,res);
+                }
+            }
+        });
+    }
 
     var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
 
@@ -194,11 +238,7 @@ exports.doUploader = function(req,res){
                 });
             } else if ($tinyImgSwitch == "imagemin") {
                 console.log("imagemin:::::::::::::::");
-                console.log($imgFiles);
                 tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
-
-                    console.log(result);
-
                     //拼接dest的路劲文件
                     destPath(result);
 
@@ -208,7 +248,6 @@ exports.doUploader = function(req,res){
             }
         }else{
             console.log("no image min:::::::::::::::");
-            console.log($imgFiles);
             tools.copyFiles($imgFiles,$currentConfig,function(result){
 
                 //拼接dest的路径文件
@@ -232,6 +271,33 @@ exports.doUploader = function(req,res){
             tools.px2rem($destCssFiles,$currentConfig,function(result){
                 //拼接dest的路劲文件
                 destPath(result);
+
+                //检测是否有需要copy的文件
+                copyFiles();
+            });
+        }else{
+            //检测是否有需要copy的文件
+            copyFiles();
+        }
+    }
+
+    /*
+     *
+     *
+     * TODO 不需要处理的文件直接调用 copyFiles
+     *
+     *
+     * */
+    var copyFiles = function(){
+        //去重复
+        $copyFile = unique($copyFile);
+
+        if($copyFile.length > 0){
+            tools.copyFiles($copyFile,$currentConfig,function(result){
+
+                //拼接dest的路径文件
+                destPath(result);
+
 
                 //ftp 上传文件
                 ftpUploader($ftpFiles, res);
@@ -264,24 +330,11 @@ exports.doUploader = function(req,res){
             errorMessage:'请您上传此项目配置：“项目目录”下的文件！'
         });
     }else{
-        //TODO 不需要处理的文件直接调用 copyFiles
-        if($copyFile.length > 0){
-            tools.copyFiles($copyFile,$currentConfig,function(result){
-
-                //拼接dest的路径文件
-                destPath(result);
-
-                if($cssFiles.length <= 0 && $imgFiles.length <= 0){
-
-                    ftpUploader($ftpFiles, res);
-
-                }
-            });
-        }
-
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
+
+                console.log(result);
 
                 result.forEach(function(resultFiles){
 
@@ -299,8 +352,10 @@ exports.doUploader = function(req,res){
                         $imgFiles.push($DestFile);
                     }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
                         $destCssFiles.push($DestFile);
-                    }else{
-                        $errorFiles.push(resultFiles.fName);
+                    }else if(resultFiles.status){
+                        $copyFile.push($DestFile);
+                    }else if(resultFiles.status===false){
+                        $errorFiles.push($DestFile);
                     }
                 });
 
@@ -316,10 +371,11 @@ exports.doUploader = function(req,res){
                 }
             });
         }else if($imgFiles.length > 0){
-
             //TODO tiny img
             tinyImg();
-
+        }else if($copyFile.length > 0){
+            //TODO copyFiles
+            copyFiles();
         }
     }
 };
@@ -390,6 +446,8 @@ exports.globalSetting = function(req,res){
 exports.updateCssSprite = function(req,res){
     var $itemsIndex = req.body.itemsIndex;
 
+    console.log($itemsIndex);
+
     var $ftpSwitch = req.body.ftpSwitch == "on" ? "true" : "false";
 
     var $imgMasterSwitch = req.body.imgMasterSwitch == "on" ? "true" : "false";
@@ -432,22 +490,7 @@ exports.updateCssSprite = function(req,res){
     Config.itemsConfig[$itemsIndex].propertyBlackList = $propertyBlackList;
 
 
-    //拼接字符串
-    var configJsPath = __dirname.split('controllers')[0] + 'config.js';
-    var newData = 'var Config =' + JSON.stringify(Config) + '\nmodule.exports = Config;';
-
-    //写入文件
-    fs.writeFile(configJsPath, newData, function (err) {
-        if (err) {
-            res.json({
-                status: false,
-                messages: err
-            });
-        }else{
-            res.json(Config.itemsConfig[$itemsIndex])
-        }
-    });
-
+    updataConfig(true,res,$itemsIndex);
 }
 
 //删除项目
@@ -456,24 +499,8 @@ exports.deleteProject = function(req,res){
 
     Config.itemsConfig.splice($itemsIndex,1);
 
-    //拼接字符串
-    var configJsPath = __dirname.split('controllers')[0] + 'config.js';
-    var newData = 'var Config =' + JSON.stringify(Config) + '\nmodule.exports = Config;';
 
-    //写入文件
-    fs.writeFile(configJsPath, newData, function (err) {
-        if (err) {
-            res.json({
-                status: false,
-                messages: err
-            });
-        }else{
-            res.json({
-                status: true,
-                configItemes:Config.itemsConfig
-            });
-        }
-    });
+    updataConfig(true,res,$itemsIndex);
 }
 
 
@@ -586,24 +613,7 @@ exports.doConfig = function(req,res){
         Config.proxy = req.body.proxy;
     }
 
-
-    //拼接字符串
-    var newData = 'var Config =' + JSON.stringify(Config) + '\nmodule.exports = Config;';
-
-    //写入文件
-    fs.writeFile(configJsPath, newData, function (err) {
-        if (err) {
-            res.json({
-                status: false,
-                messages: err
-            });
-        }else{
-            res.json({
-                status: true,
-                messages: 'It\'s saved success !'
-            });
-        }
-    });
+    updataConfig(true,res,$itemsIndex);
 }
 
 

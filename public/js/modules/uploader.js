@@ -62,29 +62,42 @@ define(function(require, exports, module) {
                         $value = value.replace(/\//g,'\\');
                     }
 
+                    //此处由于是提单路径所以引用绝对路径，所以不使用$value
                     $copyContent += $releaseUrl + value + '\n';
                     $releasePath += '<p>'+$releaseUrl + value + '</p>';
                     $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
 
                     if(result.errorFiles.length > 0){
+
                         $.each(result.errorFiles, function (i, errorValue) {
-                            if($value == errorValue){
-                                $DestPath += '<a class="red" data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                            if(result.osType =="Windows_NT"){
+                                var $errorValue = errorValue.replace(/\//g,'\\');
                             }else{
-                                $DestPath += '<a data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                                var $errorValue = errorValue;
+                            }
+
+                            if($value == $errorValue){
+                                $DestPath += '<a class="red" data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
+                            }else{
+                                $DestPath += '<a data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
                             }
                         });
                     }else{
-                        $DestPath += '<a data-href="' + $UserDest + value + '">' + $UserDest + value + '</a>';
-                        console.log(value);
+                        $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                     }
 
                 });
             }else{
                 $.each(result.errorFiles, function (i, errorValue) {
+                    if(result.osType =="Windows_NT"){
+                        var $errorValue = errorValue.replace(/\//g,'\\');
+                    }else{
+                        var $errorValue = errorValue;
+                    }
+
                     $releasePath += '<p class="red">' + $releaseUrl + errorValue + '</p>';
                     $testPath += '<p class="red">' + $testUrl + errorValue + '</p>';
-                    $DestPath += '<a class="red" data-href="' + $UserDest + errorValue + '">' + $UserDest + errorValue + '</a>';
+                    $DestPath += '<a class="red" data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
                 });
             }
 

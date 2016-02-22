@@ -1,0 +1,41 @@
+.logo{
+    height: 49px;
+    background: url(img/logo-full.svg) no-repeat 20px center;
+    border-bottom: 1px solid #2D3945;
+    display: block;
+    -webkit-app-region:drag;
+}
+.setting-icon,
+.add-icon
+{
+    width: 16px;
+    height: 16px;
+    background-image: url("img/slice/set-icon.png");
+    display: inline-block;
+}
+
+.add-icon{
+    width: 13px;
+    height: 13px;
+    background-image: url("img/slice/add-icon.png");
+}
+.edit-icon{
+    width:15px;
+    height: 15px;
+    display: inline-block;
+    background-image: url(img/slice/edit-icon.png);
+    margin-left: 2px;
+}
+
+.copy-icon,
+.success-icon
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("img/slice/copy-icon.png");
+    display: inline-block;
+    vertical-align: -2px;
+    margin-right: 5px;
+}
+
+

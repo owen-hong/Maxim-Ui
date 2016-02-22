@@ -25,37 +25,7 @@
 
 <div class="content">
     <div class="flex-box">
-        <aside>
-            <div class="logo"></div>
-            <menu>
-                <ul class="menu-list">
-                    <% if(configItemes.length > 0){ %>
-                    <% configItemes.forEach(function(result,i){ %>
-                    <% if(i===0 && result.itemsName!="" ){ %>
-                    <li class="cur">
-                        <a href="javascript:void(0);"><%= result.itemsName %></a>
-                        <i class="arrow-left"></i>
-                    </li>
-                    <% }else if(result.itemsName!=""){ %>
-                    <li>
-                        <a href="javascript:void(0);"><%= result.itemsName %></a>
-                        <i class="arrow-left"></i>
-                    </li>
-                    <% } })%>
-                    <% } %>
-                </ul>
-                <input type="hidden" name="itemsIndex" value="0"/>
-            </menu>
-            <div class="project-btn-box">
-                <a href="javascript:void(0);" id="addProject" title="新增项目">
-                    <i class="add-icon"></i>新建
-                </a>
-                <a href="javascript:void(0);" id="settingBtn">
-                    <i class="setting-icon"></i>设置
-                </a>
-
-            </div>
-        </aside>
+        <% include aside.html %>
         <main>
             <div class="itemes-info">
                 <span class="text">
@@ -64,7 +34,7 @@
                     <% } %>
                 </span>
                 <a href="javascript:void(0);" class="edit-btn" title="编辑当前项目">
-                    <i class="edit-icon"></i>
+                    <i class="setting-icon"></i>
                 </a>
             </div>
             <div class="shortcut-operations">
