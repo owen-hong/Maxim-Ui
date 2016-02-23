@@ -53,7 +53,6 @@ define(function(require, exports, module) {
                 $errorMessage += "</div></div>";
             }
 
-            console.log(result.successFiles);
             $.unique(result.errorFiles);//去除重复错误
             if(result.successFiles.length > 0){
                 console.log("a");

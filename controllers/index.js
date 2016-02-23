@@ -242,7 +242,6 @@ exports.doUploader = function(req,res){
                 });
             } else if ($tinyImgSwitch == "imagemin") {
                 console.log("imagemin:::::::::::::::");
-                console.log($imgFiles);
                 tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
                     console.log(result);
@@ -340,9 +339,6 @@ exports.doUploader = function(req,res){
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
-
-                console.log(result);
-
                 result.forEach(function(resultFiles){
 
                     if(os.type() == "Windows_NT"){
@@ -452,8 +448,6 @@ exports.globalSetting = function(req,res){
 //更新css 和 sprite 版本号和状态
 exports.updateCssSprite = function(req,res){
     var $itemsIndex = req.body.itemsIndex;
-
-    console.log($itemsIndex);
 
     var $ftpSwitch = req.body.ftpSwitch == "on" ? "true" : "false";
 

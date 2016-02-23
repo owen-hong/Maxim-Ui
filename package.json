@@ -42,16 +42,18 @@
     "java": false
   },
   "dependencies": {
-    "body-parser": "^1.14.1",
+    "body-parser": "^1.15.0",
     "connect-multiparty": "^2.0.0",
-    "ejs": "^2.3.4",
-    "express": "^4.13.3",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
     "fs-extra": "^0.26.5",
-    "log4js": "^0.6.28",
-    "maxim-workflow": "^0.2.1",
+    "http-proxy": "^1.13.2",
+    "log4js": "^0.6.31",
+    "maxim-workflow": "^0.2.3",
     "method-override": "^2.3.5",
     "node-webkit-updater": "^0.3.2",
-    "os-homedir": "^1.0.1"
+    "os-homedir": "^1.0.1",
+    "request": "^2.69.0"
   },
   "files": [
     "index.js",

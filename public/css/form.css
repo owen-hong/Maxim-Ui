@@ -164,7 +164,7 @@ legend + .control-group {
 }
 
 .check-block .info-text{
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
 }
 .check-block .switch{
@@ -188,6 +188,7 @@ legend + .control-group {
 }
 .form-group .control-label{
     font-weight: bold;
+    font-size: 14px;
 }
 
 .add-on{

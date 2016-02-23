@@ -88,11 +88,12 @@ body{
     -webkit-app-region: drag;
 }
 .itemes-info .edit-btn{
-    color: #bbb;
+    color: #354351;
     text-decoration: inherit;
     font-weight: normal;
     display: inline-block;
     vertical-align: middle;
+    font-size: 14px;
 }
 .itemes-info .text
 {
@@ -118,10 +119,11 @@ body{
     border-bottom: 1px solid #2D3945;
 }
 .global-aside .project-btn{
-    width:30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: block;
     background: url(img/slice/project-icon.png) no-repeat center center;
+    margin: 15px auto;
 }
 .global-aside .global-setting{
     width: 32px;
@@ -156,6 +158,9 @@ aside .add-project-box .add-project-btn{
     border-radius: 30px;
     margin-left: auto;
     margin-right: auto;
+}
+aside .add-project-box .add-project-btn:hover{
+    background-color: #2978AC;
 }
 menu{
     -webkit-app-region: no-drag;
@@ -207,6 +212,8 @@ main{
     position: relative;
     border-top: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
+    /* display: -webkit-flex; */
+    /* display:flex; */
 }
 
 
@@ -450,8 +457,8 @@ main .shortcut-operations a{
     border-bottom: 1px solid #ebebeb;
 }
 .operations-box .form-control{
-    line-height: 26px;
-    height: 26px;
+    line-height: 20px;
+    height: 20px;
     padding-left: 5px;
     margin-right: 5px;
     box-sizing: border-box;
@@ -540,7 +547,7 @@ main .shortcut-operations a{
 
 cursor: pointer;
 
-color: #006eff;
+color: #1B87C9;
 
 font-weight: bold;
 
