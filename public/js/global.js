@@ -373,7 +373,7 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
 
     //TODO dialog config
     var $DialogConfig = {
-        frame:false,
+        frame:true,
         toolbar:false,
         position: 'center',
         height:500,
@@ -381,52 +381,65 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
     }
 
     //TODO 新增项目
-    var addProjectWin = function(){
-        var $menuListSite = $(".menu-list li").size();
+    var addProjectWin;
+    var addProjectWinFun = function(){
+        if(!addProjectWin){
+            var $menuListSite = $(".menu-list li").size();
 
-        var addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
-            frame:$DialogConfig.frame,
-            toolbar:$DialogConfig.toolbar,
-            position: $DialogConfig.position,
-            width:$DialogConfig.width,
-            height: $DialogConfig.height,
-            focus:true
-        });
+            addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
+                frame:$DialogConfig.frame,
+                toolbar:$DialogConfig.toolbar,
+                position: $DialogConfig.position,
+                width:$DialogConfig.width,
+                height: $DialogConfig.height,
+                focus:true
+            });
 
-        addProjectWin.on('close', function () {
-            this.hide(); // PRETEND TO BE CLOSED ALREADY
-            updateCssSprite(true,$menuListSite);
-            this.close(true);
-        });
+            addProjectWin.on('close', function () {
+                this.hide(); // PRETEND TO BE CLOSED ALREADY
+                updateCssSprite(true,$menuListSite);
+                addProjectWin = undefined;
+                this.close(true);
+            });
+        }else{
+            addProjectWin.focus();
+        }
     }
 
     $("#addProject").click(function(){
-        addProjectWin();
+        addProjectWinFun();
     });
 
     //TODO 编辑项目
-    var editProjectWin = function(){
-        var $currentItems = $("input[name='itemsIndex']").val();
-        var editProjectWin = gui.Window.open('editProject?itemsIndex=' + $currentItems,{
-            frame:$DialogConfig.frame,
-            toolbar:$DialogConfig.toolbar,
-            position: $DialogConfig.position,
-            width:$DialogConfig.width,
-            height: $DialogConfig.height,
-            focus:true
-        });
+    var editProjectWin;
+    var editProjectWinFun = function(){
+        if(!editProjectWin) {
+            var $currentItems = $("input[name='itemsIndex']").val();
+            editProjectWin = gui.Window.open('editProject?itemsIndex=' + $currentItems, {
+                frame: $DialogConfig.frame,
+                toolbar: $DialogConfig.toolbar,
+                position: $DialogConfig.position,
+                width: $DialogConfig.width,
+                height: $DialogConfig.height,
+                focus: true
+            });
 
-        editProjectWin.on('close', function () {
-            this.hide(); // PRETEND TO BE CLOSED ALREADY
-            updateCssSprite(false,$currentItems);
-            this.close(true);
-        });
+            editProjectWin.on('close', function () {
+                this.hide(); // PRETEND TO BE CLOSED ALREADY
+                updateCssSprite(false, $currentItems);
+                editProjectWin = undefined;
+                this.close(true);
+            });
+        }else{
+            editProjectWin.focus();
+        }
     }
+
     $(".edit-btn").click(function() {
         if($(".menu-list li").size() > 0){
-            editProjectWin();
+            editProjectWinFun();
         }else{
-            addProjectWin();
+            addProjectWinFun();
         }
     });
 
@@ -450,19 +463,26 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
 
     //TODO 全局设置
     $("#settingBtn").click(function(){
-        var globalSetting = gui.Window.open('globalSetting',{
-            frame:$DialogConfig.frame,
-            toolbar:$DialogConfig.toolbar,
-            position: $DialogConfig.position,
-            width:512,
-            height: 370,
-            focus:true
-        });
+        var globalSetting;
+        if(!globalSetting){
+            globalSetting = gui.Window.open('globalSetting',{
+                frame:$DialogConfig.frame,
+                toolbar:$DialogConfig.toolbar,
+                position: $DialogConfig.position,
+                width:512,
+                height: 370,
+                focus:true
+            });
 
-        globalSetting.on('close', function () {
-            this.hide(); // PRETEND TO BE CLOSED ALREADY
-            this.close(true);//防止进程没被杀死
-        });
+            globalSetting.on('close', function () {
+                this.hide(); // PRETEND TO BE CLOSED ALREADY
+                globalSetting = undefined;
+                this.close(true);//防止进程没被杀死
+            });
+        }else{
+            globalSetting.focus();
+        }
+
     });
 
 
