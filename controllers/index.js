@@ -36,7 +36,10 @@ var updataConfig = function(resSwitch,res,itemsIndex){
                     messages: err
                 });
             } else {
-                res.json(Config.itemsConfig[itemsIndex])
+                res.json({
+                    status:true,
+                    Config:Config.itemsConfig[itemsIndex]
+                })
             }
         });
     }else{
@@ -617,7 +620,7 @@ exports.doConfig = function(req,res){
         Config.proxy = req.body.proxy;
     }
 
-    updataConfig(true,res,$itemsIndex);
+    updataConfig(true,res,$currentIndex);
 }
 
 

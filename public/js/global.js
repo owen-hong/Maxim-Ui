@@ -374,7 +374,7 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
     //TODO dialog config
     var $DialogConfig = {
         frame:true,
-        toolbar:false,
+        toolbar:true,
         position: 'center',
         height:500,
         width:640
