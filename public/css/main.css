@@ -39,7 +39,7 @@ body{
      flex-wrap: nowrap;
      display: flex;
      -webkit-box-flex: 1;
-     border-right: 1px solid #e6e6e6;
+     /* border-right: 1px solid #e6e6e6; */
      overflow: hidden;
 }
 .content aside{
@@ -80,12 +80,12 @@ body{
 .itemes-info{
     font-weight: bold;
     padding-left: 20px;
-    font-size: 16px;
     color: #354351;
     line-height: 49px;
     height: 49px;
     border-bottom: 1px solid #e6e6e6;
     -webkit-app-region: drag;
+    font-size: 0;
 }
 .itemes-info .edit-btn{
     color: #354351;
@@ -99,9 +99,10 @@ body{
 {
     vertical-align: 2px;
     border-right: 1px solid #ddd;
-    padding-right: 15px;
+    padding-right: 16px;
     margin-right: 15px;
     vertical-align: middle;
+    font-size: 16px;
 }
 
 .global-aside{

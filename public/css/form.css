@@ -15,12 +15,18 @@ fieldset{
     padding-left: 5px;
 }
 .operations-box .form-control.form-control-text{
-border: none;
-background-color: #FAFAFA;
-position: absolute;
-/* left: 119px; */
-padding-left: 0;
-cursor: default;
+
+border: none;
+
+background-color: #FAFAFA;
+
+position: absolute;
+
+/* left: 119px; */
+
+padding-left: 0;
+
+cursor: default;
 }
 
 
@@ -48,6 +54,7 @@ legend + .control-group {
     flex: 1;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+    border-left: 1px solid #e6e6e6;
 }
 .form-horizontal fieldset{
     padding-top: 15px;
@@ -147,23 +154,29 @@ legend + .control-group {
 }
 .check-inline{
     cursor: pointer;
+    display: block;
 }
 .check-block{
     display: block;
     margin-bottom: 10px;
     cursor: pointer;
     position: relative;
+    /* margin-top: 10px; */
+}
+.check-block.mt{
+    margin-top:10px;
 }
 .check-block.border{
     /* border-bottom: 1px dashed #B3B3B3; */
     /* padding-top: 10px; */
     margin-bottom: 0;
+    margin-top: 0;
 }
 .radio-box.hide{
     display: none;
 }
 
-.check-block .info-text{
+.info-text{
     font-size: 14px;
     font-weight: bold;
 }
@@ -171,10 +184,6 @@ legend + .control-group {
     float: right;
     margin-top: 1px;
 }
-
-
-
-
 .check-inline .checkbox,
 .check-block .checkbox
 {
@@ -189,6 +198,7 @@ legend + .control-group {
 .form-group .control-label{
     font-weight: bold;
     font-size: 14px;
+    margin-bottom: 29px;
 }
 
 .add-on{

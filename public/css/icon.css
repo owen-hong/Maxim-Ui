@@ -37,5 +37,12 @@
     vertical-align: -2px;
     margin-right: 5px;
 }
-
+.resizable-icon{
+    width: 8px;
+    height: 8px;
+    background-image: url("img/slice/resizable-icon.png");
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+}
 

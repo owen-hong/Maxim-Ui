@@ -229,19 +229,19 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
             }
 
             //图片更新
-            var $imgSwitch = data.imgSwitch || "youtu";
+            var $imgSwitch = data.imgSwitch || "imagemin";
             if($imgSwitch == "tinyimg"){
                 $("input[name='imgSwitch']").eq(0).prop("checked",true);
                 $("input[name='imgSwitch']").eq(1).prop("checked",false);
-                $("input[name='imgSwitch']").eq(2).prop("checked",false);
-            }else if($imgSwitch == "youtu"){
+            }
+            //else if($imgSwitch == "youtu"){
+            //    $("input[name='imgSwitch']").eq(0).prop("checked",false);
+            //    $("input[name='imgSwitch']").eq(1).prop("checked",true);
+            //    $("input[name='imgSwitch']").eq(2).prop("checked",false);
+            //}
+            else{
                 $("input[name='imgSwitch']").eq(0).prop("checked",false);
                 $("input[name='imgSwitch']").eq(1).prop("checked",true);
-                $("input[name='imgSwitch']").eq(2).prop("checked",false);
-            }else{
-                $("input[name='imgSwitch']").eq(0).prop("checked",false);
-                $("input[name='imgSwitch']").eq(1).prop("checked",false);
-                $("input[name='imgSwitch']").eq(2).prop("checked",true);
             }
 
             //样式和sprites更新
@@ -373,8 +373,8 @@ seajs.use(["Copy","uploader"],function(Copy,Uoloader) {
 
     //TODO dialog config
     var $DialogConfig = {
-        frame:true,
-        toolbar:true,
+        frame:false,
+        toolbar:false,
         position: 'center',
         height:500,
         width:640

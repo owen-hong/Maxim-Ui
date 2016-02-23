@@ -244,7 +244,6 @@ exports.doUploader = function(req,res){
                 console.log("imagemin:::::::::::::::");
                 tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
-                    console.log(result);
                     //拼接dest的路劲文件
                     destPath(result);
 
