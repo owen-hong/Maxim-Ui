@@ -118,7 +118,10 @@ body{
     border-bottom: 1px solid #2D3945;
 }
 .global-aside .project-btn{
-
+    width:30px;
+    height: 30px;
+    display: block;
+    background: url(img/slice/project-icon.png) no-repeat center center;
 }
 .global-aside .global-setting{
     width: 32px;

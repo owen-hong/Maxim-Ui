@@ -111,6 +111,7 @@ exports.doUploader = function(req,res){
         $errorFiles = unique($errorFiles);
         ftpFiles = unique(ftpFiles);
 
+
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
 
@@ -238,7 +239,10 @@ exports.doUploader = function(req,res){
                 });
             } else if ($tinyImgSwitch == "imagemin") {
                 console.log("imagemin:::::::::::::::");
+                console.log($imgFiles);
                 tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
+
+                    console.log(result);
                     //拼接dest的路劲文件
                     destPath(result);
 

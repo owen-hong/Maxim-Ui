@@ -52,10 +52,13 @@ define(function(require, exports, module) {
 
                 $errorMessage += "</div></div>";
             }
+
+            console.log(result.successFiles);
             $.unique(result.errorFiles);//去除重复错误
             if(result.successFiles.length > 0){
                 console.log("a");
                 $.each(result.successFiles, function (i, value) {
+
                     var $value = value;
 
                     if(result.osType =="Windows_NT"){
@@ -70,6 +73,9 @@ define(function(require, exports, module) {
                     if(result.errorFiles.length > 0){
 
                         $.each(result.errorFiles, function (i, errorValue) {
+                            console.log(errorValue);
+
+
                             if(result.osType =="Windows_NT"){
                                 var $errorValue = errorValue.replace(/\//g,'\\');
                             }else{
@@ -81,6 +87,9 @@ define(function(require, exports, module) {
                             }else{
                                 $DestPath += '<a data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
                             }
+
+                            //完成后删除数组
+                            result.errorFiles.splice(i,1);
                         });
                     }else{
                         $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';

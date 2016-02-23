@@ -16,11 +16,9 @@ var fse = require('fs-extra');
 var pkg = require('./updata/package.json'); // Insert your app's manifest here
 var updater = require('node-webkit-updater');
 var upd = new updater(pkg);
-var copyPath, execPath;
 
 
 // Args passed when new app is launched from temp dir during update
-console.log(gui.App.argv.length);
 if(!gui.App.argv.length) {
     // ------------- Step 1 -------------
     upd.checkNewVersion(function(error, newVersionExists, manifest) {
