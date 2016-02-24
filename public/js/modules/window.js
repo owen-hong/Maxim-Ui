@@ -56,8 +56,6 @@ define(function(require, exports, module) {
 
         });
 
-
-
         //TODO dialog config
         var $DialogConfig = {
             frame:false,
@@ -67,9 +65,20 @@ define(function(require, exports, module) {
             width:640
         }
 
+        var setAlwaysOnTop = function(win){
+            var $alwaysOnTop = $("#alwaysOnTop").hasClass("cur");
+            if($alwaysOnTop){
+                win.setAlwaysOnTop(true);
+            }else{
+                win.setAlwaysOnTop(false);
+            }
+        }
+
+
         //TODO 全局设置
         var globalSetting;
         $("#settingBtn").click(function(){
+            //setAlwaysOnTop();
             if(!globalSetting){
                 globalSetting = gui.Window.open('globalSetting',{
                     frame:$DialogConfig.frame,
@@ -80,6 +89,8 @@ define(function(require, exports, module) {
                     focus:true
                 });
 
+                setAlwaysOnTop(globalSetting);
+
                 globalSetting.on('close', function () {
                     this.hide(); // PRETEND TO BE CLOSED ALREADY
                     globalSetting = undefined;
@@ -87,7 +98,9 @@ define(function(require, exports, module) {
                 });
             }else{
                 globalSetting.focus();
+
             }
+
         });
 
         //TODO 新增项目
@@ -104,6 +117,8 @@ define(function(require, exports, module) {
                     height: $DialogConfig.height,
                     focus:true
                 });
+
+                setAlwaysOnTop(addProjectWin);
 
                 addProjectWin.on('close', function () {
                     this.hide(); // PRETEND TO BE CLOSED ALREADY
@@ -133,6 +148,8 @@ define(function(require, exports, module) {
                     height: $DialogConfig.height,
                     focus: true
                 });
+
+                setAlwaysOnTop(editProjectWin);
 
                 editProjectWin.on('close', function () {
                     this.hide(); // PRETEND TO BE CLOSED ALREADY

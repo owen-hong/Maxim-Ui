@@ -23,6 +23,9 @@ body{
     overflow: hidden;
     border-right: 1px solid #e6e6e6;*/;
 }
+body.no-border{
+    border-right: none;
+}
 .no-drag{
     -webkit-app-region: no-drag;
 }

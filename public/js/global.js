@@ -6,7 +6,9 @@
 var gui = require('nw.gui');
 var win = gui.Window.get();
 
-seajs.use(["Copy","uploader","window"],function(Copy,Uoloader,Window) {
+seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window) {
+
+
     //初始化复制功能
     Copy.init();
 
