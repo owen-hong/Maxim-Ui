@@ -229,6 +229,7 @@ main{
     box-sizing: border-box;
     border-top: 1px solid #e6e6e6;
     z-index: 9;
+    font-size: 0;
 }
 .global-operations.alert-box{
     background-color: #354351;
@@ -247,6 +248,7 @@ main{
     margin-top: 14px;
 }
 
+.global-operations .always-on-top-btn,
 .global-operations .minimize-btn,
 .global-operations .fullscreen-btn,
 .global-operations .close-btn
@@ -256,6 +258,24 @@ main{
     display: inline-block;
     -webkit-app-region: no-drag;
 }
+
+.global-operations .always-on-top-btn{
+    vertical-align: 6px;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 8px;
+}
+.global-operations .always-on-top-btn .pushpin-icon{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url("img/pushpin.svg") no-repeat 0 0;
+    transform: rotate(44deg);
+}
+.global-operations .always-on-top-btn.cur .pushpin-icon{
+    transform: rotate(0deg);
+}
+
 .global-operations .minimize-btn{
     background: url("img/minimize-hover-icon.png") no-repeat center 18px;
 }
@@ -270,7 +290,9 @@ main{
     margin-right: 15px;
 }
 
-
+.global-operations .always-on-top-btn:hover{
+    background-color: #ddd;
+}
 .global-operations .minimize-btn:hover{
     background-color: #FFBD2D;
     background-image: url(img/minimize-icon.png);

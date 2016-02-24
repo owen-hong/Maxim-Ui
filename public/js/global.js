@@ -10,9 +10,6 @@ seajs.use(["Copy","uploader","window"],function(Copy,Uoloader,Window) {
     //初始化复制功能
     Copy.init();
 
-    //初始化窗口操作
-    Window.init();
-
     //TODO初始化上传组件
     var $uoloader = Uoloader;
 
@@ -370,6 +367,10 @@ seajs.use(["Copy","uploader","window"],function(Copy,Uoloader,Window) {
     $(".multipleFile-box .text").click(function(){
         $("#multipleFile").click();
     });
+
+
+    //初始化窗口操作
+    Window.init(updateCssSprite);
 
 });
 

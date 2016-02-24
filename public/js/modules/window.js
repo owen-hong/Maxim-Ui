@@ -2,9 +2,9 @@
  * Created by owenhong on 2016/2/24.
  */
 define(function(require, exports, module) {
-    var init = function() {
+    var init = function(updateCssSprite) {
 
-        //TODO ×èÖ¹ÎÄ¼şÍÏ×§½ø´°¿Ú
+        //TODO é˜»æ­¢æ–‡ä»¶æ‹–æ‹½è¿›çª—å£
         $(window).on('dragover', function (e) {
             e.preventDefault();
             e.originalEvent.dataTransfer.dropEffect = 'none';
@@ -13,7 +13,7 @@ define(function(require, exports, module) {
             e.preventDefault();
         });
 
-        //TODO ä¯ÀÀÆ÷´ò¿ª´°¿Ú ³¬Á´½Ó
+        //TODO æµè§ˆå™¨æ‰“å¼€çª—å£ è¶…é“¾æ¥
         $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
             var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
             var $url = $(this).data("href");
@@ -30,7 +30,7 @@ define(function(require, exports, module) {
         });
 
 
-        //TODO È«¾Ö¿ØÖÆ´°¿Ú¿ª¹Ø
+        //TODO å…¨å±€æ§åˆ¶çª—å£å¼€å…³
         $("#closeSortware").click(function(){
             win.close();
         });
@@ -42,6 +42,22 @@ define(function(require, exports, module) {
             win.minimize();
         });
 
+        $("#alwaysOnTop").click(function(){
+            var $this = $(this);
+            if($this.hasClass("cur")){
+                $this.attr("title","çª—å£ç½®é¡¶");
+                $this.removeClass("cur");
+                win.setAlwaysOnTop(false);
+            }else{
+                $this.attr("title","å–æ¶ˆçª—å£ç½®é¡¶");
+                $this.addClass("cur");
+                win.setAlwaysOnTop(true);
+            }
+
+        });
+
+
+
         //TODO dialog config
         var $DialogConfig = {
             frame:false,
@@ -51,7 +67,7 @@ define(function(require, exports, module) {
             width:640
         }
 
-        //TODO È«¾ÖÉèÖÃ
+        //TODO å…¨å±€è®¾ç½®
         var globalSetting;
         $("#settingBtn").click(function(){
             if(!globalSetting){
@@ -67,14 +83,14 @@ define(function(require, exports, module) {
                 globalSetting.on('close', function () {
                     this.hide(); // PRETEND TO BE CLOSED ALREADY
                     globalSetting = undefined;
-                    this.close(true);//·ÀÖ¹½ø³ÌÃ»±»É±ËÀ
+                    this.close(true);//é˜²æ­¢è¿›ç¨‹æ²¡è¢«æ€æ­»
                 });
             }else{
                 globalSetting.focus();
             }
         });
 
-        //TODO ĞÂÔöÏîÄ¿
+        //TODO æ–°å¢é¡¹ç›®
         var addProjectWin;
         var addProjectWinFun = function(){
             if(!addProjectWin){
@@ -104,7 +120,7 @@ define(function(require, exports, module) {
         });
 
 
-        //TODO ±à¼­ÏîÄ¿
+        //TODO ç¼–è¾‘é¡¹ç›®
         var editProjectWin;
         var editProjectWinFun = function(){
             if(!editProjectWin) {
@@ -137,24 +153,24 @@ define(function(require, exports, module) {
         });
 
 
-        //É¾³ıÏîÄ¿
+        //åˆ é™¤é¡¹ç›®
         $("#deletProject").click(function(e){
             e.preventDefault();
 
             var $currentItems = $("input[name='currentIndex']").val();
 
-            var r = confirm("ÊÇ·ñÈ·ÈÏÉ¾³ı¸ÃÏîÄ¿£¡")
+            var r = confirm("æ˜¯å¦ç¡®è®¤åˆ é™¤è¯¥é¡¹ç›®ï¼")
             if(r==true){
                 $.get("/deleteProject?itemsIndex=" + $currentItems).done(function(data){
-                    alert('É¾³ı³É¹¦£¡');
+                    alert('åˆ é™¤æˆåŠŸï¼');
                     win.close();
                 }).fail(function(data){
-                    alert("É¾³ıÊ§°Ü£¡")
+                    alert("åˆ é™¤å¤±è´¥ï¼")
                 });
             }
         });
 
-        //TODO È¡Ïû°´Å¥µ±Ç°´°¿Ú
+        //TODO å–æ¶ˆæŒ‰é’®å½“å‰çª—å£
         $("#cancelWin").click(function(e){
             e.preventDefault();
             win.close();
