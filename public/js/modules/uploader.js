@@ -55,9 +55,7 @@ define(function(require, exports, module) {
 
             $.unique(result.errorFiles);//去除重复错误
             if(result.successFiles.length > 0){
-                console.log("a");
                 $.each(result.successFiles, function (i, value) {
-
                     var $value = value;
 
                     if(result.osType =="Windows_NT"){
@@ -70,30 +68,25 @@ define(function(require, exports, module) {
                     $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
 
                     if(result.errorFiles.length > 0){
-
                         $.each(result.errorFiles, function (i, errorValue) {
-                            console.log(errorValue);
 
+                            if(errorValue !== undefined){
+                                if(result.osType =="Windows_NT"){
+                                    var $errorValue = errorValue.replace(/\//g,'\\');
+                                }else{
+                                    var $errorValue = errorValue;
+                                }
 
-                            if(result.osType =="Windows_NT"){
-                                var $errorValue = errorValue.replace(/\//g,'\\');
-                            }else{
-                                var $errorValue = errorValue;
-                            }
-
-                            if($value == $errorValue){
                                 $DestPath += '<a class="red" data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
-                            }else{
-                                $DestPath += '<a data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
-                            }
 
-                            //完成后删除数组
-                            result.errorFiles.splice(i,1);
+                                //完成后删除数组
+                                result.errorFiles.splice(i,1);
+                            }
                         });
-                    }else{
-                        $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                     }
 
+                    //处理成功文件
+                    $DestPath += '<a data-href="' + $UserDest + value + '">' + $UserDest + value + '</a>';
                 });
             }else{
                 $.each(result.errorFiles, function (i, errorValue) {

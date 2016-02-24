@@ -44,5 +44,6 @@
     position: absolute;
     bottom: 2px;
     right: 2px;
+    z-index: 9;
 }
 

@@ -114,7 +114,6 @@ exports.doUploader = function(req,res){
         $errorFiles = unique($errorFiles);
         ftpFiles = unique(ftpFiles);
 
-
         var osType = os.type();
         if ($ftpSwitch == "true" && ftpFiles.length > 0) {
 
@@ -357,7 +356,14 @@ exports.doUploader = function(req,res){
                     }else if(resultFiles.status){
                         $copyFile.push($DestFile);
                     }else if(resultFiles.status===false){
-                        $errorFiles.push($DestFile);
+                        //判断操作系统，linux无需替换路径“/”
+                        if(os.type() == "Windows_NT"){
+                            var $localPath = resultFiles.fName.replace(/\//g,'\\');
+                        }else{
+                            var $localPath = resultFiles.fName;
+                        }
+
+                        $errorFiles.push($localPath);
                     }
                 });
 

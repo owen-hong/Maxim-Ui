@@ -20,7 +20,8 @@ body{
     display: -webkit-box;
     height: 100%;
     -webkit-box-orient: vertical;
-     overflow: hidden;
+    overflow: hidden;
+    border-right: 1px solid #e6e6e6;*/;
 }
 .no-drag{
     -webkit-app-region: no-drag;
