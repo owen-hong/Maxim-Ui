@@ -30,6 +30,7 @@ input,
 button,
 textarea,
 select {
+    -webkit-user-select: none;
     font-size: 14px;
     font-family:  'helvetica neue', 'hiragino sans gb', 'tahoma', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif';
 }
