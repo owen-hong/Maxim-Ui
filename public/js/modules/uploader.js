@@ -38,7 +38,6 @@ define(function(require, exports, module) {
             var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
             var $errorMessage="";
 
-            console.log(result.successFiles);
             if (result.errorMessage.length > 0) {
                 $errorMessage += "<div class='logs-box'><div class='logs-text-box'><p><em style='color:red'>Error log: </em></p>";
 
@@ -70,10 +69,6 @@ define(function(require, exports, module) {
                     $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
             }
-
-
-            console.log(result.errorFiles);
-            console.log(result.successFiles);
 
             if(result.errorFiles.length > 0){
                 $.each(result.errorFiles, function (i, errorValue) {

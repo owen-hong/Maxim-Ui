@@ -6,13 +6,6 @@
 @import url("btn.css");
 @import url("switch.css");
 
-a{
-    -webkit-app-region: no-drag !important;
-    outline: none;
-}
-a.red{
-    color:red !important;
-}
 html{
     height: 100%;
 }
@@ -21,10 +14,13 @@ body{
     height: 100%;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    border-right: 1px solid #e6e6e6;*/;
+    border-right: 1px solid #e6e6e6;
 }
 body.no-border{
     border-right: none;
+}
+a.red{
+    color:red !important;
 }
 .no-drag{
     -webkit-app-region: no-drag;
@@ -337,6 +333,7 @@ main .shortcut-operations a{
     word-wrap: break-word;
     position: relative;
     -webkit-app-region: no-drag;
+    -webkit-user-select:text;
 }
 .drop-files-box .drop-tips{
     font-size: 18px;

@@ -84,10 +84,6 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
         $("#drag-and-drop-zone").html("");
     });
 
-    //TODO 路径配置
-    $(".panel-heading").click(function () {
-        $(this).siblings(".panel-collapse").toggleClass("in");
-    });
 
     //TODO 配置信息异步提交
     $(".form-horizontal").submit(function () {
@@ -117,7 +113,7 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
         var formdata = new FormData(this);
         $.ajax({
             type: 'post',
-            url: 'http://localhost:3030/tools/doConfig',
+            url: '/tools/doConfig',
             data: formdata,
             contentType: false,
             processData: false
