@@ -38,6 +38,7 @@ define(function(require, exports, module) {
             var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
             var $errorMessage="";
 
+            console.log(result.successFiles);
             if (result.errorMessage.length > 0) {
                 $errorMessage += "<div class='logs-box'><div class='logs-text-box'><p><em style='color:red'>Error log: </em></p>";
 
@@ -57,7 +58,6 @@ define(function(require, exports, module) {
             if(result.successFiles.length > 0){
                 $.each(result.successFiles, function (i, value) {
                     var $value = value;
-
                     if(result.osType =="Windows_NT"){
                         $value = value.replace(/\//g,'\\');
                     }
@@ -67,37 +67,24 @@ define(function(require, exports, module) {
                     $releasePath += '<p>'+$releaseUrl + value + '</p>';
                     $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
 
-                    if(result.errorFiles.length > 0){
-                        $.each(result.errorFiles, function (i, errorValue) {
-
-                            if(errorValue !== undefined){
-                                if(result.osType =="Windows_NT"){
-                                    var $errorValue = errorValue.replace(/\//g,'\\');
-                                }else{
-                                    var $errorValue = errorValue;
-                                }
-
-                                $DestPath += '<a class="red" data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
-
-                                //完成后删除数组
-                                result.errorFiles.splice(i,1);
-                            }
-                        });
-                    }
-
-                    //处理成功文件
-                    $DestPath += '<a data-href="' + $UserDest + value + '">' + $UserDest + value + '</a>';
+                    $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
-            }else{
+            }
+
+
+            console.log(result.errorFiles);
+            console.log(result.successFiles);
+
+            if(result.errorFiles.length > 0){
                 $.each(result.errorFiles, function (i, errorValue) {
+                    var $errorValue = errorValue;
                     if(result.osType =="Windows_NT"){
-                        var $errorValue = errorValue.replace(/\//g,'\\');
-                    }else{
-                        var $errorValue = errorValue;
+                        $errorValue = errorValue.replace(/\//g,'\\');
                     }
 
                     $releasePath += '<p class="red">' + $releaseUrl + errorValue + '</p>';
                     $testPath += '<p class="red">' + $testUrl + errorValue + '</p>';
+
                     $DestPath += '<a class="red" data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
                 });
             }

@@ -30,7 +30,7 @@
         <% include aside.html %>
         <main>
             <div class="itemes-info">
-                <span class="text"><% if(configItemes.length > 0){ %><%= configItemes[0].itemsName %><% } %></span>
+                <span class="text"><%= configItemes[0] ? configItemes[0].itemsName : "请新建项目" %></span>
                 <a href="javascript:void(0);" class="edit-btn" title="设置当前项目">设置</a>
             </div>
 

@@ -90,11 +90,10 @@ exports.doUploader = function(req,res){
     var $currentConfig = Config.itemsConfig[$itemsIndex];
 
     var $ftpSwitch = req.body.ftpSwitch;
-    var $tinyImgSwitch = req.body.tinyImgSwitch || "youtu";
+    var $tinyImgSwitch = req.body.tinyImgSwitch || "imagemin";
 
     var $pxToRemSwitch = req.body.pxToRemSwitch;
 
-    var $ftpFiles =[];
     var $errorFiles = [];
     var $errorMessage = [];
     var $successFiles = [];
@@ -108,16 +107,30 @@ exports.doUploader = function(req,res){
      * TODO 上传文件 ftpUploader
      *
      * */
-    var ftpUploader = function(ftpFiles,res){
+    var ftpUploader = function(res){
         //去除重复
         $successFiles = unique($successFiles);
         $errorFiles = unique($errorFiles);
-        ftpFiles = unique(ftpFiles);
+
+        //过滤成功返回结果与失败返回结果中相同部分
+        var $newSuccessFiles = [];
+        $successFiles.forEach(function(sucValue){
+            console.log(sucValue);
+            if($errorFiles.indexOf(sucValue) == -1){
+                $newSuccessFiles.push(sucValue);
+            }
+        });
+        $successFiles = $newSuccessFiles;
 
         var osType = os.type();
-        if ($ftpSwitch == "true" && ftpFiles.length > 0) {
+        if ($ftpSwitch == "true" && $successFiles.length > 0) {
 
-            tools.ftpUtil(ftpFiles, $currentConfig, function (result) {
+            var $sucFtpFiles = [];
+            $successFiles.forEach(function(sucPaths){
+                $sucFtpFiles.push($currentConfig.destPath + sucPaths);
+            });
+
+            tools.ftpUtil($sucFtpFiles, $currentConfig, function (result) {
                 var $ftpFiles = result.files;
 
                 if(result.success===true){
@@ -128,6 +141,10 @@ exports.doUploader = function(req,res){
                             $errorFiles.push(ftpData.fName);
                         }
                     });
+
+                    //去除重复
+                    $successFiles = unique($successFiles);
+                    $errorFiles = unique($errorFiles);
 
                     res.json({
                         ftpSuccess:true,
@@ -159,7 +176,6 @@ exports.doUploader = function(req,res){
                 }
             });
         }else{
-            console.log("111111111111111");
             res.json({
                 ftpSuccess:true,
                 status: true,
@@ -192,12 +208,13 @@ exports.doUploader = function(req,res){
                 var $localPath = result.fName;
             }
 
-            if($ftpSwitch == "false" && result.status){//关闭ftp后直接输出成功压缩后的文件数组
-                $successFiles.push($localPath);
-            }else if($ftpSwitch == "true" && result.status){
-                $ftpFiles.push($currentConfig.destPath + $localPath);
+            if(result.status){//关闭ftp后直接输出成功压缩后的文件数组
+                $successFiles.push(result.fName);
+            //}
+            //else if($ftpSwitch == "true" && result.status){
+            //    $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
-                $errorFiles.push($localPath);
+                $errorFiles.push(result.fName);
                 if(result.message !== undefined){
                     $errorMessage.push(result.message);
                 }else{
@@ -219,37 +236,43 @@ exports.doUploader = function(req,res){
         $imgFiles = unique($imgFiles);
 
         if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true") {
-            if ($tinyImgSwitch == "tinyimg") {
-                console.log("tiny img::::::::::::");
-                tools.tinyImg($imgFiles, $currentConfig, Config, function (result) {
 
-                    //拼接dest的路劲文件
-                    destPath(result);
+            switch($tinyImgSwitch)
+            {
+                case "tinyimg":
+                    console.log("tiny img::::::::::::");
+                    tools.tinyImg($imgFiles, $currentConfig, Config, function (result) {
+                        console.log(result);
+                        //拼接dest的路劲文件
+                        destPath(result);
 
-                    //px2rem处理
-                    Px2rem();
-                });
-            } else if ($tinyImgSwitch == "youtu") {
-                console.log("youtu:::::::::::::::");
-                tools.youtu($imgFiles, $currentConfig, Config, function (result) {
+                        //px2rem处理
+                        Px2rem();
+                    });
+                    break;
+                case "youtu":
+                    console.log("youtu:::::::::::::::");
+                    tools.youtu($imgFiles, $currentConfig, Config, function (result) {
 
-                    //拼接dest的路劲文件
-                    destPath(result);
+                        //拼接dest的路劲文件
+                        destPath(result);
 
-                    //px2rem处理
-                    Px2rem();
-                });
-            } else if ($tinyImgSwitch == "imagemin") {
-                console.log("imagemin:::::::::::::::");
-                tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
+                        //px2rem处理
+                        Px2rem();
+                    });
+                    break;
+                default:
+                    console.log("imagemin:::::::::::::::");
+                    tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
-                    //拼接dest的路劲文件
-                    destPath(result);
+                        //拼接dest的路劲文件
+                        destPath(result);
 
-                    //px2rem处理
-                    Px2rem();
-                });
+                        //px2rem处理
+                        Px2rem();
+                    });
             }
+
         }else{
             console.log("no image min:::::::::::::::");
             tools.copyFiles($imgFiles,$currentConfig,function(result){
@@ -304,11 +327,11 @@ exports.doUploader = function(req,res){
 
 
                 //ftp 上传文件
-                ftpUploader($ftpFiles, res);
+                ftpUploader(res);
             });
         }else{
             //ftp 上传文件
-            ftpUploader($ftpFiles, res);
+            ftpUploader(res);
         }
     }
 
