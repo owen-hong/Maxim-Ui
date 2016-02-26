@@ -31,35 +31,28 @@
                 <span class="switch-helper">开启</span>
             </label>
         </div>
-        <% if(configItemes.length > 0 && configItemes[0].imgMasterSwitch =="true"){ %>
-        <div class="radio-box" id="imgRadioBox">
-        <% }else{ %>
-        <div class="radio-box hide" id="imgRadioBox">
-        <% } %>
-
-        <% if(configItemes.length > 0 && configItemes[0].imgSwitch =="tinyimg"){ %>
-        <label class="radio-inline">
-            <input type="radio" name="imgSwitch" checked class="radio" value="tinyimg">tinyimg
-        </label>
-        <label class="radio-inline">
-            <input type="radio" name="imgSwitch" class="radio" value="imagemin">本地
-        </label>
-        <% } else { %>
-        <label class="radio-inline">
-            <input type="radio" name="imgSwitch" class="radio" value="tinyimg">tinyimg
-        </label>
-        <label class="radio-inline">
-            <input type="radio" name="imgSwitch" checked class="radio" value="imagemin">本地
-        </label>
-        <% } %>
-        </div>
     </div>
+    <hr/>
+
+    <!-- 资源同步 -->
+    <div class="check-block border" title="将样式中引用的资源,例如:Font,Svg,Jpg,Git,Png等除雪碧图以外，只要是被样式引用到的资源都会同步到服务器，并生成对应的提单路径">
+        <label class="info-text">样式引用资源同步</label>
+        <label class="switch" title="样式引用资源同步">
+            <% if(configItemes.length > 0 && configItemes[0].resourceSyncSwitch =="true"){ %>
+            <input type="checkbox" name="resourceSyncSwitch" checked class="switch-input">
+            <% } else {%>
+            <input type="checkbox" name="resourceSyncSwitch" class="switch-input">
+            <% } %>
+            <span class="switch-helper">开启</span>
+        </label>
+    </div>
+
     <hr/>
 
     <!--  样式处理 -->
     <div class="form-group">
         <label class="info-text">文件重命名</label>
-        <div class="check-block border">
+        <div class="check-block" style="margin-top:5px;">
             <label class="check-inline">
                 时间戳：<input style="width:84px;" id="updataTimeVal" type="text" class="form-control" placeholder="" value="<%= configItemes[0] ? configItemes[0].spriteName : '' %>">
                 <a href="javascript:void(0)" id="updataTimeBtn" class="updata-btn"></a>
@@ -90,33 +83,19 @@
 
             <% /* if(configItemes.length > 0 && configItemes[0].imgSyncSwitch =="true"){ */%>
             <!--<label class="check-block">-->
-                <!--<input type="checkbox" class="checkbox" checked name="imgSyncSwitch" checked>图片规则:原名- -->
-                <!--<input type="text" disabled name="imgSyncName" class="form-control form-control-text" placeholder="" value="<%/*= configItemes[0].imgSyncName */%>">-->
+            <!--<input type="checkbox" class="checkbox" checked name="imgSyncSwitch" checked>图片规则:原名- -->
+            <!--<input type="text" disabled name="imgSyncName" class="form-control form-control-text" placeholder="" value="<%/*= configItemes[0].imgSyncName */%>">-->
             <!--</label>-->
             <% /* } else { */%>
             <!--<label class="check-block">-->
-                <!--<input type="checkbox" class="checkbox" name="imgSyncSwitch">图片规则:原名- -->
-                <!--<input type="text" disabled name="imgSyncName" class="form-control form-control-text" placeholder="" value="<%/*= configItemes[0].imgSyncName */%>">-->
+            <!--<input type="checkbox" class="checkbox" name="imgSyncSwitch">图片规则:原名- -->
+            <!--<input type="text" disabled name="imgSyncName" class="form-control form-control-text" placeholder="" value="<%/*= configItemes[0].imgSyncName */%>">-->
             <!--</label>-->
             <% /* } */%>
         </div>
     </div>
     <hr/>
 
-    <!-- 资源同步 -->
-    <div class="check-block border" title="将样式中引用的资源,例如:Font,Svg,Jpg,Git,Png等除雪碧图以外，只要是被样式引用到的资源都会同步到服务器，并生成对应的提单路径">
-        <label class="info-text">样式引用资源同步</label>
-        <label class="switch" title="样式引用资源同步">
-            <% if(configItemes.length > 0 && configItemes[0].resourceSyncSwitch =="true"){ %>
-            <input type="checkbox" name="resourceSyncSwitch" checked class="switch-input">
-            <% } else {%>
-            <input type="checkbox" name="resourceSyncSwitch" class="switch-input">
-            <% } %>
-            <span class="switch-helper">开启</span>
-        </label>
-    </div>
-
-    <hr/>
     <!-- px转rem -->
     <div class="form-group">
         <% if(configItemes.length > 0 && configItemes[0].pxToRemSwitch =="false"){ %>
@@ -127,7 +106,7 @@
                 <span class="switch-helper">开启</span>
             </label>
         </div>
-        <label class="check-inline">
+        <label class="check-inline" style="margin-top:10px;">
             html font size：<input disabled type="text" style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0] ? configItemes[0].rootValue : '75' %>">
         </label>
         <label class="check-inline">

@@ -357,9 +357,9 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
     });
 
     //图压缩开关
-    $("input[name='imgMasterSwitch']").on("change",function(){
-        $("#imgRadioBox").slideToggle();
-    });
+    //$("input[name='imgMasterSwitch']").on("change",function(){
+    //    $("#imgRadioBox").slideToggle();
+    //});
 
     //触发选择文件开关
     $(".multipleFile-box .text").click(function(){

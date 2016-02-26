@@ -90,7 +90,7 @@ exports.doUploader = function(req,res){
     var $currentConfig = Config.itemsConfig[$itemsIndex];
 
     var $ftpSwitch = req.body.ftpSwitch;
-    var $tinyImgSwitch = req.body.tinyImgSwitch || "imagemin";
+    var $tinyImgSwitch = "imagemin"; //req.body.tinyImgSwitch || "imagemin";
 
     var $pxToRemSwitch = req.body.pxToRemSwitch;
 
