@@ -24,7 +24,6 @@ exports.handle = function (app) {
 
     app.get('/validateFtp', Home.validateFtp);
     app.post('/tools/doConfig', Home.doConfig);
-
 }
 
 

@@ -7,8 +7,6 @@ var gui = require('nw.gui');
 var win = gui.Window.get();
 
 seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window) {
-
-
     //初始化复制功能
     Copy.init();
 
@@ -280,6 +278,12 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
         $(".drop-tips").show();
         //更新界面
         updateCssSprite(false);
+    });
+
+
+    //TODO 切换大类工具
+    $("body").on("click",".global-aside ul a",function(){
+        $(this).addClass("current").parent("li").siblings("li").find("a").removeClass("current");
     });
 
 

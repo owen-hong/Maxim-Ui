@@ -1,0 +1,41 @@
+body {
+    margin: 0 0.3rem 0.2rem 0.1rem
+}
+/*中文看看*/
+header {
+    font-size: 0.28rem;
+    line-height: 28em
+}
+
+.box {
+    padding: 0.2rem 0
+}
+
+footer {
+    border: 1px solid #ccc;
+    padding-top: 0.1798rem
+}
+
+@media screen and (max-width: 300px) {
+    body {
+        margin: 1rem 2rem 0 0.1rem
+    }
+}
+
+@-webkit-keyframes InUp {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0)
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 50%, 0);
+        transform: translate3d(0, 50%, 0)
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none
+    }
+}

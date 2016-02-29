@@ -24,59 +24,104 @@ if(!gui.App.argv.length) {
     upd.checkNewVersion(function(error, newVersionExists, manifest) {
         if(error){
             //window.location = 'http://localhost:3030';
+
         }
-        console.log(newVersionExists);
-        console.log(manifest);
+        //是否需要更新
+        if(newVersionExists){
+            var $version  = document.querySelector("#updataText .version");
+            var $modalDialog  = document.querySelector(".modal-dialog");
+            var $cancel  = document.querySelector(".btn-default");
+            var $ok  = document.querySelector(".btn-primary");
+            var $progress  = document.querySelector(".progress");
+            var $progressBar  = document.querySelector(".progress .progress-bar");
 
-        if (!error && newVersionExists) {
+            //暂不更新
+            $cancel.onclick = function(){
+                console.log("取消");
+                window.location = 'http://localhost:3030';
+            }
 
-            console.log("updata...")
-            // ------------- Step 2 -------------
-            upd.download(function(error, filename) {
-                console.log("download...")
-                console.log(error);
-                console.log(filename);
 
-                if (!error) {
-                    // ------------- Step 3 -------------
-                    upd.unpack(filename, function(error, newAppPath) {
-                        console.log("unpack...");
-                        console.log(newAppPath);
-                        console.log(error);
+            $modalDialog.style.display = 'block';
 
-                        //解压完后删除更新包
-                        fse.remove(filename, function(err){
-                            if (err) return console.error(err);
+            document.querySelector("#updataText .version").innerHTML = manifest.version;
 
-                            console.log("zip delet success!")
-                        });
+            $ok.onclick = function(){
+                $progress.style.display = 'block';
+
+                if (!error){
+                    console.log("updata...")
+                    // ------------- Step 2 -------------
+                    upd.download(function(error, filename) {
+                        console.log("download...")
+
+                        //TODO 更新进度条
+                        $progressBar.style.width = "30%";
 
                         if (!error) {
-                            console.log("runInstaller...");
-                            var $dirPath = path.dirname(newAppPath);
-                            var $getAppPath = process.cwd(); //upd.getAppPath()由于此接口在osx10.10.5下面返回路径不对，所以暂时弃用
+                            // ------------- Step 3 -------------
+                            upd.unpack(filename, function(error, newAppPath) {
+                                console.log("unpack...");
+                                console.log(newAppPath);
+                                console.log(error);
 
-                            console.log($dirPath,$getAppPath);
+                                //TODO 更新进度条
+                                $progressBar.style.width = "60%";
 
-                            //拷贝文件
-                            fse.copy($dirPath, $getAppPath, function (err) {
-                                if (err) return console.error(err);
+                                //解压完后删除更新包
+                                fse.remove(filename, function(err){
+                                    if (err) return console.error(err);
 
-                                //更新成功文件后删除临时目
-                                fse.remove($dirPath, function (err) {
-                                    if (err){
-                                        gui.App.quit();
-                                    }
-                                    console.log("updata success!")
-                                    //gui.App.quit();
+                                    //TODO 更新进度条
+                                    $progressBar.style.width = "70%";
                                 });
-                            });
+
+                                if (!error) {
+                                    console.log("runInstaller...");
+                                    var $dirPath = path.dirname(newAppPath);
+                                    var $getAppPath = process.cwd(); //upd.getAppPath()由于此接口在osx10.10.5下面返回路径不对，所以暂时弃用
+
+
+                                    $progressBar.style.width = "80%";
+
+                                    //拷贝文件
+                                    fse.copy($dirPath, $getAppPath, function (err) {
+                                        if (err) return console.error(err);
+
+                                        //TODO 更新进度条
+                                        $progressBar.style.width = "90%";
+
+
+                                        //更新成功文件后删除临时目
+                                        fse.remove($dirPath, function (err) {
+                                            if (err){
+                                                alert('更新失败，请稍后重试!');
+                                                gui.App.quit();
+                                            }
+
+                                            //TODO 更新进度条
+                                            $progressBar.style.width = "100%";
+
+                                            alert('更新成功,请重启软件!')
+                                            //gui.App.quit();
+                                        });
+                                    });
+                                }else{
+                                    alert('更新失败，请稍后重试!');
+                                    gui.App.quit();
+                                }
+                            }, manifest);
                         }
                     }, manifest);
+
+                }else{
+                    alert("更新失败,请下次重启软件是再更新!");
                 }
-            }, manifest);
+            }
         }else{
-            console.log("no need updata!")
+            setTimeout(function(){
+                window.location = 'http://localhost:3030';
+            },2000);
         }
     });
 }

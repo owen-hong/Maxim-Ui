@@ -1,0 +1,14 @@
+{
+  "name": "Maxim-updata",
+  "version": "0.0.1",
+  "author": "owen hong <520ued.com@gmail.com>",
+  "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
+  "packages": {
+    "mac": {
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp.zip"
+    },
+    "win": {
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp.zip"
+    }
+  }
+}

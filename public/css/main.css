@@ -5,6 +5,8 @@
 @import url("radio.css");
 @import url("btn.css");
 @import url("switch.css");
+@import url("dialog.css");
+@import url("propress-bar.css");
 
 html{
     height: 100%;
@@ -119,13 +121,24 @@ a.red{
     box-sizing: border-box;
     border-bottom: 1px solid #2D3945;
 }
-.global-aside .project-btn{
+.global-aside .project-btn,
+.global-aside .about-btn{
     width: 32px;
     height: 32px;
     display: block;
     background: url(img/slice/project-icon.png) no-repeat center center;
     margin: 15px auto;
 }
+.global-aside .project-btn.current{
+    background: url(img/slice/project-icon-cur.png) no-repeat center center;
+}
+.global-aside .about-btn{
+    background: url(img/slice/about-me-icon.png) no-repeat center center;
+}
+.global-aside .about-btn.current{
+    background: url(img/slice/about-me-icon-cur.png) no-repeat center center;
+}
+
 .global-aside .global-setting{
     width: 32px;
     height: 32px;
@@ -500,7 +513,17 @@ main .shortcut-operations a{
     height: 100%;
     width: 100%;
     z-index: 99;
+    -webkit-app-region: drag;
 }
+#loadding-box .text {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    margin-top: -20px;
+    margin-left: -42px;
+    color: #fff;
+}
+
 
 #loadding-box .loading-box {
     height: 100%;
@@ -512,8 +535,8 @@ main .shortcut-operations a{
 
 #loadding-box .loading-icon {
     position: absolute;
-    margin-left: -20px;
-    margin-top: -20px;
+    margin-left: -40px;
+    margin-top: -40px;
     top: 50%;
     left: 50%;
 }
