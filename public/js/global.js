@@ -226,11 +226,12 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
             }
             $("input[name='cssName']").val(data.cssName);
 
-            var $imgSyncSwitch = data.imgSyncSwitch || "false";
-            if ($cssNameSwitch == "true") {
-                $("input[name='imgSyncSwitch']").prop("checked",true);
+            var $imgMasterSwitch = data.imgMasterSwitch || "false";
+            console.log($imgMasterSwitch);
+            if ($imgMasterSwitch == "true") {
+                $("input[name='imgMasterSwitch']").prop("checked",true);
             } else {
-                $("input[name='imgSyncSwitch']").prop("checked",false);
+                $("input[name='imgMasterSwitch']").prop("checked",false);
             }
             $("input[name='imgSyncName']").val(data.spriteName);
             $("#updataTimeVal").val(data.spriteName);
