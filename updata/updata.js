@@ -23,9 +23,9 @@ if(!gui.App.argv.length) {
     // ------------- Step 1 -------------
     upd.checkNewVersion(function(error, newVersionExists, manifest) {
         if(error){
-            //window.location = 'http://localhost:3030';
-
+            window.location = 'http://localhost:3030';
         }
+        console.log(manifest)
         //是否需要更新
         if(newVersionExists){
             var $version  = document.querySelector("#updataText .version");
@@ -37,7 +37,6 @@ if(!gui.App.argv.length) {
 
             //暂不更新
             $cancel.onclick = function(){
-                console.log("取消");
                 window.location = 'http://localhost:3030';
             }
 
@@ -46,14 +45,15 @@ if(!gui.App.argv.length) {
 
             document.querySelector("#updataText .version").innerHTML = manifest.version;
 
+            //立即更新
             $ok.onclick = function(){
                 $progress.style.display = 'block';
 
                 if (!error){
-                    console.log("updata...")
+                    //console.log("updata...")
                     // ------------- Step 2 -------------
                     upd.download(function(error, filename) {
-                        console.log("download...")
+                        //console.log("download...")
 
                         //TODO 更新进度条
                         $progressBar.style.width = "30%";
@@ -61,9 +61,13 @@ if(!gui.App.argv.length) {
                         if (!error) {
                             // ------------- Step 3 -------------
                             upd.unpack(filename, function(error, newAppPath) {
-                                console.log("unpack...");
-                                console.log(newAppPath);
-                                console.log(error);
+                                //console.log("unpack...");
+                                //console.log(newAppPath);
+                                //console.log(error);
+                                if(error){
+                                    alert("更新失败,请下次重启软件时再更新!");
+                                    window.location = 'http://localhost:3030';
+                                }
 
                                 //TODO 更新进度条
                                 $progressBar.style.width = "60%";
@@ -77,7 +81,7 @@ if(!gui.App.argv.length) {
                                 });
 
                                 if (!error) {
-                                    console.log("runInstaller...");
+                                    //console.log("runInstaller...");
                                     var $dirPath = path.dirname(newAppPath);
                                     var $getAppPath = process.cwd(); //upd.getAppPath()由于此接口在osx10.10.5下面返回路径不对，所以暂时弃用
 
@@ -101,14 +105,15 @@ if(!gui.App.argv.length) {
 
                                             //TODO 更新进度条
                                             $progressBar.style.width = "100%";
-
-                                            alert('更新成功,请重启软件!')
-                                            //gui.App.quit();
+                                            setTimeout(function() {
+                                                alert('更新成功,请重启软件!');
+                                                gui.App.quit();
+                                            },800);
                                         });
                                     });
                                 }else{
-                                    alert('更新失败，请稍后重试!');
-                                    gui.App.quit();
+                                    alert('更新失败，请下次重启软件时再更新!');
+                                    window.location = 'http://localhost:3030';
                                 }
                             }, manifest);
                         }
@@ -116,6 +121,7 @@ if(!gui.App.argv.length) {
 
                 }else{
                     alert("更新失败,请下次重启软件是再更新!");
+                    window.location = 'http://localhost:3030';
                 }
             }
         }else{
