@@ -48,7 +48,6 @@ a.red{
     width: 185px;
     font-size: 14px;
     background-color: #354351;
-    /* border-bottom: 1px solid #2D3945; */
     position: relative;
     z-index: 9;
 }
@@ -86,7 +85,7 @@ a.red{
     line-height: 49px;
     height: 49px;
     border-bottom: 1px solid #e6e6e6;
-    -webkit-app-region: drag;
+    -webkit-app-region: drag !important;
     font-size: 0;
 }
 .itemes-info .edit-btn{
@@ -168,7 +167,7 @@ aside .add-project-box .add-project-btn{
     background-color: #2487C8;
     padding: 5px 0px;
     text-decoration: inherit;
-    width: 105px;
+    width: 141px;
     border-radius: 30px;
     margin-left: auto;
     margin-right: auto;
@@ -226,8 +225,7 @@ main{
     position: relative;
     border-top: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
-    /* display: -webkit-flex; */
-    /* display:flex; */
+    -webkit-app-region: drag;
 }
 
 
@@ -591,16 +589,11 @@ main .shortcut-operations a{
 }
 
 .multipleFile-box{
-
-cursor: pointer;
-
-color: #1B87C9;
-
-font-weight: bold;
-
-display: inline-block;
-
-position: relative;
+    cursor: pointer;
+    color: #1B87C9;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
 }
 .multipleFile-box .multipleFile {
     position: absolute;
@@ -612,13 +605,74 @@ position: relative;
     z-index: -1;
 }
 
+.about-wrap{
+    -webkit-box-flex: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+    -webkit-app-region: drag;
+    background-color: #F9F9F9;
+    left: 50px;
+}
+.about-info-box{
+    width: 591px;
+    height: 350px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding-top: 50px;
+    padding-left: 50px;
+    box-sizing: border-box;
+    padding-right: 50px;
+    position: relative;
+    margin-left: -295.5px;
+    margin-top: -175px;
+    left: 50%;
+    top: 50%;
+}
+.about-wrap .global-operations{
+    right:50px;
+}
 
+.about-wrap .about-info-box .logo-about{
+    width: 220px;
+    height: 65px;
+    background-image: url(img/slice/help-logo.png);
+    display: inline-block;
+    vertical-align: -28px;
+    margin-bottom: 17px;
+}
 
-
-
-
-
-
+.about-wrap .about-info-box .version-text{
+    color: #838383;
+    margin-left: 10px;
+}
+.about-wrap .about-info-box dl{
+    display: table;
+    width: 100%;
+    margin-top: 6px;
+}
+.about-wrap .about-info-box dt,
+.about-wrap .about-info-box dd
+{
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 24px;
+    color: #4B6175;
+}
+.about-wrap .about-info-box dt{
+    width: 75px;
+    vertical-align: top;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 25px;
+}
+.about-wrap .about-info-box dd{
+    padding-right: 10px;
+}
 
 
 

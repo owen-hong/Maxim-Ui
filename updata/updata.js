@@ -25,7 +25,7 @@ if(!gui.App.argv.length) {
         if(error){
             window.location = 'http://localhost:3030';
         }
-        console.log(manifest)
+        console.log(manifest);
         //是否需要更新
         if(newVersionExists){
             var $version  = document.querySelector("#updataText .version");

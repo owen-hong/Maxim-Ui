@@ -285,6 +285,13 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
     //TODO 切换大类工具
     $("body").on("click",".global-aside ul a",function(){
         $(this).addClass("current").parent("li").siblings("li").find("a").removeClass("current");
+        $(".about-wrap").toggle();
+
+        if($(".about-btn").hasClass('current')){
+            $("input[name='panelBox']").val(1);
+        }else{
+            $("input[name='panelBox']").val(0);
+        }
     });
 
 

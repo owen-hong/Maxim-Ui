@@ -216,8 +216,8 @@ define(function(requires, exports, module) {
             //}
             var $this = this;
             var $DialogConfig = {
-                frame:true,
-                toolbar:true,
+                frame:false,
+                toolbar:false,
                 position: 'center',
                 height:500,
                 width:640

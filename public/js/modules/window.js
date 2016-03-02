@@ -31,18 +31,17 @@ define(function(require, exports, module) {
 
 
         //TODO 全局控制窗口开关
-        $("#closeSortware").click(function(){
+        $(".global-operations .close-btn").click(function(){
             win.close();
         });
-        $("#enterFullscreen").click(function(){
+        $(".global-operations .fullscreen-btn").click(function(){
             win.toggleFullscreen();
         });
 
-        $("#minimize").click(function(){
+        $(".global-operations .minimize-btn").click(function(){
             win.minimize();
         });
-
-        $("#alwaysOnTop").click(function(){
+        $(".global-operations .always-on-top-btn").click(function(){
             var $this = $(this);
             if($this.hasClass("cur")){
                 $this.attr("title","窗口置顶");
@@ -53,7 +52,6 @@ define(function(require, exports, module) {
                 $this.addClass("cur");
                 win.setAlwaysOnTop(true);
             }
-
         });
 
         //TODO dialog config

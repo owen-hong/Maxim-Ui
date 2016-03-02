@@ -74,6 +74,7 @@ exports.index = function(req,res){
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
+        version:'2.0.0',
         configItemes:itemsConfig
     });
 };
@@ -115,7 +116,6 @@ exports.doUploader = function(req,res){
         //过滤成功返回结果与失败返回结果中相同部分
         var $newSuccessFiles = [];
         $successFiles.forEach(function(sucValue){
-            console.log(sucValue);
             if($errorFiles.indexOf(sucValue) == -1){
                 $newSuccessFiles.push(sucValue);
             }
@@ -127,7 +127,12 @@ exports.doUploader = function(req,res){
 
             var $sucFtpFiles = [];
             $successFiles.forEach(function(sucPaths){
-                $sucFtpFiles.push($currentConfig.destPath + sucPaths);
+                if(os.type() == "Windows_NT"){
+                    var $localPath = sucPaths.replace(/\//g,'\\');
+                }else{
+                    var $localPath = sucPaths;
+                }
+                $sucFtpFiles.push($currentConfig.destPath + $localPath);
             });
 
             tools.ftpUtil($sucFtpFiles, $currentConfig, function (result) {
@@ -201,18 +206,9 @@ exports.doUploader = function(req,res){
     * */
     var destPath = function(data){
         data.forEach(function(result){
-            //判断操作系统，linux无需替换路径“/”
-            if(os.type() == "Windows_NT"){
-                var $localPath = result.fName.replace(/\//g,'\\');
-            }else{
-                var $localPath = result.fName;
-            }
 
             if(result.status){//关闭ftp后直接输出成功压缩后的文件数组
                 $successFiles.push(result.fName);
-            //}
-            //else if($ftpSwitch == "true" && result.status){
-            //    $ftpFiles.push($currentConfig.destPath + $localPath);
             }else{
                 $errorFiles.push(result.fName);
                 if(result.message !== undefined){
@@ -240,7 +236,7 @@ exports.doUploader = function(req,res){
             switch($tinyImgSwitch)
             {
                 case "tinyimg":
-                    console.log("tiny img::::::::::::");
+                    //console.log("tiny img::::::::::::");
                     tools.tinyImg($imgFiles, $currentConfig, Config, function (result) {
                         console.log(result);
                         //拼接dest的路劲文件
@@ -251,7 +247,7 @@ exports.doUploader = function(req,res){
                     });
                     break;
                 case "youtu":
-                    console.log("youtu:::::::::::::::");
+                    //console.log("youtu:::::::::::::::");
                     tools.youtu($imgFiles, $currentConfig, Config, function (result) {
 
                         //拼接dest的路劲文件
@@ -262,7 +258,7 @@ exports.doUploader = function(req,res){
                     });
                     break;
                 default:
-                    console.log("imagemin:::::::::::::::");
+                    //console.log("imagemin:::::::::::::::");
                     tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
                         //拼接dest的路劲文件
@@ -274,7 +270,7 @@ exports.doUploader = function(req,res){
             }
 
         }else{
-            console.log("no image min:::::::::::::::");
+            //console.log("no image min:::::::::::::::");
             tools.copyFiles($imgFiles,$currentConfig,function(result){
 
                 //拼接dest的路径文件
@@ -321,7 +317,6 @@ exports.doUploader = function(req,res){
 
         if($copyFile.length > 0){
             tools.copyFiles($copyFile,$currentConfig,function(result){
-
                 //拼接dest的路径文件
                 destPath(result);
 
@@ -379,14 +374,7 @@ exports.doUploader = function(req,res){
                     }else if(resultFiles.status){
                         $copyFile.push($DestFile);
                     }else if(resultFiles.status===false){
-                        //判断操作系统，linux无需替换路径“/”
-                        if(os.type() == "Windows_NT"){
-                            var $localPath = resultFiles.fName.replace(/\//g,'\\');
-                        }else{
-                            var $localPath = resultFiles.fName;
-                        }
-
-                        $errorFiles.push($localPath);
+                        $errorFiles.push(resultFiles.fName);
                     }
                 });
 
@@ -637,7 +625,7 @@ exports.doConfig = function(req,res){
 
     }else{
         //全局设置
-        Config.youtuQuality = req.body.youtuQuality || "85";
+        //Config.youtuQuality = req.body.youtuQuality || "85";
         Config.tinyApi = req.body.tinyApi;
         Config.proxy = req.body.proxy;
     }
