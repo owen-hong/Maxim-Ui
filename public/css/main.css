@@ -45,7 +45,7 @@ a.red{
      overflow: hidden;
 }
 .content aside{
-    width: 185px;
+    width: 144px;
     font-size: 14px;
     background-color: #354351;
     position: relative;
@@ -167,7 +167,7 @@ aside .add-project-box .add-project-btn{
     background-color: #2487C8;
     padding: 5px 0px;
     text-decoration: inherit;
-    width: 141px;
+    width: 72%;
     border-radius: 30px;
     margin-left: auto;
     margin-right: auto;
@@ -190,6 +190,9 @@ menu .menu-list a{
     line-height: 38px;
     color: #fff;
     text-indent: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 menu .menu-list a:hover{
     text-decoration: none;
