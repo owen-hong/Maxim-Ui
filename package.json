@@ -1,9 +1,9 @@
 {
   "name": "Maxim-Ui",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Qcloud front end workflow tools",
   "author": {
-    "name": "Owen Hong",
+    "name": "Owenhong",
     "email": "520UED.com@gmail.com",
     "url": "http://520UED.com"
   },
@@ -29,7 +29,7 @@
     "show_in_taskbar": true,
     "fullscreen": false,
     "always-on-top": false,
-    "show": true,
+    "show": false,
     "kiosk": false,
     "width": 800,
     "height": 600,
@@ -38,8 +38,7 @@
   },
   "webkit": {
     "page-cache": false,
-    "plugin": true,
-    "java": false
+    "plugin": true
   },
   "dependencies": {
     "body-parser": "^1.15.0",

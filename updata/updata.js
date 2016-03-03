@@ -17,7 +17,6 @@ var pkg = require('./updata/package.json'); // Insert your app's manifest here
 var updater = require('node-webkit-updater');
 var upd = new updater(pkg);
 
-
 // Args passed when new app is launched from temp dir during update
 if(!gui.App.argv.length) {
     // ------------- Step 1 -------------
@@ -25,7 +24,6 @@ if(!gui.App.argv.length) {
         if(error){
             window.location = 'http://localhost:3030';
         }
-        console.log(manifest);
         //是否需要更新
         if(newVersionExists){
             var $version  = document.querySelector("#updataText .version");

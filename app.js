@@ -82,8 +82,13 @@ Routes.handle(app);
  *
  * */
 if(Config.debug){
+    exports.StarSver = function(){
+        app.listen(app.get('port'),function(){
+            console.log('Node listening on port:' + app.get('port'));
+        });
+    }
+}else{
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
     });
-
 }

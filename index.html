@@ -22,13 +22,15 @@
 			color: #fff;
 		}
     </style>
-	<!--<script>-->
-		<!--var gui = require('nw.gui');-->
+	<script>
+		var gui = require('nw.gui');
 
-		<!--onload = function() {-->
-			<!--gui.Window.get().show();-->
-		<!--}-->
-	<!--</script>-->
+		onload = function() {
+			console.log("abc");
+			gui.Window.get().show();
+			process.mainModule.exports.StarSver();
+		}
+	</script>
 </head>
 <body>
 
@@ -89,14 +91,7 @@
 </div>
 
 
+<script src="updata/updata.js"></script>
 
-
-	<script src="updata/updata.js"></script>
-
-<script>
-//	setTimeout(function(){
-//		window.location = 'http://localhost:3030';
-//	},2000)
-</script>
 </body>
 </html>
