@@ -1,7 +1,6 @@
 /**
  * Created by owenhong on 2015/11/9.
  */
-
 var express = require('express');
 var app = express();
 
@@ -32,8 +31,10 @@ app.use(multipart());
 app.set('port', Config.port);
 
 
+var $dirname = process.cwd();
+
 //设置静态文件目录
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join($dirname, 'views'));
 
 
 // 更改模板引擎
@@ -41,7 +42,7 @@ app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
 
 //静态中心
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join($dirname, 'public')));
 
 
 //日志中心
@@ -82,12 +83,6 @@ Routes.handle(app);
  *
  * */
 if(Config.debug){
-    exports.StarSver = function(){
-        app.listen(app.get('port'),function(){
-            console.log('Node listening on port:' + app.get('port'));
-        });
-    }
-}else{
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
     });

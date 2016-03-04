@@ -74,7 +74,7 @@ exports.index = function(req,res){
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
-        version:'2.0.1',
+        version:'2.0.3',
         configItemes:itemsConfig
     });
 };

@@ -217,60 +217,70 @@ define(function(requires, exports, module) {
             var $this = this;
             var $DialogConfig = {
                 frame:false,
-                toolbar:false,
                 position: 'center',
                 height:500,
                 width:640
             }
 
+            var setAlwaysOnTop = function(win){
+                var $alwaysOnTop = $("#alwaysOnTop").hasClass("cur");
+                if($alwaysOnTop){
+                    win.setAlwaysOnTop(true);
+                }else{
+                    win.setAlwaysOnTop(false);
+                }
+            }
+
             //判断是否项目为空
             var $menuListSite = $(".menu-list li").size();
             if($menuListSite <= 0){
-
                 alert("请先配置你的项目");
-
-                var addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
+                gui.Window.open('http://localhost:3030/addProject?itemsIndex=' + $menuListSite,{
                     frame:$DialogConfig.frame,
-                    toolbar:$DialogConfig.toolbar,
                     position: $DialogConfig.position,
                     width:$DialogConfig.width,
                     height: $DialogConfig.height,
-                    focus:true
-                });
+                    focus:true,
+                    id:"addProjectWin"
+                },function(new_win){
 
-                addProjectWin.on('close', function () {
-                    this.hide(); // PRETEND TO BE CLOSED ALREADY
-                    $this.updateCssSprite(true,$menuListSite);
-                    this.close(true);
+                    setAlwaysOnTop(new_win);
+
+                    new_win.on('close', function () {
+                        new_win.hide(); // PRETEND TO BE CLOSED ALREADY
+                        $this.updateCssSprite(true,$menuListSite);
+                        new_win.close(true);//防止进程没被杀死
+                    });
                 });
                 return false;
             }
 
 
             //判断FTP是否开启，开启就做FTP配置校验，未开启就弹出FTP配置让用户完善
-            var $ftpSwitch = $("input[name='ftpSwitch']:checked").val();
+            var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
             var $itemsIndex = $("input[name='itemsIndex']").val();
-
-            if($ftpSwitch=="true"){
+            if($ftpSwitch === true){
                 $.get("/validateFtp?itemsIndex="+$itemsIndex).done(function(data){
                     if(data.ftpNull===false){
                         $("#loadding-box").show();
                         $this.processQueue();
                     }else{
                         alert("请完善FTP配置.");
-                        var editProjectWin = gui.Window.open('editProject?tabIndex=1&itemsIndex=' + $itemsIndex,{
-                            frame:$DialogConfig.frame,
-                            toolbar:$DialogConfig.toolbar,
+                        gui.Window.open('http://localhost:3030/editProject?itemsIndex=' + $itemsIndex, {
+                            frame: $DialogConfig.frame,
                             position: $DialogConfig.position,
-                            width:$DialogConfig.width,
+                            width: $DialogConfig.width,
                             height: $DialogConfig.height,
-                            focus:true
-                        });
+                            focus: true,
+                            id:"editProjectWin"
+                        },function(new_win){
+                            setAlwaysOnTop(new_win);
 
-                        editProjectWin.on('close', function () {
-                            this.hide(); // PRETEND TO BE CLOSED ALREADY
-                            $this.updateCssSprite(false,$itemsIndex);
-                            this.close(true);
+                            new_win.on('close', function () {
+                                new_win.hide(); // PRETEND TO BE CLOSED ALREADY
+                                $this.updateCssSprite(false,$itemsIndex);
+                                new_win.close(true);//防止进程没被杀死
+                            });
                         });
                         return false;
                     }

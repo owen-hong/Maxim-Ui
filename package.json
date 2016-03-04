@@ -1,6 +1,6 @@
 {
   "name": "Maxim-Ui",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "Qcloud front end workflow tools",
   "author": {
     "name": "Owenhong",
@@ -16,14 +16,12 @@
   ],
   "nodejs": true,
   "main": "index.html",
-  "node-remote": "http://localhost:3030",
   "node-main": "app.js",
-  "single-instance": true,
+  "node-remote": "http://localhost:3030",
   "window": {
     "frame": false,
     "toolbar": false,
     "title": "node-webkit demo",
-    "icon": "maxim-logo.png",
     "position": "center",
     "resizable": true,
     "show_in_taskbar": true,

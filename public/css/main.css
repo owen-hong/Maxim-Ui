@@ -46,6 +46,7 @@ a.red{
 }
 .content aside{
     width: 144px;
+    min-width: 144px;
     font-size: 14px;
     background-color: #354351;
     position: relative;
@@ -108,6 +109,7 @@ a.red{
 
 .global-aside{
     width: 50px;
+    min-width: 50px;
     position: relative;
     background: #242E38;
     border-bottom: 1px solid #2D3945;
@@ -229,12 +231,14 @@ main{
     border-top: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
     -webkit-app-region: drag;
+    width: 45%;
 }
 
 
 /*全局操作样式*/
 .global-operations{
     width: 240px;
+    min-width: 240px;
     height: 50px;
     position: absolute;
     right: 0;
@@ -445,6 +449,8 @@ main .shortcut-operations a{
     display: block;
     cursor: pointer;
     color: #333;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .drop-files-box .logs-text-box a:hover{
     text-decoration: underline;
@@ -455,6 +461,7 @@ main .shortcut-operations a{
     position: relative;
     box-sizing: border-box;
     width: 240px;
+    min-width: 240px;
     background-color: #FAFAFA;
     font-size: 12px;
     line-height: 26px;

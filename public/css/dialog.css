@@ -35,6 +35,11 @@
     position: relative;
     padding: 15px;
 }
+.modal-body .logs{
+    padding-left: 20px;
+    margin-top: 10px;
+    line-height: 20px;
+}
 .modal-footer {
     padding: 15px;
     text-align: right;

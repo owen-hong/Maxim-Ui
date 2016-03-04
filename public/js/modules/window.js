@@ -57,7 +57,6 @@ define(function(require, exports, module) {
         //TODO dialog config
         var $DialogConfig = {
             frame:false,
-            toolbar:false,
             position: 'center',
             height:500,
             width:640
@@ -74,59 +73,46 @@ define(function(require, exports, module) {
 
 
         //TODO 全局设置
-        var globalSetting;
         $("#settingBtn").click(function(){
-            //setAlwaysOnTop();
-            if(!globalSetting){
-                globalSetting = gui.Window.open('globalSetting',{
-                    frame:$DialogConfig.frame,
-                    toolbar:$DialogConfig.toolbar,
-                    position: $DialogConfig.position,
-                    width:512,
-                    height: 370,
-                    focus:true
+            gui.Window.open('http://localhost:3030/globalSetting',{
+                frame:$DialogConfig.frame,
+                position: $DialogConfig.position,
+                width:512,
+                height: 370,
+                focus:true,
+                id:'globalSetting'
+            },function(new_win){
+
+                setAlwaysOnTop(new_win);
+
+                new_win.on('close', function () {
+                    new_win.hide(); // PRETEND TO BE CLOSED ALREADY
+                    new_win.close(true);//防止进程没被杀死
                 });
-
-                setAlwaysOnTop(globalSetting);
-
-                globalSetting.on('close', function () {
-                    this.hide(); // PRETEND TO BE CLOSED ALREADY
-                    globalSetting = undefined;
-                    this.close(true);//防止进程没被杀死
-                });
-            }else{
-                globalSetting.focus();
-
-            }
-
+            });
         });
 
         //TODO 新增项目
-        var addProjectWin;
         var addProjectWinFun = function(){
-            if(!addProjectWin){
-                var $menuListSite = $(".menu-list li").size();
+            var $menuListSite = $(".menu-list li").size();
 
-                addProjectWin = gui.Window.open('addProject?itemsIndex=' + $menuListSite,{
-                    frame:$DialogConfig.frame,
-                    toolbar:$DialogConfig.toolbar,
-                    position: $DialogConfig.position,
-                    width:$DialogConfig.width,
-                    height: $DialogConfig.height,
-                    focus:true
-                });
+            gui.Window.open('http://localhost:3030/addProject?itemsIndex=' + $menuListSite,{
+                frame:$DialogConfig.frame,
+                position: $DialogConfig.position,
+                width:$DialogConfig.width,
+                height: $DialogConfig.height,
+                focus:true,
+                id:"addProjectWin"
+            },function(new_win){
 
-                setAlwaysOnTop(addProjectWin);
+                setAlwaysOnTop(new_win);
 
-                addProjectWin.on('close', function () {
-                    this.hide(); // PRETEND TO BE CLOSED ALREADY
+                new_win.on('close', function () {
+                    new_win.hide(); // PRETEND TO BE CLOSED ALREADY
                     updateCssSprite(true,$menuListSite);
-                    addProjectWin = undefined;
-                    this.close(true);
+                    new_win.close(true);//防止进程没被杀死
                 });
-            }else{
-                addProjectWin.focus();
-            }
+            });
         }
         $("#addProject").click(function(){
             addProjectWinFun();
@@ -134,30 +120,25 @@ define(function(require, exports, module) {
 
 
         //TODO 编辑项目
-        var editProjectWin;
         var editProjectWinFun = function(){
-            if(!editProjectWin) {
-                var $currentItems = $("input[name='itemsIndex']").val();
-                editProjectWin = gui.Window.open('editProject?itemsIndex=' + $currentItems, {
-                    frame: $DialogConfig.frame,
-                    toolbar: $DialogConfig.toolbar,
-                    position: $DialogConfig.position,
-                    width: $DialogConfig.width,
-                    height: $DialogConfig.height,
-                    focus: true
-                });
+            var $currentItems = $("input[name='itemsIndex']").val();
+            gui.Window.open('http://localhost:3030/editProject?itemsIndex=' + $currentItems, {
+                frame: $DialogConfig.frame,
+                position: $DialogConfig.position,
+                width: $DialogConfig.width,
+                height: $DialogConfig.height,
+                focus: true,
+                id:"editProjectWin"
+            },function(new_win){
 
-                setAlwaysOnTop(editProjectWin);
+                setAlwaysOnTop(new_win);
 
-                editProjectWin.on('close', function () {
-                    this.hide(); // PRETEND TO BE CLOSED ALREADY
+                new_win.on('close', function () {
+                    new_win.hide(); // PRETEND TO BE CLOSED ALREADY
                     updateCssSprite(false, $currentItems);
-                    editProjectWin = undefined;
-                    this.close(true);
+                    new_win.close(true);//防止进程没被杀死
                 });
-            }else{
-                editProjectWin.focus();
-            }
+            });
         }
         $(".edit-btn").click(function() {
             if($(".menu-list li").size() > 0){

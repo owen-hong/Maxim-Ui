@@ -227,7 +227,6 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
             $("input[name='cssName']").val(data.cssName);
 
             var $imgMasterSwitch = data.imgMasterSwitch || "false";
-            console.log($imgMasterSwitch);
             if ($imgMasterSwitch == "true") {
                 $("input[name='imgMasterSwitch']").prop("checked",true);
             } else {
