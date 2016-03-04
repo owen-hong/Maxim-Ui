@@ -31,6 +31,11 @@ define(function(require, exports, module) {
 
 
         //TODO 全局控制窗口开关
+        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+        if(isMac){
+            $(".global-operations a").hide();
+        }
+
         $(".global-operations .close-btn").click(function(){
             win.close();
         });
