@@ -215,11 +215,21 @@ define(function(requires, exports, module) {
             //    return false;
             //}
             var $this = this;
-            var $DialogConfig = {
-                frame:false,
-                position: 'center',
-                height:500,
-                width:640
+            var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+            if(isMac){
+                var $DialogConfig = {
+                    frame:true,
+                    position: 'center',
+                    height:500,
+                    width:640
+                }
+            }else{
+                var $DialogConfig = {
+                    frame:false,
+                    position: 'center',
+                    height:500,
+                    width:640
+                }
             }
 
             var setAlwaysOnTop = function(win){

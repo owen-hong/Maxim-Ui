@@ -19,8 +19,7 @@
   "node-main": "app.js",
   "node-remote": "http://localhost:3030",
   "window": {
-    "frame": false,
-    "toolbar": false,
+    "frame": true,
     "title": "node-webkit demo",
     "position": "center",
     "resizable": true,
