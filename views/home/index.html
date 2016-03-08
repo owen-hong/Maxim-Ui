@@ -23,8 +23,14 @@
         <% include aside.html %>
         <main>
             <div class="itemes-info">
-                <span class="text"><%= configItemes[0] ? configItemes[0].itemsName : "请新建项目" %></span>
-                <a href="javascript:void(0);" class="edit-btn" title="设置当前项目">设置</a>
+                <% if(configItemes[0]){ %>
+                <div class="itemes-info-bd">
+                <% }else{ %>
+                <div class="itemes-info-bd" style="display: none;">
+                <% } %>
+                    <span class="text"><%= configItemes[0] ? configItemes[0].itemsName : "请新建项目" %></span>
+                    <a href="javascript:void(0);" class="edit-btn" title="设置当前项目">设置</a>
+                </div>
             </div>
 
             <div class="shortcut-operations">
@@ -52,8 +58,6 @@
         </div>
     </div>
 </div>
-
-<% include about-we.html %>
 
 <input type="hidden" name="panelBox" value="0"/>
 <script src="/js/dist/sea.js" id="seajsnode"></script>

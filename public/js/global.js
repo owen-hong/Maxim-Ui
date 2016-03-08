@@ -181,6 +181,15 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
                 }
             }
 
+
+            //控制设置标题栏是否显示
+            if($(".menu-list li").size() > 0) {
+                $(".itemes-info .itemes-info-bd").show();
+            }else{
+                $(".itemes-info .itemes-info-bd").hide();
+            }
+
+
             //FTP信息更新
             var $ftpSwitch = data.ftpSwitch || "false";
             if($ftpSwitch == "true"){
@@ -282,16 +291,16 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
 
 
     //TODO 切换大类工具
-    $("body").on("click",".global-aside ul a",function(){
-        $(this).addClass("current").parent("li").siblings("li").find("a").removeClass("current");
-        $(".about-wrap").toggle();
-
-        if($(".about-btn").hasClass('current')){
-            $("input[name='panelBox']").val(1);
-        }else{
-            $("input[name='panelBox']").val(0);
-        }
-    });
+    //$("body").on("click",".global-aside ul a",function(){
+    //    $(this).addClass("current").parent("li").siblings("li").find("a").removeClass("current");
+    //    $(".about-wrap").toggle();
+    //
+    //    if($(".about-btn").hasClass('current')){
+    //        $("input[name='panelBox']").val(1);
+    //    }else{
+    //        $("input[name='panelBox']").val(0);
+    //    }
+    //});
 
 
     //更新css 和 sprite 版本号和状态

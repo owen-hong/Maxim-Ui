@@ -74,7 +74,6 @@ exports.index = function(req,res){
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
-        version:'2.0.3',
         configItemes:itemsConfig
     });
 };
@@ -453,9 +452,10 @@ exports.updateProject = function(req,res){
     }
 }
 exports.globalSetting = function(req,res){
-    res.render('home/other-config',{
+    res.render('home/global-config',{
         title: '全局设置',
-        config:Config
+        config:Config,
+        version:'2.0.3'
     });
 }
 

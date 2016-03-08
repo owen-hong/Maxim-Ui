@@ -112,7 +112,7 @@
         <label class="check-inline">
             转换不包含：<input disabled type="text" name="propertyBlackList" class="form-control" placeholder="font-size,font" value="<%= configItemes[0] ? configItemes[0].propertyBlackList : '' %>">
         </label>
-        <% } else {%>
+        <% } else if(configItemes.length > 0 && configItemes[0].pxToRemSwitch =="true"){%>
         <div class="check-block border">
             <span class="info-text">PX转REM</span>
             <label class="switch" title="px转rem">
@@ -126,7 +126,21 @@
         <label class="check-inline">
             转换不包含：<input type="text" name="propertyBlackList" class="form-control" placeholder="font-size,font" value="<%= configItemes[0] ? configItemes[0].propertyBlackList : '' %>">
         </label>
-        <% }%>
+        <% }else{ %>
+        <div class="check-block">
+            <span class="info-text">PX转REM</span>
+            <label class="switch" title="px转rem">
+                <input type="checkbox" name="pxToRemSwitch" class="switch-input">
+                <span class="switch-helper">开启</span>
+            </label>
+        </div>
+        <label class="check-inline" style="margin-top:10px;">
+            html font size：<input disabled type="text" style="width:45px;" name="rootValue" class="form-control" placeholder="" value="<%= configItemes[0] ? configItemes[0].rootValue : '75' %>">
+        </label>
+        <label class="check-inline">
+            转换不包含：<input disabled type="text" name="propertyBlackList" class="form-control" placeholder="font-size,font" value="<%= configItemes[0] ? configItemes[0].propertyBlackList : '' %>">
+        </label>
+        <% } %>
     </div>
     <hr/>
 </form>

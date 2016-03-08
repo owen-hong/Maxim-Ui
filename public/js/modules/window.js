@@ -91,9 +91,10 @@ define(function(require, exports, module) {
             gui.Window.open('http://localhost:3030/globalSetting',{
                 frame:$DialogConfig.frame,
                 position: $DialogConfig.position,
-                width:512,
+                width:640,
                 height: 370,
                 focus:true,
+                resizable:false,
                 id:'globalSetting'
             },function(new_win){
 

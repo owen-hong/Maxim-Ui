@@ -61,9 +61,6 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
                     //console.log("download...")
                     $progressBar.style.width = "30%";
 
-
-                    console.log(filename);
-
                     if (!error) {
                         // ------------- Step 3 -------------
                         upd.unpack(filename, function(error, newAppPath) {
@@ -93,6 +90,7 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
 
 
                                 $progressBar.style.width = "80%";
+
 
                                 //拷贝文件
                                 fse.copy($dirPath, $getAppPath, function (err) {

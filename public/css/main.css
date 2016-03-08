@@ -629,25 +629,18 @@ main .shortcut-operations a{
     left: 50px;
 }
 .about-info-box{
-    width: 591px;
-    height: 350px;
-    border: 1px solid #ccc;
     background-color: #fff;
     padding-top: 50px;
     padding-left: 50px;
     box-sizing: border-box;
-    padding-right: 50px;
-    position: relative;
-    margin-left: -295.5px;
-    margin-top: -175px;
-    left: 50%;
-    top: 50%;
+    font-size: 14px;
+    text-align: center;
 }
 .about-wrap .global-operations{
     right:50px;
 }
 
-.about-wrap .about-info-box .logo-about{
+.about-info-box .logo-about{
     width: 220px;
     height: 65px;
     background-image: url(img/slice/help-logo.png);
@@ -656,31 +649,34 @@ main .shortcut-operations a{
     margin-bottom: 17px;
 }
 
-.about-wrap .about-info-box .version-text{
+.about-info-box .version-text{
     color: #838383;
     margin-left: 10px;
+    font-size: 14px;
+    text-align: center;
 }
-.about-wrap .about-info-box dl{
+.about-info-box dl{
     display: table;
     width: 100%;
     margin-top: 6px;
+    text-align: left;
 }
-.about-wrap .about-info-box dt,
-.about-wrap .about-info-box dd
+.about-info-box dt,
+.about-info-box dd
 {
     display: table-cell;
     vertical-align: middle;
     line-height: 24px;
     color: #4B6175;
 }
-.about-wrap .about-info-box dt{
+.about-info-box dt{
     width: 75px;
     vertical-align: top;
     font-weight: bold;
     text-align: right;
     padding-right: 25px;
 }
-.about-wrap .about-info-box dd{
+.about-info-box dd{
     padding-right: 10px;
 }
 
