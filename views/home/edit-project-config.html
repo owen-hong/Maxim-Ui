@@ -148,13 +148,11 @@
                         </label>
                         <div class="controls">
                             <div class="input-append">
-                            <span class="add-on">
                                 <label class="check-block">
                                     <input id="destPathSwitch" type="checkbox" class="checkbox">自定义临时目录
                                 </label>
-                            </span>
                                 <input type="text" id="destPath" disabled="disabled" name="destPath" class="form-control dest-path disabled" data-path="<%= DefaultDestPath %>" value="<%= config.destPath %>">
-                                <a href="javascript:void(0)" class="btn btn-default btn-sm file-dest">更改目录</a>
+                                <a href="javascript:void(0)" class="btn btn-default btn-sm file-dest" style="margin-top:5px;">更改目录</a>
                                 <label>
                                     <input type="file" id="choosedest" value="上传文件" class="control-file" nwdirectory />
                                 </label>

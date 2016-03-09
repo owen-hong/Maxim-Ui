@@ -29,7 +29,6 @@ define(function(require, exports, module) {
             }
         });
 
-
         //TODO 全局控制窗口开关
         var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
         if(isMac){
@@ -64,15 +63,15 @@ define(function(require, exports, module) {
             var $DialogConfig = {
                 frame:true,
                 position: 'center',
-                height:500,
-                width:640
+                height:418,
+                width:610
             }
         }else{
             var $DialogConfig = {
                 frame:false,
                 position: 'center',
-                height:500,
-                width:640
+                height:418,
+                width:610
             }
         }
 
@@ -116,6 +115,7 @@ define(function(require, exports, module) {
                 position: $DialogConfig.position,
                 width:$DialogConfig.width,
                 height: $DialogConfig.height,
+                resizable:false,
                 focus:true,
                 id:"addProjectWin"
             },function(new_win){
@@ -142,6 +142,7 @@ define(function(require, exports, module) {
                 position: $DialogConfig.position,
                 width: $DialogConfig.width,
                 height: $DialogConfig.height,
+                resizable:false,
                 focus: true,
                 id:"editProjectWin"
             },function(new_win){

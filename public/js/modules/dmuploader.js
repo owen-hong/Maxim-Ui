@@ -220,15 +220,15 @@ define(function(requires, exports, module) {
                 var $DialogConfig = {
                     frame:true,
                     position: 'center',
-                    height:500,
-                    width:640
+                    height:418,
+                    width:610
                 }
             }else{
                 var $DialogConfig = {
                     frame:false,
                     position: 'center',
-                    height:500,
-                    width:640
+                    height:418,
+                    width:610
                 }
             }
 

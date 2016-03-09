@@ -239,7 +239,7 @@ main{
 .global-operations{
     width: 240px;
     min-width: 240px;
-    height: 50px;
+    height: 35px;
     position: absolute;
     right: 0;
     text-align: right;
@@ -247,6 +247,10 @@ main{
     border-top: 1px solid #e6e6e6;
     z-index: 9;
     font-size: 0;
+}
+.flex-box .global-operations{
+    padding-top: 7px;
+    padding-right: 8px;
 }
 .global-operations.alert-box{
     background-color: #354351;
@@ -260,9 +264,9 @@ main{
     display: inline-block;
     float: left;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     padding-left: 20px;
-    margin-top: 14px;
+    line-height: 35px;
 }
 
 .global-operations .always-on-top-btn,
@@ -303,8 +307,8 @@ main{
 
 .global-operations .close-btn{
     background: url("img/close-hover-icon.png") no-repeat center center;
-    margin-top: 8px;
-    margin-right: 15px;
+    margin-top: 2px;
+    margin-right: 2px;
 }
 
 .global-operations .always-on-top-btn:hover{
@@ -684,7 +688,9 @@ main .shortcut-operations a{
 
 
 
-
+#destPath{
+    margin-top:5px;
+}
 
 
 
