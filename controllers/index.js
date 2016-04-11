@@ -10,7 +10,7 @@ var osHomedir = require('os-homedir');
 var Config = require('../config.js');
 var Maxim = require('maxim-workflow');
 var tools = new Maxim();
-
+var MaximVersion = require('../updata/package.json');
 
 //去重复公共方法
 var unique = function(array){
@@ -455,7 +455,7 @@ exports.globalSetting = function(req,res){
     res.render('home/global-config',{
         title: '全局设置',
         config:Config,
-        version:'2.0.3'
+        version:MaximVersion.version
     });
 }
 

@@ -35,8 +35,35 @@ define(function(require, exports, module) {
             $(".global-operations a").hide();
         }
 
+        //托盘
+        var Tray = function(){
+            var tray = new gui.Tray({ title: 'Maxim', icon: 'app.png' });
+
+            tray.tooltip = 'Maxim';
+
+            //添加一个菜单
+            var menu = new gui.Menu();
+
+            menu.append(new gui.MenuItem({ label: '显示窗口' }));
+            menu.append(new gui.MenuItem({ label: '退出' }));
+
+
+            menu.items[0].click = function() {
+                win.show();
+            }
+            menu.items[1].click = function() {
+                win.close();
+            }
+            tray.menu = menu;
+            //click事件
+            tray.on('click',function () {
+                win.show();
+            });
+        }();
+
+
         $(".global-operations .close-btn").click(function(){
-            win.close();
+            win.hide();
         });
         $(".global-operations .fullscreen-btn").click(function(){
             win.toggleFullscreen();

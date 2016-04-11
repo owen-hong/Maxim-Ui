@@ -1,15 +1,15 @@
 {
   "name": "Maxim-updata",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.0.4.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.0.4.zip"
     }
   },
-  "updataInfo":"1、更新内核\n2、优化界面"
+  "updataInfo":"1、新增自动检测样式语法错误功能\n2、去掉单倍图合并时对样式的background-size设置\n3、任务栏图标未显示修复"
 }
