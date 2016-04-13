@@ -28,14 +28,7 @@ define(function(require, exports, module) {
                 }
             }
         });
-
-        //TODO 全局控制窗口开关
-        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
-        if(isMac){
-            $(".global-operations a").hide();
-        }
-
-        //托盘
+        //TODO 启动托盘
         var Tray = function(){
             var tray = new gui.Tray({ title: 'Maxim', icon: 'app.png' });
 
@@ -52,19 +45,30 @@ define(function(require, exports, module) {
                 win.show();
             }
             menu.items[1].click = function() {
-                win.close();
+                win.close(true);
             }
             tray.menu = menu;
             //click事件
             tray.on('click',function () {
                 win.show();
             });
-        }();
-
+        };
+        //TODO 全局控制窗口开关
+        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+        if(isMac){
+            $(".global-operations a").hide();
+        }else{
+            Tray();//windows下启动托盘
+        }
 
         $(".global-operations .close-btn").click(function(){
             win.hide();
         });
+
+        $(".alert-box .close-btn").click(function(){
+            win.close(true);
+        });
+
         $(".global-operations .fullscreen-btn").click(function(){
             win.toggleFullscreen();
         });
