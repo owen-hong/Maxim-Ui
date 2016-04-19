@@ -49,6 +49,8 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
             ele.addEventListener("click",function(){
                 gui.Shell.openExternal("http://baidu.com");
             },false);
+        }else if(manifest.core){
+            $updataInfo.innerHTML = manifest.updataInfo + '</br><span style="color:red">(本次真的会比较慢,请耐心等待)</span>';
         }else{
             $updataInfo.innerHTML = manifest.updataInfo;
         }
@@ -63,6 +65,12 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
 
         //立即更新
         $ok.onclick = function(){
+
+            $ok.style.display = 'none';
+            $cancel.style.display = 'none';
+
+
+
             $progress.style.display = 'block';
 
             //TODO 更新进度条
@@ -70,25 +78,31 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
             if (!error){
                 //console.log("updata...")
 
+
+                setTimeout(function(){
+                    $progressBar.style.width = "30%";
+                },10000);
+
+                setTimeout(function(){
+                    $progressBar.style.width = "60%";
+                },100000);
+
                 // ------------- Step 2 -------------
                 upd.download(function(error, filename) {
-                    //console.log("download...")
-                    $progressBar.style.width = "30%";
+                    console.log("download...");
+                    console.log(error);
 
                     if (!error) {
                         // ------------- Step 3 -------------
                         upd.unpack(filename, function(error, newAppPath) {
-                            //console.log("unpack...");
-                            //console.log(newAppPath);
-                            //console.log(error);
+                            console.log("unpack...");
+                            console.log(newAppPath);
+                            console.log(error);
 
                             if(error){
                                 alert("更新失败,请下次重启软件时再更新!");
                                 window.location = 'http://localhost:3030';
                             }
-
-                            //TODO 更新进度条
-                            $progressBar.style.width = "60%";
 
                             //解压完后删除更新包
                             fse.remove(filename, function(err){

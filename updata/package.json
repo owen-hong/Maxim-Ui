@@ -1,8 +1,8 @@
 {
   "name": "Maxim2.0.6",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": "owen hong <520ued.com@gmail.com>",
-  "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/test/package.json",
+  "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
       "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.0.6.zip"
@@ -12,6 +12,6 @@
     }
   },
   "core":false,
-  "updataInfo":"1、自动更新机制优化,增加了内核更新功能",
+  "updataInfo":"1、优化了自动更新机制\n 2、优化任务进程图标",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
