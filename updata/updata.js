@@ -19,6 +19,7 @@ var upd = new updater(pkg);
 
 // Args passed when new app is launched from temp dir during update
 // ------------- Step 1 -------------
+
 upd.checkNewVersion(function(error, newVersionExists, manifest) {
     if(error){
         window.location = 'http://localhost:3030';
@@ -33,13 +34,26 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
         var $ok  = document.querySelector(".btn-primary");
         var $progress  = document.querySelector(".progress");
         var $progressBar  = document.querySelector(".progress .progress-bar");
+        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
 
         //暂不更新
         $cancel.onclick = function(){
             window.location = 'http://localhost:3030';
         }
 
-        $updataInfo.innerText = manifest.updataInfo;
+        if(isMac){
+            $updataInfo.innerHTML = manifest.MacUpdataInfo + '<a href="javascript:void(0)" id="download-btn">Maxim2.1.0</a>';
+
+            var ele = document.getElementById("download-btn");
+            console.log(ele);
+            ele.addEventListener("click",function(){
+                gui.Shell.openExternal("http://baidu.com");
+            },false);
+        }else{
+            $updataInfo.innerHTML = manifest.updataInfo;
+        }
+
+
         $modalDialog.style.display = 'block';
 
         var $marginTop = $modalDialog.offsetHeight/2;
@@ -67,6 +81,7 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
                             //console.log("unpack...");
                             //console.log(newAppPath);
                             //console.log(error);
+
                             if(error){
                                 alert("更新失败,请下次重启软件时再更新!");
                                 window.location = 'http://localhost:3030';
@@ -91,33 +106,39 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
 
                                 $progressBar.style.width = "80%";
 
-
-                                //拷贝文件
-                                fse.copy($dirPath, $getAppPath, function (err) {
-                                    if (err) {
-                                        alert(err);
-                                        return false;
-                                    }
-
-                                    //TODO 更新进度条
-                                    $progressBar.style.width = "90%";
-
-
-                                    //更新成功文件后删除临时目
-                                    fse.remove($dirPath, function (err) {
-                                        if (err){
-                                            alert('更新失败，请稍后重试!');
-                                            gui.App.quit();
+                                var $core = manifest.core || false;
+                                if($core && isMac === false){
+                                    $progressBar.style.width = "100%";
+                                    upd.runInstaller(newAppPath, [$getAppPath, $dirPath],{});
+                                    gui.App.quit();
+                                }else if($core === false){
+                                    //partial renewal
+                                    fse.copy($dirPath, $getAppPath, function (err) {
+                                        if (err) {
+                                            alert(err);
+                                            return false;
                                         }
 
                                         //TODO 更新进度条
-                                        $progressBar.style.width = "100%";
-                                        setTimeout(function() {
-                                            alert('更新成功,请重启软件!');
-                                            gui.App.quit();
-                                        },800);
+                                        $progressBar.style.width = "90%";
+
+
+                                        //更新成功文件后删除临时目
+                                        fse.remove($dirPath, function (err) {
+                                            if (err){
+                                                alert('更新失败，请稍后重试!');
+                                                gui.App.quit();
+                                            }
+
+                                            //TODO 更新进度条
+                                            $progressBar.style.width = "100%";
+                                            setTimeout(function() {
+                                                alert('更新成功,请重启软件!');
+                                                gui.App.quit();
+                                            },800);
+                                        });
                                     });
-                                });
+                                }
                             }else{
                                 alert('更新失败，请下次重启软件时再更新!');
                                 window.location = 'http://localhost:3030';
