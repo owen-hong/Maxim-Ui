@@ -41,18 +41,17 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
             window.location = 'http://localhost:3030';
         }
 
-        if(isMac){
-            $updataInfo.innerHTML = manifest.MacUpdataInfo + '<a href="javascript:void(0)" id="download-btn">Maxim2.1.0</a>';
+        if(isMac && manifest.core){
+            $updataInfo.innerHTML = manifest.MacUpdataInfo + '<a href="javascript:void(0)" id="download-btn">Maxim Mac安装包下载地址</a>';
 
             var ele = document.getElementById("download-btn");
-            console.log(ele);
             ele.addEventListener("click",function(){
                 gui.Shell.openExternal("http://baidu.com");
             },false);
         }else if(manifest.core){
             $updataInfo.innerHTML = manifest.updataInfo + '</br><span style="color:red">(本次真的会比较慢,请耐心等待)</span>';
         }else{
-            $updataInfo.innerHTML = manifest.updataInfo;
+            $updataInfo.innerText = manifest.updataInfo;
         }
 
 
