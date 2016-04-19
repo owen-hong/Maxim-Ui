@@ -46,7 +46,7 @@ upd.checkNewVersion(function(error, newVersionExists, manifest) {
 
             var ele = document.getElementById("download-btn");
             ele.addEventListener("click",function(){
-                gui.Shell.openExternal("http://baidu.com");
+                gui.Shell.openExternal(manifest.packages.mac.url);
             },false);
         }else if(manifest.core){
             $updataInfo.innerHTML = manifest.updataInfo + '</br><span style="color:red">(本次真的会比较慢,请耐心等待)</span>';
