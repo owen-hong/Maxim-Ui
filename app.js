@@ -83,13 +83,7 @@ Routes.handle(app);
  *
  * */
 
-var startMaxim = function(){
-     app.listen(app.get('port'),function(){
-        console.log('Node listening on port:' + app.get('port'));
-     }).on('error', function(err) {
 
-     });
-}
 if(Config.debug){
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
