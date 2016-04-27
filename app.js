@@ -82,8 +82,18 @@ Routes.handle(app);
  * 启动服务
  *
  * */
+
+var startMaxim = function(){
+     app.listen(app.get('port'),function(){
+        console.log('Node listening on port:' + app.get('port'));
+     }).on('error', function(err) {
+
+     });
+}
 if(Config.debug){
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
+    }).on('error', function(err) {
+        console.log(err.code);
     });
 }
