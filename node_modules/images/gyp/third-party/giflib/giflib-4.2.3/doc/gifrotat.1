@@ -1,0 +1,63 @@
+'\" t
+.\"     Title: gifrotat
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "GIFROTAT" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+gifrotat \- rotate a GIF image by a specified angle\&.
+.SH "SYNOPSIS"
+.HP \w'\fBgifrotat\fR\ 'u
+\fBgifrotat\fR [\-v] \-a\ \fIangle\fR [\-s\ \fIwidth\fR\ \fIheight\fR] [\-h] [\fIgif\-file\fR]
+.SH "OPTIONS"
+.PP
+\-a Angle
+.RS 4
+Specifies the angle to rotate in degrees with respect to the X (horizontal) axis\&.
+.RE
+.PP
+\-v
+.RS 4
+Verbose mode (show progress)\&. Enables printout of running scan lines\&.
+.RE
+.PP
+\-s Width Height
+.RS 4
+Since the rotated image will have the same image size as the original, some parts of the image will by clipped out and lost\&. By specifing a (bigger) size explicitly using the `\-s\*(Aq option, these parts may be saved\&.
+.RE
+.PP
+\-h
+.RS 4
+Print one line of command line help, similar to Usage above\&.
+.RE
+.PP
+If no GIF file is given, gifrotat will try to read a GIF file from stdin\&.
+.SH "NOTES"
+.PP
+The image is rotated around its center\&. No filtering is performed on the output, which has the same color map as the input\&.
+.SH "AUTHOR:"
+.PP
+Gershon Elber\&.

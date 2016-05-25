@@ -1,0 +1,58 @@
+'\" t
+.\"     Title: gifcomb
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "GIFCOMB" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+gifcomb \- combine GIF images with mask
+.SH "SYNOPSIS"
+.HP \w'\fBgifcomb\fR\ 'u
+\fBgifcomb\fR [\-v] [\-m\ \fImaskfile\fR] [\-h] [[\fIgif\-file\fR]...]
+.SH "DESCRIPTION"
+.PP
+A program to combine 2 GIF images of exactly the same size into one\&. The color maps are merged, but the result may not exceed 256 colors\&. A boolean mask GIF file can be used to set which pixel from two images to use at each location\&. Otherwise any background color from first image is converted to second image color at that point\&. Only the first image of each file is combined; again, all files\*(Aq first images must be of exactly the same size\&.
+.SH "OPTIONS"
+.PP
+\-v
+.RS 4
+Verbose mode\&. Enables printout of running scan lines\&.
+.RE
+.PP
+\-m maskfile
+.RS 4
+The maskfile can be regular GIF file whose first image has same dimensions as the combined images\&. Any non\-background color in it will select Image 1 Pixel to output, otherwise Image2 pixel will be selected\&. Usually this image will be boolean (two colors only) but it does not have to be\&.
+.RE
+.PP
+\-h
+.RS 4
+Print one line of command line help, similar to Usage above\&.
+.RE
+.PP
+Two GIF files must be specified; a third mask GIF file is optional\&.
+.SH "AUTHOR"
+.PP
+Gershon Elber\&.

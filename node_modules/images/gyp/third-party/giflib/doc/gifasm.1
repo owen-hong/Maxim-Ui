@@ -1,0 +1,60 @@
+'\" t
+.\"     Title: gifasm
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "GIFASM" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+gifasm \- assemble or disassemble multi\-GIF animations
+.SH "SYNOPSIS"
+.HP \w'\fBgifasm\fR\ 'u
+\fBgifasm\fR [\-v] [\-a] [\-d\ \fIoutfile\fR] [\-h] [\fIgif\-file\fR]
+.SH "OPTIONS"
+.PP
+\-v
+.RS 4
+Verbose mode (show progress)\&. Enables printout of running scan lines\&.
+.RE
+.PP
+\-a
+.RS 4
+Assemble\&. This is the default, and the GifFile(s) are assembled to stdout\&. Note the screen descriptor (including screen color map) is taken from the first file, while other screen descriptors are ignored\&. As this tool requires at least 2 GIF files as input, no attempt will be made to read stdin if none specified on command line\&.
+.RE
+.PP
+\-d OutFileName
+.RS 4
+Disassemble GifFile (if specified on command line) or stdin, into several files of the form OutFileNameXX, where XX are two decimal digits\&. Obviously up to 100 files can be generated this way\&. Note: in this mode nothing is sent to stdout\&.
+.RE
+.PP
+\-h
+.RS 4
+Print one line of command line help, similar to Usage above\&.
+.RE
+.PP
+If no GIF file is given, gifasm will try to read a GIF file from stdin, if in disassembly mode only (\-d)\&.
+.SH "AUTHOR:"
+.PP
+Gershon Elber\&.

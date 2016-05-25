@@ -1,0 +1,65 @@
+'\" t
+.\"     Title: rgb2gif
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "RGB2GIF" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+rgb2gif \- convert 24\-bit images to GIF images using color quantization
+.SH "SYNOPSIS"
+.HP \w'\fBrgb2gif\fR\ 'u
+\fBrgb2gif\fR [\-v] [\-c\ \fIcolors\fR] [\-1] \-s\ \fIwidth\fR\ \fIheight\fR [\-h] [\fIrgb\-file\fR]
+.SH "OPTIONS"
+.PP
+\-v
+.RS 4
+Verbose mode (show progress)\&. Enables printout of running scan lines\&.
+.RE
+.PP
+\-c colors
+.RS 4
+Specifies number of colors to use, in bits per pixels, so \*(Aq\-c 8\*(Aq specifies actually 256 colors (maximum and default)\&.
+.RE
+.PP
+\-1
+.RS 4
+Only one file in the format of RGBRGB\&.\&.\&. triplets (Each of R, G, B is a byte) is read from input\&. This file size is 3 * Width * Height (see \*(Aq\-s\*(Aq below\&. If stdin is used for input, this option is implicitly applied\&. The default (if not \*(Aq\-1\*(Aq) is 3 files with the names RGBFile\&.R, RGBFile\&.G, RGBFile\&.B, each of which is Width * Height bytes\&.
+.RE
+.PP
+\-s width height
+.RS 4
+Specifies the size of the image to read\&.
+.RE
+.PP
+\-h
+.RS 4
+Print one line of command line help, similar to Usage above\&.
+.RE
+.PP
+If no rgb\-file is given, rgb2gif will try to read RGB data from stdin\&.
+.SH "AUTHOR"
+.PP
+Gershon Elber\&.

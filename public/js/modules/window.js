@@ -13,6 +13,13 @@ define(function(require, exports, module) {
             e.preventDefault();
         });
 
+        //TODO 阻止文件拖拽进窗口
+        $(window).on("keydown",function(e){
+            if(e.keyCode==8){
+                e.preventDefault();
+            }
+        });
+
         //TODO 浏览器打开窗口 超链接
         $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
             var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
@@ -45,7 +52,7 @@ define(function(require, exports, module) {
                 win.show();
             }
             menu.items[1].click = function() {
-                win.close(true);
+                win.close();
             }
             tray.menu = menu;
             //click事件
@@ -58,6 +65,7 @@ define(function(require, exports, module) {
         if(isMac){
             $(".global-operations a").hide();
         }else{
+            console.log("test");
             Tray();//windows下启动托盘
         }
 
@@ -66,7 +74,7 @@ define(function(require, exports, module) {
         });
 
         $(".alert-box .close-btn").click(function(){
-            win.close(true);
+            win.close();
         });
 
         $(".global-operations .fullscreen-btn").click(function(){

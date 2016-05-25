@@ -22,16 +22,7 @@
     <div class="flex-box">
         <% include aside.html %>
         <main>
-            <div class="itemes-info">
-                <% if(configItemes[0]){ %>
-                <div class="itemes-info-bd">
-                <% }else{ %>
-                <div class="itemes-info-bd" style="display: none;">
-                <% } %>
-                    <span class="text"><%= configItemes[0] ? configItemes[0].itemsName : "请新建项目" %></span>
-                    <a href="javascript:void(0);" class="edit-btn" title="设置当前项目">设置</a>
-                </div>
-            </div>
+            <div class="itemes-info"></div>
 
             <div class="shortcut-operations">
                 <a href="javascript:void(0);" id="clearLogs">清空LOG</a>
@@ -46,6 +37,21 @@
                 <em class="drop-tips">请拖拽文件到此区域</em>
             </div>
         </main>
+
+        <div class="itemes-info drag">
+            <% if(configItemes[0]){ %>
+                <div class="itemes-info-bd">
+                <% }else{ %>
+                <div class="itemes-info-bd" style="display: none;">
+                <% } %>
+                    <span class="text"><%= configItemes[0] ? configItemes[0].itemsName : "请新建项目" %></span>
+                    <a href="javascript:void(0);" class="edit-btn" title="设置当前项目">设置</a>
+                </div>
+        </div>
+
+
+
+
         <div class="global-operations">
             <a href="javascript:void(0);" title="置顶窗口" class="always-on-top-btn" id="alwaysOnTop"><i class="pushpin-icon"></i></a>
             <a href="javascript:void(0);" title="最小化窗口" class="minimize-btn" id="minimize"></a>

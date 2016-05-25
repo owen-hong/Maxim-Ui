@@ -89,6 +89,12 @@ a.red{
     -webkit-app-region: drag !important;
     font-size: 0;
 }
+.itemes-info.drag{
+    position: absolute;
+    left: 194px;
+    height: 50px;
+    width: 100%;
+}
 .itemes-info .edit-btn{
     color: #354351;
     text-decoration: inherit;

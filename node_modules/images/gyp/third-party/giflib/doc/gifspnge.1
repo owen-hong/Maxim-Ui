@@ -1,0 +1,43 @@
+'\" t
+.\"     Title: gifspnge
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "GIFSPNGE" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+gifspnge \- expensive GIF copy, whole\-image version
+.SH "SYNOPSIS"
+.HP \w'\fBgifspnge\fR\ 'u
+\fBgifspnge\fR
+.SH "DESCRIPTION"
+.PP
+This is an expensive way to copy a GIF from stdin to stdout\&. The source is included as a skeleton for more sophisticated filters using DGifSlurp() and EGifSpew()\&. See the source in the util directory of the distribution for details\&.
+.PP
+Retains some utility as a test of DGifSlurp() and EGifSpew()\&. The output should be bytewise identical to the input\&.
+.SH "AUTHOR"
+.PP
+Eric S\&. Raymond
+esr@thyrsus\&.com

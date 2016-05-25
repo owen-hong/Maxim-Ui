@@ -1,0 +1,69 @@
+'\" t
+.\"     Title: gifovly
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "GIFOVLY" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+gifovly \- composite images in a multi\-image GIF as layers
+.SH "SYNOPSIS"
+.HP \w'\fBgifovly\fR\ 'u
+\fBgifovly\fR [\-t\ \fItrans\-color\fR] [\-h]
+.SH "DESCRIPTION"
+.PP
+This program takes a multi\-image GIF file and generates a single GIF consisting of all the images overlayed\&. Each image\*(Aqs screen position is used\&. Thus, you can use this together with
+\m[blue]\fBgifpos\fR\m[]\&\s-2\u[1]\d\s+2
+and
+\m[blue]\fBgifasm\fR\m[]\&\s-2\u[2]\d\s+2
+to paste together images\&.
+.PP
+The GIF to be operated is read in from stdin\&. The result GIF is written to stdout\&.
+.SH "OPTIONS"
+.PP
+\-t num
+.RS 4
+If this index is given, any pixel in images after the first that has this value is not copied\&.
+.RE
+.PP
+\-h
+.RS 4
+Print one line of command line help, similar to Usage above\&.
+.RE
+.SH "AUTHOR"
+.PP
+Eric S\&. Raymond
+esr@thyrsus\&.com\&.
+.SH "NOTES"
+.IP " 1." 4
+gifpos
+.RS 4
+\%[set $man.base.url.for.relative.links]/gifpos.html
+.RE
+.IP " 2." 4
+gifasm
+.RS 4
+\%[set $man.base.url.for.relative.links]/gifasm.html
+.RE

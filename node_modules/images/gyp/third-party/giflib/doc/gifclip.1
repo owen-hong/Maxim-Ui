@@ -1,0 +1,86 @@
+'\" t
+.\"     Title: gifclip
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2 May 2012
+.\"    Manual: GIFLIB Documentation
+.\"    Source: GIFLIB
+.\"  Language: English
+.\"
+.TH "GIFCLIP" "1" "2 May 2012" "GIFLIB" "GIFLIB Documentation"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+gifclip \- clip a region from a GIF
+.SH "SYNOPSIS"
+.HP \w'\fBgifclip\fR\ 'u
+\fBgifclip\fR [\-v] [\-i\ \fIxmin\fR\ \fIymin\fR\ \fIxmax\fR\ \fIymax\fR] [\-n\ \fIn\fR\ \fIxmin\fR\ \fIymin\fR\ \fIxmax\fR\ \fIymax\fR] [\-c] [\-h] [\fIgif\-file\fR]
+.SH "DESCRIPTION"
+.PP
+A program to clip images in GIF files\&. Only one image in a GIF file can be modified at a time\&. Neither the image position on screen nor the screen size is modified (use
+\m[blue]\fBgifpos\fR\m[]\&\s-2\u[1]\d\s+2
+for that)\&.
+.SH "OPTIONS"
+.PP
+\-v
+.RS 4
+Verbose mode\&. Enables printout of running scan lines\&.
+.RE
+.PP
+\-i xmin ymin xmax max
+.RS 4
+Clip first image to the dimensions as specified by the 4 coordinates (Xmin Ymin Xmax Ymax) of a box clipping region\&.
+.sp
+For example: \*(Aq\-i 11 22 33 44\*(Aq will crop the box from top left [11,22] to bottom right [33,44] out of the first image\&.
+.sp
+If the first parameter is bigger than third one (Xmin > Xmax) they are swapped\&. Same for Y\&.
+.sp
+The dimensions of the clipped image must be confined to original image width and height\&. Note the clipped image includes both the min & max boundary; an image of width W can have coordinates 0 to W\-1 (zero based)\&.
+.sp
+Only one of \-i or \-n can be specified\&.
+.RE
+.PP
+\-n n xmin ymin xmax ymax
+.RS 4
+Same as \-i above but for the nth image: `\-n 1 11 22 33 44\*(Aq is exactly the same as the example in \-i\&. Only one of \-i or \-n can be specified\&.
+.RE
+.PP
+\-c
+.RS 4
+Complement\&. This removes horizontal and/or vertical bands of the image\&. For example `\-c \-i 638 3 658 13\*(Aq would remove a horizontal band 11 pixels deep beginning at raster line 3, and a vertical band 21 pixels right beginning at pixel 658\&.
+.RE
+.PP
+\-h
+.RS 4
+Print one line of command line help, similar to Usage above\&.
+.RE
+.PP
+Note: all coordinates are 0\-based \-\-\- the top left corner is (0, 0)\&.
+.PP
+If no GIF file is given, gifclip will try to read a GIF file from stdin\&.
+.SH "AUTHOR"
+.PP
+Gershon Elber\&.
+.SH "NOTES"
+.IP " 1." 4
+gifpos
+.RS 4
+\%[set $man.base.url.for.relative.links]/gifpos.html
+.RE
