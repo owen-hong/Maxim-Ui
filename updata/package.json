@@ -1,12 +1,17 @@
 {
+  "name": "Maxim2.0.8",
+  "version": "2.0.8",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.0.8.zip"
     },
     "win": {
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.0.8.zip"
     }
   },
   "core":false,
+  "updataInfo":"1、修复csslint不支持IE hack\n 2、修改重命名时间戳的格式\n 3、修复点击'Backspace键导致bug\n 4、修复部分地区拖拽无效bug",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
