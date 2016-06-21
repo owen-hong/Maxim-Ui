@@ -347,8 +347,8 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
         var $date = nowTime.getFullYear()
             + (nowTime.getMonth() + 1 >= 10 ? nowTime.getMonth() + 1 : '0' + (nowTime.getMonth() + 1))
             + (nowTime.getDate() > 10 ? nowTime.getDate() : '0' + nowTime.getDate())
-            + (nowTime.getHours() > 10 ? nowTime.getHours() : '0' + nowTime.getHours())
-            + (nowTime.getMinutes() > 10 ? nowTime.getMinutes() : '0' + nowTime.getMinutes());
+            + (nowTime.getHours() >= 10 ? nowTime.getHours() : '0' + nowTime.getHours())
+            + (nowTime.getMinutes() >= 10 ? nowTime.getMinutes() : '0' + nowTime.getMinutes());
 
         $("#updataTimeVal").val($date);
         $("input[name='spriteName'],input[name='cssName'],input[name='imgSyncName']").val($date);

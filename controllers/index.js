@@ -12,6 +12,12 @@ var Maxim = require('maxim-workflow');
 var tools = new Maxim();
 var MaximVersion = require('../updata/package.json');
 
+
+exports.configData = function(req,res) {
+    res.send('var Config =' + JSON.stringify(Config));
+}
+
+
 //去重复公共方法
 var unique = function(array){
     var n = [];//临时数组
@@ -99,6 +105,7 @@ exports.doUploader = function(req,res){
     var $successFiles = [];
     var $copyFile =[];
     var $cssFiles = [];
+    var $jsFiles = [];
     var $imgFiles = [];
     var $destCssFiles = [];
 
@@ -294,12 +301,41 @@ exports.doUploader = function(req,res){
                 //拼接dest的路劲文件
                 destPath(result);
 
-                //检测是否有需要copy的文件
-                copyFiles();
+                //检测是否有需要JS文件需要处理
+                jsMin();
             });
         }else{
+            //检测是否有需要JS文件需要处理
+            jsMin();
+        }
+    }
+
+    /*
+     *
+     *
+     * TODO compressJS
+     *
+     *
+     * */
+    var jsMin = function(){
+
+        //去重复
+        $jsFiles = unique($jsFiles);
+
+        if($jsFiles.length > 0){
+            tools.compressJS($jsFiles,$currentConfig,function(result){
+                //拼接dest的路径文件
+                destPath(result);
+
+                //检测是否有需要copy的文件
+                copyFiles();
+
+            });
+        }else{
+
             //检测是否有需要copy的文件
             copyFiles();
+
         }
     }
 
@@ -333,8 +369,9 @@ exports.doUploader = function(req,res){
 
     //TODO 文件分类
     for (var i in $filesType) {
-        if ($filesType[i] == "text\/html" || $filesType[i] == "application\/javascript") {
-            $copyFile.push($fileUrl[i]);
+        if ($filesType[i] == "application\/javascript") {
+            console.log($filesType[i]);
+            $jsFiles.push($fileUrl[i]);
         } else if($filesType[i]=="text\/css"){
             $cssFiles.push($fileUrl[i]);
         }else if($filesType[i]=="image\/jpeg" || $filesType[i]=="image\/png"){
@@ -391,12 +428,15 @@ exports.doUploader = function(req,res){
         }else if($imgFiles.length > 0){
             //TODO tiny img
             tinyImg();
+        }else if($jsFiles.length > 0){
+            //TODO jsMin
+            jsMin();
         }else if($copyFile.length > 0){
             //TODO copyFiles
             copyFiles();
         }
     }
-};
+}
 
 
 

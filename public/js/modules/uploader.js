@@ -170,7 +170,7 @@ define(function(require, exports, module) {
             },
             onFileTypeError: function (file) {
                 $("#loadding-box").hide();
-                alert('上传文件格式不对，请上传css文件!');
+                alert('请勿上传文件夹!!!!');
             }
         });
 
@@ -189,7 +189,7 @@ define(function(require, exports, module) {
                          */
 
                         if (event.keyCode == "112") {
-                            gui.Shell.openExternal("http://km.oa.com/group/26630/articles");
+                            gui.Shell.openExternal("https://github.com/owen-hong/Maxim-Ui/wiki");
                         }
 
                         if (event.keyCode == "116" || event.which == 1) {

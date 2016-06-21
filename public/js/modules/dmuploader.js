@@ -175,6 +175,12 @@ define(function(requires, exports, module) {
 
                     continue;
                 }
+                // 判断用户是否上传的是文件夹
+                if (file.type ==""){
+                    this.settings.onFileTypeError.call(this.element, file);
+
+                    return;
+                }
 
                 // Check file extension
                 if (this.settings.extFilter != null) {
