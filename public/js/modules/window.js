@@ -15,8 +15,10 @@ define(function(require, exports, module) {
 
         //TODO 阻止文件拖拽进窗口
         $(window).on("keydown",function(e){
-            if(e.keyCode==8){
-                e.preventDefault();
+            if($("input[name='panelBox']").val()=="0"){
+                if(e.keyCode==8){
+                    e.preventDefault();
+                }
             }
         });
 

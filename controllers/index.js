@@ -237,6 +237,8 @@ exports.doUploader = function(req,res){
         //去重复
         $imgFiles = unique($imgFiles);
 
+        //console.log($imgFiles);
+
         if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true") {
 
             switch($tinyImgSwitch)
@@ -244,7 +246,6 @@ exports.doUploader = function(req,res){
                 case "tinyimg":
                     //console.log("tiny img::::::::::::");
                     tools.tinyImg($imgFiles, $currentConfig, Config, function (result) {
-                        console.log(result);
                         //拼接dest的路劲文件
                         destPath(result);
 
@@ -370,7 +371,6 @@ exports.doUploader = function(req,res){
     //TODO 文件分类
     for (var i in $filesType) {
         if ($filesType[i] == "application\/javascript") {
-            console.log($filesType[i]);
             $jsFiles.push($fileUrl[i]);
         } else if($filesType[i]=="text\/css"){
             $cssFiles.push($fileUrl[i]);
@@ -391,8 +391,8 @@ exports.doUploader = function(req,res){
         //TODO CSS处理 miniCsses
         if($cssFiles.length > 0) {
             tools.sprite($cssFiles, $currentConfig, function (result) {
-                result.forEach(function(resultFiles){
 
+                result.forEach(function(resultFiles){
                     if(os.type() == "Windows_NT"){
                         var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
                     }else{
@@ -400,7 +400,7 @@ exports.doUploader = function(req,res){
                     }
 
                     var $filesName = path.basename(resultFiles.fName);
-                    var $fileType = $filesName.split(".")[1];
+                    var $fileType = $filesName.split(".")[1] || '';
 
                     var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0;
                     if($fileTypeStatus && resultFiles.status){

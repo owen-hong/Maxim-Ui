@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.0.8",
-  "version": "2.0.8",
+  "name": "Maxim2.2.0",
+  "version": "2.2.0",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.0.8.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.2.0.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.0.8.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.2.0.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、修复csslint不支持IE hack\n 2、修改重命名时间戳的格式\n 3、修复点击'Backspace键导致bug\n 4、修复部分地区拖拽无效bug",
+  "updataInfo":"1、新增svg sprite功能\n 2、新增svgsprite转png功能\n 3、添加js压缩功能\n 4、修复日期时间戳2位显示bug\n 5、修复样式处理bug若干",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
