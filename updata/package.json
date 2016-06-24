@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.2.1",
-  "version": "2.2.1",
+  "name": "Maxim2.2.2",
+  "version": "2.2.2",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.2.1.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.2.2.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.2.1.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.2.2.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、修复雪碧图漏合并相同图片bug\n 2、修复background base64导致的bug\n 3、修复样式处理后丢失 @-webkit-keyframes bug",
+  "updataInfo":"1、修复样式处理过滤掉'!important' bug\n ",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }

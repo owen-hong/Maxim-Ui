@@ -46,7 +46,7 @@
     "fs-extra": "^0.26.5",
     "http-proxy": "^1.13.2",
     "log4js": "^0.6.31",
-    "maxim-workflow": "^0.3.1",
+    "maxim-workflow": "^0.3.3",
     "method-override": "^2.3.5",
     "node-webkit-updater": "^0.3.2",
     "os-homedir": "^1.0.1",
