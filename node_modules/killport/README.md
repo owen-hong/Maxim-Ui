@@ -1,0 +1,32 @@
+# killport
+a nodejs module to kill any process given their port
+
+Usage
+------
+
+For example, you want to kill the process listening on port 8080:
+
+```javascript
+
+var killport = require('killport');
+
+killport(8080)
+// if success
+.then(function(out){
+  console.log(out);
+})
+// if failed
+.catch(function(err){
+  console.log(err);
+});
+
+```
+
+Support
+------
+
+Only works on OS with `lsof` command.
+
+License
+-------
+MIT

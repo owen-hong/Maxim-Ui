@@ -6,6 +6,8 @@ var app = express();
 
 var path = require('path');
 
+var os = require('os');
+
 var Routes = require('./routes.js');
 var Config = require('./config.js');
 
@@ -84,10 +86,34 @@ Routes.handle(app);
  * */
 
 
+var killport = require('killport');
+
 if(Config.debug){
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
     }).on('error', function(err) {
-        console.log(err.code);
+
+        if(os.platform() == 'darwin'){
+            //判断端口是否被占用，占用就kill，然后重启
+            if(err.code =='EADDRINUSE'){
+                killport(3030)
+                    .then(function(out){
+                        console.log('success:: ')
+
+                        //重启端口
+                        app.listen(app.get('port'),function(){
+                            console.log('Node listening on port:' + app.get('port'));
+                        });
+
+                    })
+                    .catch(function(err){
+                        console.log('error::')
+                        console.log(err);
+                    })
+            }
+        }else{
+            console.log('windows port error~~')
+        }
+
     });
 }
