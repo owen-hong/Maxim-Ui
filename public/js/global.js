@@ -39,7 +39,7 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
     //TODO 自定义dest目录
     var $destPathVal = $.trim($("#destPath").val());
     var $defaultDestPath = $("#destPath").data("path");
-    if ($destPathVal == $defaultDestPath) {
+    if ($destPathVal == $defaultDestPath || $destPathVal == $defaultDestPath+'\\' || $destPathVal == $defaultDestPath+'\/') {
         $(".choose-dest").parent().hide();
         $(".dest-path").prop("disabled", true);
         $(".file-dest").hide();
@@ -72,6 +72,19 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
             $("input[name='propertyBlackList']").prop("disabled", "disabled");
         }
     });
+
+    //TODO 自定义spriteNameSwitch名称
+    $("#spriteFolderSwitch").on("change",function(){
+        var $switch = $(this).prop('checked');
+        if ($switch === true) {
+            $("input[name='spriteFolderName']").prop("disabled", "");
+        } else {
+            $("input[name='spriteFolderName']").prop("disabled", "disabled");
+        }
+    });
+
+
+
     /******************end**********************/
 
 

@@ -369,17 +369,20 @@ exports.doUploader = function(req,res){
 
 
     //TODO 文件分类
-    for (var i in $filesType) {
-        if ($filesType[i] == "application\/javascript") {
+    $filesType.forEach(function(fileType,i){
+        if (fileType == "application\/javascript") {
             $jsFiles.push($fileUrl[i]);
-        } else if($filesType[i]=="text\/css"){
+        } else if(fileType == "text\/css"){
             $cssFiles.push($fileUrl[i]);
-        }else if($filesType[i]=="image\/jpeg" || $filesType[i]=="image\/png"){
+        }else if(fileType == "image\/jpeg" || fileType == "image\/png"){
             $imgFiles.push($fileUrl[i]);
         }else{
             $copyFile.push($fileUrl[i]);
         }
-    }
+    });
+
+
+
 
     //判断是否正确从配置的根元素拉取文件
     if($fileUrl[0].indexOf($currentConfig.localPath) < 0){
@@ -623,6 +626,9 @@ exports.doConfig = function(req,res){
         $obj.cssNameSwitch = req.body.cssNameSwitch;
         $obj.cssName = req.body.cssName  || "";
 
+        $obj.spriteFolderSwitch = req.body.spriteFolderSwitch == "on" ? "true" : "false";
+        $obj.spriteFolderName = req.body.spriteFolderName  || "slice";
+
         $obj.pxToRemSwitch = "false";
         $obj.rootValue = "75";
         $obj.propertyBlackList = "";
@@ -653,9 +659,17 @@ exports.doConfig = function(req,res){
             //编辑项目
             Config.itemsConfig[$currentIndex].itemsName = req.body.itemsName;
             Config.itemsConfig[$currentIndex].localPath = req.body.localPath;
+
             Config.itemsConfig[$currentIndex].destPath = req.body.destPath || DefaultDestPath;
             Config.itemsConfig[$currentIndex].releasePath = req.body.releasePath;
             Config.itemsConfig[$currentIndex].testPath = req.body.testPath;
+
+            Config.itemsConfig[$currentIndex].spriteFolderSwitch = req.body.spriteFolderSwitch == "on" ? "true" : "false";
+            Config.itemsConfig[$currentIndex].spriteFolderName = req.body.spriteFolderName;
+
+
+            console.log(Config.itemsConfig[$currentIndex].spriteFolderSwitch);
+
             Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost;
             Config.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort;
             Config.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath;

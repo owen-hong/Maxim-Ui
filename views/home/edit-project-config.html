@@ -160,6 +160,30 @@
                             <p class="help-block"></p>
                         </div>
                     </div>
+                    <div class="control-group">
+                        <!-- Appended checkbox -->
+                        <label class="control-label">
+                            sprite文件夹名称
+                        </label>
+                        <div class="controls">
+                            <% if(config.spriteFolderSwitch == "true"){ %>
+                            <div class="input-append">
+                                <label class="check-block">
+                                    <input id="spriteFolderSwitch" name="spriteFolderSwitch" type="checkbox" class="checkbox" checked>自定义sprite文件夹名称
+                                </label>
+                                <input name="spriteFolderName" value="<%= config.spriteFolderName %>" type="text" class="form-control" />
+                            </div>
+                            <% }else{ %>
+                            <div class="input-append">
+                                <label class="check-block">
+                                    <input id="spriteFolderSwitch" name="spriteFolderSwitch" type="checkbox" class="checkbox">自定义sprite文件夹名称
+                                </label>
+                                <input name="spriteFolderName" disabled="disabled" value="<%= config.spriteFolderName %>" type="text" class="form-control" />
+                            </div>
+                            <% } %>
+                            <p style="font-size:12px;color:#666;">此文件夹名下存放待合并为sprites图片<br>的小图片，默认命名为slice</p>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div>

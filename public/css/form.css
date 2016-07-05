@@ -15,12 +15,18 @@ fieldset{
     padding-left: 5px;
 }
 .operations-box .form-control.form-control-text{
-border: none;
-background-color: #FAFAFA;
-position: absolute;
-padding-left: 0;
-cursor: default;
-top: 3px;
+
+border: none;
+
+background-color: #FAFAFA;
+
+position: absolute;
+
+padding-left: 0;
+
+cursor: default;
+
+top: 3px;
 }
 
 
@@ -90,10 +96,9 @@ legend + .control-group {
 }
 
 .form-horizontal .control-label {
-    width: 90px;
+    width: 120px;
     text-align: right;
     display: table-cell;
-    padding-right: 15px;
     font-size: 14px;
 }
 .form-horizontal .control-label.title{
@@ -106,7 +111,7 @@ legend + .control-group {
 
 .form-horizontal .controls {
     display: inline-block;
-    padding-left: 20px;
+    padding-left: 15px;
     margin-left: 0;
     display: table-cell;
     font-size: 14px;
@@ -152,10 +157,9 @@ legend + .control-group {
 }
 .check-block{
     display: block;
-    /* margin-bottom: 10px; */
+    margin-bottom: 10px;
     cursor: pointer;
     position: relative;
-    /* margin-top: 10px; */
 }
 .check-block.mt{
     margin-top:10px;

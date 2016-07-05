@@ -175,10 +175,10 @@ define(function(requires, exports, module) {
 
                     continue;
                 }
-                // 判断用户是否上传的是文件夹
-                if (file.type ==""){
-                    this.settings.onFileTypeError.call(this.element, file);
 
+                // 判断用户是否上传的是文件夹
+                if (file.name.indexOf('.') < 0){
+                    this.settings.onFileTypeError.call(this.element, file);
                     return;
                 }
 

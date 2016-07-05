@@ -349,6 +349,11 @@ a.btn.disabled,fieldset[disabled] a.btn {
     line-height: 1.5;
 }
 
+.file-local,
+.file-dest{
+    padding: 3px 12px;
+}
+
 .btn-group-xs>.btn,.btn-xs {
     padding: 1px 5px;
     font-size: 12px;

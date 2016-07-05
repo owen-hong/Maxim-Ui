@@ -143,12 +143,12 @@
                 <div class="control-group">
                     <!-- Appended checkbox -->
                     <label class="control-label">
-                        临时目录
+                        输出目录
                     </label>
                     <div class="controls">
                         <div class="input-append">
                             <label class="check-block">
-                                <input id="destPathSwitch" type="checkbox" class="checkbox">自定义临时目录
+                                <input id="destPathSwitch" type="checkbox" class="checkbox">自定义输出目录
                             </label>
                             <input type="text" id="destPath" disabled="disabled" name="destPath" class="form-control dest-path disabled" data-path="<%= DefaultDestPath %>" value="<%= DefaultDestPath %>">
                             <a href="javascript:void(0)" class="btn btn-default btn-sm file-dest">更改目录</a>
@@ -157,6 +157,21 @@
                             </label>
                         </div>
                         <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <!-- Appended checkbox -->
+                    <label class="control-label">
+                       sprite文件夹名称
+                    </label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <label class="check-block">
+                                <input id="spriteFolderSwitch" name="spriteFolderSwitch" type="checkbox" class="checkbox">自定义sprite文件夹名称
+                            </label>
+                            <input name="spriteFolderName" disabled="disabled" type="text" class="form-control" />
+                        </div>
+                        <p style="font-size:12px;color:#666;">此文件夹名下存放待合并为sprites图片<br>的小图片，默认命名为slice</p>
                     </div>
                 </div>
 
