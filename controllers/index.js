@@ -251,7 +251,6 @@ exports.doUploader = function(req,res){
         //去重复
         $imgFiles = unique($imgFiles);
 
-        //console.log($imgFiles);
 
         if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true") {
 
@@ -339,6 +338,7 @@ exports.doUploader = function(req,res){
 
         if($jsFiles.length > 0){
             tools.compressJS($jsFiles,$currentConfig,function(result){
+
                 //拼接dest的路径文件
                 destPath(result);
 
@@ -384,7 +384,7 @@ exports.doUploader = function(req,res){
 
     //TODO 文件分类
     $filesType.forEach(function(fileType,i){
-        if (fileType == "application\/javascript") {
+        if (fileType.indexOf('javascript') != -1) {
             $jsFiles.push($fileUrl[i]);
         } else if(fileType == "text\/css"){
             $cssFiles.push($fileUrl[i]);
