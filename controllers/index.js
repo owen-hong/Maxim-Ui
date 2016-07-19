@@ -13,8 +13,10 @@ var tools = new Maxim();
 var MaximVersion = require('../updata/package.json');
 
 
+
+
 exports.configData = function(req,res) {
-    res.send('var Config =' + JSON.stringify(Config));
+    res.send(JSON.stringify(Config));
 }
 
 
@@ -59,6 +61,12 @@ var updataConfig = function(resSwitch,res,itemsIndex){
 
 
 exports.index = function(req,res){
+
+    var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
+    var DefaultPath = osHomedir() + path.sep;
+    var DefaultDestPath = DefaultPath + "Dest";
+
+
     //判断monitor是否开启
     if(Config.monitor){
         //http://520ued.com/maxim/downCount
@@ -71,15 +79,21 @@ exports.index = function(req,res){
 
                     updataConfig(false,res);
                 }
+            }else{
+                res.render('home/index',{
+                    title: 'owen tools',
+                    config:Config,
+                    DefaultPath:DefaultDestPath,
+                    configItemes:itemsConfig
+                });
             }
         });
     }
 
-    var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
-
     res.render('home/index',{
         title: 'owen tools',
         config:Config,
+        DefaultPath:DefaultDestPath,
         configItemes:itemsConfig
     });
 };
@@ -519,6 +533,7 @@ exports.updateCssSprite = function(req,res){
     var $cssNameSwitch = req.body.cssNameSwitch == "on" ? "true" : "false";
     var $cssName = req.body.cssName;
 
+
     //var $imgSyncSwitch = req.body.imgSyncSwitch == "on" ? "true" : "false";
     //var $imgSyncName = req.body.imgSyncName;
 
@@ -635,6 +650,8 @@ exports.doConfig = function(req,res){
 
         //判断是否是新增项目
         var $itemsConfigSize = Config.itemsConfig.length || 0;
+
+
         if($itemsConfigSize <= $currentIndex){
 
             //新增项目
@@ -666,9 +683,6 @@ exports.doConfig = function(req,res){
 
             Config.itemsConfig[$currentIndex].spriteFolderSwitch = req.body.spriteFolderSwitch == "on" ? "true" : "false";
             Config.itemsConfig[$currentIndex].spriteFolderName = req.body.spriteFolderName;
-
-
-            console.log(Config.itemsConfig[$currentIndex].spriteFolderSwitch);
 
             Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost;
             Config.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort;
