@@ -6,7 +6,7 @@
 var gui = require('nw.gui');
 var win = gui.Window.get();
 
-seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window) {
+seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoloader,Window) {
     //初始化复制功能
     Copy.init();
 
@@ -131,14 +131,14 @@ seajs.use(["jquery","Copy","uploader","window"],function($,Copy,Uoloader,Window)
         }).done(function (data) {
             if (data.status) {
                 alert("保存成功!");
-                win.close();
+                //win.close();
             } else {
                 alert("配置信息保存失败！");
-                win.close();
+                //win.close();
             }
         }).fail(function (data) {
             console.log("保存失败！");
-            win.close();
+            //win.close();
         });
 
         return false;

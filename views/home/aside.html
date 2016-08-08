@@ -10,28 +10,19 @@
     </ul>
     <a class="global-setting" title="全局设置" id="settingBtn"></a>
 </div>
-<aside>
+<aside id="aside">
     <!--<div class="logo"></div>-->
     <div class="add-project-box">
-        <a href="javascript:void(0);" class="add-project-btn" id="addProject"><i class="add-icon"></i>新建项目</a>
+        <a v-on:click="addProject" href="javascript:void(0);" class="add-project-btn"><i class="add-icon"></i>新建项目</a>
     </div>
     <menu>
         <ul class="menu-list">
-            <% if(configItemes.length > 0){ %>
-            <% configItemes.forEach(function(result,i){ %>
-            <% if(i===0 && result.itemsName!="" ){ %>
-            <li class="cur">
-                <a href="javascript:void(0);"><%= result.itemsName %></a>
+            <li v-for="item in itemsConfig" v-bind:class="[$index == 0 ? 'cur':'']" v-on:click="updataMenuIndex($index)">
+                <a href="javascript:void(0);">{{item.itemsName}}</a>
                 <i class="arrow-left"></i>
             </li>
-            <% }else if(result.itemsName!=""){ %>
-            <li>
-                <a href="javascript:void(0);"><%= result.itemsName %></a>
-                <i class="arrow-left"></i>
-            </li>
-            <% } })%>
-            <% } %>
         </ul>
+
         <input type="hidden" name="itemsIndex" value="0"/>
     </menu>
 </aside>

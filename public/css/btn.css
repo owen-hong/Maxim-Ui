@@ -350,7 +350,8 @@ a.btn.disabled,fieldset[disabled] a.btn {
 }
 
 .file-local,
-.file-dest{
+.file-dest,
+.file-sync{
     padding: 3px 12px;
 }
 

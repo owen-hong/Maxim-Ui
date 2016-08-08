@@ -13,21 +13,113 @@ var tools = new Maxim();
 var MaximVersion = require('../updata/package.json');
 
 
-
-
 exports.configData = function(req,res) {
     res.send(JSON.stringify(Config));
 }
 
 
 //去重复公共方法
-var unique = function(array){
-    var n = [];//临时数组
+const unique = function(array){
+    const n = [];//临时数组
     array.forEach(function(data){
         if(n.indexOf(data) == -1) n.push(data);
     });
     return n;
 }
+
+//同步版本号
+var syncVersions = function(filePath,CurrentConfig,fileType,callback){
+
+    var versions =  CurrentConfig.cssName ? CurrentConfig.cssName : '';
+    fileType =  fileType ? fileType : '.ejs';
+
+    var RegExVersions = /\{\{\s*Maxim-versions\s*\}\}/ig;
+
+
+    var index = filePath.length;
+    var results = [];
+
+    filePath.forEach(function(cssFile) {
+        var baseName = path.basename(cssFile,'.css');
+        var devName = baseName + '-dev' + fileType;
+        var destPath = CurrentConfig.versionsFilePath;
+        var devFile = path.join(destPath, baseName + '-dev' + fileType);
+        var destFile = path.join(destPath, baseName + fileType);
+
+
+        fs.stat(devFile,function(err,stat){
+            if(stat && stat.isFile()) {
+                fs.readFile(devFile, function (error, fileData) {
+                    if (error) {
+                        results.push({
+                            versionsSyncSwitch:true,
+                            fName: destFile,
+                            status: false,
+                            message: error
+                        });
+
+                        index--;
+                        if (index <= 0) {
+                            callback(results);
+                        }
+                    }
+
+                    var $data = fileData.toString();
+                    var result = $data.replace(RegExVersions, versions);
+
+                    fs.writeFile(destFile, result, function (err) {
+                        if (err) {
+                            results.push({
+                                versionsSyncSwitch:true,
+                                fName: destFile,
+                                status: false,
+                                message: err
+                            });
+
+                            index--;
+                            if (index <= 0) {
+                                callback(results);
+                            }
+
+                            console.log(err);
+                        }
+
+                        results.push({
+                            versionsSyncSwitch:true,
+                            fName: destFile,
+                            status: true
+                        });
+
+
+                        index--;
+                        if (index <= 0) {
+                            callback(results);
+                        }
+
+                    })
+                });
+            }else{
+                results.push({
+                    versionsSyncSwitch:true,
+                    fName: devFile,
+                    status: false,
+                    message: '未找css到对应的ejs版本文件'
+                });
+
+                index--;
+                if (index <= 0) {
+                    callback(results);
+                }
+            }
+        });
+
+    });
+}
+
+
+
+
+
 
 //Config.js更新写入
 var updataConfig = function(resSwitch,res,itemsIndex){
@@ -61,11 +153,9 @@ var updataConfig = function(resSwitch,res,itemsIndex){
 
 
 exports.index = function(req,res){
-
     var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
     var DefaultPath = osHomedir() + path.sep;
     var DefaultDestPath = DefaultPath + "Dest";
-
 
     //判断monitor是否开启
     if(Config.monitor){
@@ -94,9 +184,11 @@ exports.index = function(req,res){
         title: 'owen tools',
         config:Config,
         DefaultPath:DefaultDestPath,
+        version:MaximVersion.version,
         configItemes:itemsConfig
     });
 };
+
 
 exports.doUploader = function(req,res){
 
@@ -122,6 +214,7 @@ exports.doUploader = function(req,res){
     var $jsFiles = [];
     var $imgFiles = [];
     var $destCssFiles = [];
+    var $versionsSyncFiles = [];
 
     /*
      *
@@ -180,6 +273,7 @@ exports.doUploader = function(req,res){
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
+                        versionsSyncFiles:$versionsSyncFiles,
                         errorFiles: $errorFiles,
                         successFiles: $successFiles,
                         errorMessage:$errorMessage
@@ -194,6 +288,7 @@ exports.doUploader = function(req,res){
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
+                        versionsSyncFiles:$versionsSyncFiles,
                         errorFiles: $errorFiles,
                         successFiles: $successFiles,
                         errorMessage:$errorMessage
@@ -210,6 +305,7 @@ exports.doUploader = function(req,res){
                 destPath: $currentConfig.destPath,
                 repeatFiles : $repeatfiles,
                 repeatfilesType : $repeatfilesType,
+                versionsSyncFiles:$versionsSyncFiles,
                 errorFiles: $errorFiles,
                 successFiles: $successFiles,
                 errorMessage:$errorMessage
@@ -227,9 +323,11 @@ exports.doUploader = function(req,res){
     var destPath = function(data){
         data.forEach(function(result){
 
-            if(result.status){//关闭ftp后直接输出成功压缩后的文件数组
+            if(result.status && result.versionsSyncSwitch){
+                $versionsSyncFiles.push(result.fName);
+            }else if(result.status){//关闭ftp后直接输出成功压缩后的文件数组
                 $successFiles.push(result.fName);
-            }else{
+            }else if(result.versionsSyncSwitch == undefined || result.versionsSyncSwitch ==false){
                 $errorFiles.push(result.fName);
                 if(result.message !== undefined){
                     $errorMessage.push(result.message);
@@ -251,8 +349,7 @@ exports.doUploader = function(req,res){
         //去重复
         $imgFiles = unique($imgFiles);
 
-
-        if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true") {
+        if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true" || Config.itemsConfig[$itemsIndex].imgMasterSwitch === true) {
 
             switch($tinyImgSwitch)
             {
@@ -371,9 +468,40 @@ exports.doUploader = function(req,res){
                 destPath(result);
 
 
+                syncVersionsFiles();
+
+            });
+        }else{
+
+            syncVersionsFiles();
+        }
+    }
+
+    /*
+     *
+     *
+     * TODO 不需要处理的文件直接调用 syncVersionsFiles
+     *
+     *
+     * */
+    var syncVersionsFiles = function(){
+        //去重复
+        $cssFiles = unique($cssFiles);
+
+        if($cssFiles.length > 0 && $currentConfig.versionsSyncSwitch && $currentConfig.cssNameSwitch && $currentConfig.versionsFilePath !=""){
+            syncVersions($cssFiles,$currentConfig,'.ejs',function(result){
+
+                console.log(result);
+
+                //拼接dest的路径文件
+                destPath(result);
+
+
                 //ftp 上传文件
                 ftpUploader(res);
+
             });
+
         }else{
             //ftp 上传文件
             ftpUploader(res);
@@ -456,109 +584,39 @@ exports.doUploader = function(req,res){
 }
 
 
-
-/*
-*
-* TODO 配置信息处理
-*
-* */
-
-exports.addProject = function(req,res){
-    var $itemsConfigSize = req.query.itemsIndex;
-    var DefaultPath = osHomedir() + path.sep;
-    var DefaultDestPath = DefaultPath + "Dest";
-
-
-    res.render('home/add-project-config',{
-        title: '新增项目',
-        currentIndex:$itemsConfigSize,
-        config:Config.itemsConfig[$itemsConfigSize],
-        configItemes:Config.itemsConfig,
-        DefaultPath:DefaultPath,
-        DefaultDestPath:DefaultDestPath
-    });
-}
-exports.editProject = function(req,res){
-    var $itemsConfigSize = req.query.itemsIndex;
-    var $tabIndex = req.query.tabIndex || 0;
-    var DefaultDestPath = osHomedir() + path.sep + "Dest";
-
-    res.render('home/edit-project-config',{
-        title: '修改项目配置',
-        currentIndex:$itemsConfigSize,
-        config:Config.itemsConfig[$itemsConfigSize],
-        tabIndex:$tabIndex,
-        DefaultDestPath:DefaultDestPath
-    });
-}
-exports.updateProject = function(req,res){
-    var $itemsIndex = req.query.itemsIndex || 0;
-
-    if(Config.itemsConfig[$itemsIndex]){
-        res.json({
-            Config: Config.itemsConfig[$itemsIndex],
-            status:true,
-            itemsLength:Config.itemsConfig.length
-        })
-    }else{
-        res.json({
-            Config: Config.itemsConfig[$itemsIndex - 1],
-            status:false,
-            itemsLength:Config.itemsConfig.length
-        })
-    }
-}
-exports.globalSetting = function(req,res){
-    res.render('home/global-config',{
-        title: '全局设置',
-        config:Config,
-        version:MaximVersion.version
-    });
-}
-
-
-
 //更新css 和 sprite 版本号和状态
 exports.updateCssSprite = function(req,res){
     var $itemsIndex = req.body.itemsIndex;
 
-    var $ftpSwitch = req.body.ftpSwitch == "on" ? "true" : "false";
+    var $ftpSwitch = req.body.ftpSwitch == "on" ? true : false;
 
-    var $imgMasterSwitch = req.body.imgMasterSwitch == "on" ? "true" : "false";
-    var $imgSwitch = req.body.imgSwitch;
+    var $imgMasterSwitch = req.body.imgMasterSwitch == "on" ? true : false;
 
-    var $spriteNameSwitch = req.body.spriteNameSwitch == "on" ? "true" : "false";
-    var $spriteName = req.body.spriteName;
+    var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? true : false;
 
-    var $cssNameSwitch = req.body.cssNameSwitch == "on" ? "true" : "false";
-    var $cssName = req.body.cssName;
+    var $spriteNameSwitch = req.body.spriteNameSwitch == "on" ? true : false;
+    var $spriteName = req.body.spriteName.trim();
+
+    var $cssNameSwitch = req.body.cssNameSwitch == "on" ? true : false;
+    var $cssName = req.body.cssName.trim();
 
 
-    //var $imgSyncSwitch = req.body.imgSyncSwitch == "on" ? "true" : "false";
-    //var $imgSyncName = req.body.imgSyncName;
-
-    var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? "true" : "false";
-
-    var $pxToRemSwitch = req.body.pxToRemSwitch == "on" ? "true" : "false";
-    var $rootValue = req.body.rootValue ? req.body.rootValue : Config.itemsConfig[$itemsIndex].rootValue;
-    var $propertyBlackList = req.body.propertyBlackList ? req.body.propertyBlackList : Config.itemsConfig[$itemsIndex].propertyBlackList;
+    var $pxToRemSwitch = req.body.pxToRemSwitch == "on" ? true : false;
+    var $rootValue = req.body.rootValue ? req.body.rootValue.trim() : '75';
+    var $propertyBlackList = req.body.propertyBlackList ? req.body.propertyBlackList.trim() : '';
 
 
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
 
     Config.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
-    Config.itemsConfig[$itemsIndex].imgSwitch = $imgSwitch;
+
+    Config.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
 
     Config.itemsConfig[$itemsIndex].spriteNameSwitch = $spriteNameSwitch;
     Config.itemsConfig[$itemsIndex].spriteName = $spriteName;
 
     Config.itemsConfig[$itemsIndex].cssNameSwitch = $cssNameSwitch;
     Config.itemsConfig[$itemsIndex].cssName = $cssName;
-
-    //Config.itemsConfig[$itemsIndex].imgSyncSwitch = $imgSyncSwitch;
-    //Config.itemsConfig[$itemsIndex].imgSyncName = $imgSyncName;
-
-    Config.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
 
     Config.itemsConfig[$itemsIndex].pxToRemSwitch = $pxToRemSwitch;
     Config.itemsConfig[$itemsIndex].rootValue = $rootValue;
@@ -612,88 +670,97 @@ exports.validateFtp = function(req,res){
 
 //新增或编辑配置文件
 exports.doConfig = function(req,res){
-    var configJsPath = __dirname.split('controllers')[0] + 'config.js';
+
     var $panelBox = req.body.panelBox;
 
     var $currentIndex = Number(req.body.currentIndex);
     var DefaultDestPath = osHomedir() + path.sep + "Dest";
 
+    var $destPathSwitch = req.body.destPathSwitch == "on" ? true : false;
+    var $spriteFolderSwitch = req.body.spriteFolderSwitch == "on" ? true : false;
 
-    var $obj = {};
+    var $versionsSyncSwitch = req.body.versionsSyncSwitch == "on" ? true : false;
+    var $versionsFilePath = req.body.versionsFilePath ? req.body.versionsFilePath.trim() : '';
+
+    //TODO 新增或删除配置信息
     if($panelBox =="1"){
-        //更新配置信息
-
-        $obj.itemsName = req.body.itemsName;
-        $obj.localPath = req.body.localPath;
-        $obj.destPath = req.body.destPath || DefaultDestPath;
-
-        $obj.releasePath = req.body.releasePath;
-        $obj.testPath = req.body.testPath;
-
-        $obj.ftpHost = req.body.ftpHost;
-        $obj.ftpPort = req.body.ftpPort;
-        $obj.ftpRemotePath = req.body.ftpRemotePath;
-        $obj.ftpUser = req.body.ftpUser;
-        $obj.ftpPassword = req.body.ftpPassword;
-
-        $obj.spriteNameSwitch = req.body.spriteNameSwitch;
-        $obj.spriteName = req.body.spriteName  || "";
-        $obj.cssNameSwitch = req.body.cssNameSwitch;
-        $obj.cssName = req.body.cssName  || "";
-
-        $obj.spriteFolderSwitch = req.body.spriteFolderSwitch == "on" ? "true" : "false";
-        $obj.spriteFolderName = req.body.spriteFolderName  || "slice";
-
-        $obj.pxToRemSwitch = "false";
-        $obj.rootValue = "75";
-        $obj.propertyBlackList = "";
+        var $obj = {};
 
         //判断是否是新增项目
         var $itemsConfigSize = Config.itemsConfig.length || 0;
 
-
         if($itemsConfigSize <= $currentIndex){
-
             //新增项目
             var $date = Math.round(new Date().getTime() / 1000);
 
-            $obj.spriteNameSwitch = "true";
+            $obj.itemsName = req.body.itemsName.trim();
+            $obj.localPath = req.body.localPath.trim();
+
+            $obj.releasePath = req.body.releasePath.trim();
+            $obj.testPath = req.body.testPath.trim();
+
+            $obj.ftpHost = req.body.ftpHost.trim();
+            $obj.ftpPort = req.body.ftpPort.trim();
+            $obj.ftpRemotePath = req.body.ftpRemotePath.trim();
+            $obj.ftpUser = req.body.ftpUser.trim();
+            $obj.ftpPassword = req.body.ftpPassword.trim();
+
+            $obj.ftpSwitch = false;
+
+            $obj.imgMasterSwitch = true;
+            $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin
+
+            $obj.resourceSyncSwitch = false;
+
+            $obj.versionsSyncSwitch = $versionsSyncSwitch;
+            $obj.versionsFilePath = $versionsFilePath;
+
+            $obj.spriteNameSwitch = true;
             $obj.spriteName = $date;
 
-            $obj.cssNameSwitch = "false";
+            $obj.cssNameSwitch = false;
             $obj.cssName = $date;
 
-            //$obj.imgSyncSwitch = "false";
-            //$obj.imgSyncName = $date;
+            $obj.destPathSwitch = $destPathSwitch;
+            $obj.destPath = req.body.destPath || DefaultDestPath;
 
-            $obj.ftpSwitch = "false";
+            $obj.spriteFolderSwitch = $spriteFolderSwitch;
+            $obj.spriteFolderName = req.body.spriteFolderName ? req.body.spriteFolderName.trim() : "slice";
 
-            $obj.imgMasterSwitch = "true";
-            $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin
+            $obj.pxToRemSwitch = false;
+            $obj.rootValue = "75";
+            $obj.propertyBlackList = "";
+
 
             Config.itemsConfig.push($obj);
         }else{
             //编辑项目
-            Config.itemsConfig[$currentIndex].itemsName = req.body.itemsName;
-            Config.itemsConfig[$currentIndex].localPath = req.body.localPath;
+            Config.itemsConfig[$currentIndex].itemsName = req.body.itemsName.trim();
+            Config.itemsConfig[$currentIndex].localPath = req.body.localPath.trim();
 
+            Config.itemsConfig[$currentIndex].releasePath = req.body.releasePath.trim();
+            Config.itemsConfig[$currentIndex].testPath = req.body.testPath.trim();
+
+
+            Config.itemsConfig[$currentIndex].destPathSwitch = $destPathSwitch;
             Config.itemsConfig[$currentIndex].destPath = req.body.destPath || DefaultDestPath;
-            Config.itemsConfig[$currentIndex].releasePath = req.body.releasePath;
-            Config.itemsConfig[$currentIndex].testPath = req.body.testPath;
 
-            Config.itemsConfig[$currentIndex].spriteFolderSwitch = req.body.spriteFolderSwitch == "on" ? "true" : "false";
-            Config.itemsConfig[$currentIndex].spriteFolderName = req.body.spriteFolderName;
+            Config.itemsConfig[$currentIndex].versionsSyncSwitch = $versionsSyncSwitch;
+            Config.itemsConfig[$currentIndex].versionsFilePath = $versionsFilePath;
 
-            Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost;
-            Config.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort;
-            Config.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath;
-            Config.itemsConfig[$currentIndex].ftpUser = req.body.ftpUser;
-            Config.itemsConfig[$currentIndex].ftpPassword = req.body.ftpPassword;
+
+            Config.itemsConfig[$currentIndex].spriteFolderSwitch = $spriteFolderSwitch;
+            Config.itemsConfig[$currentIndex].spriteFolderName = req.body.spriteFolderName ? req.body.spriteFolderName.trim() : "slice";
+
+            Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost.trim();
+            Config.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort.trim();
+            Config.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath.trim();
+            Config.itemsConfig[$currentIndex].ftpUser = req.body.ftpUser.trim();
+            Config.itemsConfig[$currentIndex].ftpPassword = req.body.ftpPassword.trim();
         }
 
     }else{
         //全局设置
-        //Config.youtuQuality = req.body.youtuQuality || "85";
         Config.tinyApi = req.body.tinyApi;
         Config.proxy = req.body.proxy;
     }

@@ -48,13 +48,13 @@ legend + .control-group {
 .form-horizontal{
     -webkit-box-flex: 1;
     overflow: auto;
-    border: 1px solid #e6e6e6;
+    /*border: 1px solid #e6e6e6;*/
     border-top: none;
     border-left: none;
     flex: 1;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    border-left: 1px solid #e6e6e6;
+    /*border-left: 1px solid #e6e6e6;*/
 }
 .form-horizontal fieldset{
     padding-top: 15px;
@@ -81,7 +81,9 @@ legend + .control-group {
 .form-horizontal .control-file {
     width:94px;
 }
-
+.dest-path{
+    margin-right: 5px;
+}
 
 
 

@@ -18,7 +18,7 @@
 </div>
 <!-- end-->
 
-<div class="content">
+<div class="content" id="content">
     <div class="flex-box">
         <% include aside.html %>
         <main>
@@ -38,26 +38,10 @@
             </div>
         </main>
 
-        <div class="itemes-info drag">
-            <% if(configItemes[0]){ %>
-                <div class="itemes-info-bd">
-                <% }else{ %>
-                <div class="itemes-info-bd" style="display: none;">
-                <% } %>
-                    <span class="text"><%= configItemes[0] ? configItemes[0].itemsName : "请新建项目" %></span>
-                    <a href="javascript:void(0);" class="edit-btn" title="设置当前项目">设置</a>
-                </div>
-        </div>
+        <!-- 主面板头部 -->
+        <% include itemes-title.html %>
 
 
-
-
-        <div class="global-operations">
-            <a href="javascript:void(0);" title="置顶窗口" class="always-on-top-btn" id="alwaysOnTop"><i class="pushpin-icon"></i></a>
-            <a href="javascript:void(0);" title="最小化窗口" class="minimize-btn" id="minimize"></a>
-            <a href="javascript:void(0);" title="全屏模式" class="fullscreen-btn" id="enterFullscreen"></a>
-            <a href="javascript:void(0);" title="关闭软件" class="close-btn" id="closeSortware"></a>
-        </div>
         <!-- 右侧控制面板-->
         <div class="operations-box">
             <% include control-panel.html %>
@@ -66,6 +50,19 @@
 </div>
 
 <input type="hidden" name="panelBox" value="0"/>
+
+
+
+<div class="modal-dialog" id="modalDialog" style="display:none;"></div>
+
+<% include project-config-dialog.html %>
+<% include global-config-dialog.html %>
+<% include updata-dialog.html %>
+
+
+
+<script src="/js/updata.js"></script>
+
 <script src="/js/dist/sea.js" id="seajsnode"></script>
 <script>
     // seajs 的简单配置
@@ -75,14 +72,18 @@
             'modules':'/js/modules/'
         },
         alias: {
-            "jquery": "/js/jquery/2.1.4/jquery"
+            "jquery": "/js/jquery/2.1.4/jquery",
+            "vue": "/js/vue/vue"
         },
         debug:true
     })
 
     // 加载入口模块
-    seajs.use(["/js/global.js"]);
+    seajs.use(["/js/global-dev.js"]);
 </script>
+
+
+
 
 </body>
 </html>

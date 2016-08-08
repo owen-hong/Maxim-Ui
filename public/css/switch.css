@@ -31,6 +31,7 @@
 	padding:0 !important;
 	transition-duration:0.4s;
 	transition-property:background-color;
+	cursor: pointer;
 }
 /* 小圆点 */
 .switch-helper:before{

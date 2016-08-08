@@ -13,14 +13,14 @@ define(function(require, exports, module) {
             e.preventDefault();
         });
 
-        //TODO 阻止文件拖拽进窗口
-        $(window).on("keydown",function(e){
-            if($("input[name='panelBox']").val()=="0"){
-                if(e.keyCode==8){
-                    e.preventDefault();
-                }
+        //TODO 阻止界面回退按钮导致bug input除外
+        $(window).bind("keydown",function(e){
+            var $type = e.target.type;
+            if(e.keyCode==8 && $type !== 'text' && $type !== 'password' && $type !== 'textarea'){
+                e.preventDefault();
             }
         });
+
 
         //TODO 浏览器打开窗口 超链接
         $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
@@ -37,6 +37,32 @@ define(function(require, exports, module) {
                 }
             }
         });
+
+        //TODO 选择文件夹
+        $(".file-local").click(function(){
+            $("#chooseLocal").click();
+        });
+        $("body").on("click",".file-dest",function(){
+            $("#choosedest").click();
+        });
+        $("body").on("click",".file-sync",function(){
+            $("#chooseSync").click();
+        });
+        $("#chooseLocal").on("change", function () {
+            var $val = $(this).val();
+            $("#localPath").val($val);
+        });
+
+        $("#choosedest").on("change", function () {
+            var $val = $(this).val();
+            $("#destPath").val($val);
+        });
+        $("#chooseSync").on("change", function () {
+            var $val = $(this).val();
+            $("#versionsFilePath").val($val);
+        });
+
+
         //TODO 启动托盘
         var Tray = function(){
             var tray = new gui.Tray({ title: 'Maxim', icon: 'app.png' });
@@ -45,7 +71,6 @@ define(function(require, exports, module) {
 
             //添加一个菜单
             var menu = new gui.Menu();
-
             menu.append(new gui.MenuItem({ label: '显示窗口' }));
             menu.append(new gui.MenuItem({ label: '退出' }));
 
@@ -62,32 +87,33 @@ define(function(require, exports, module) {
                 win.show();
             });
         };
+
+
         //TODO 全局控制窗口开关
         var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
         if(isMac){
-            //$(".global-operations a").hide();
-            $(".global-operations .close-btn").click(function(){
+            $("#closeSortware").click(function(){
                 win.close();
             });
         }else{
             Tray();//windows下启动托盘
 
-            $(".global-operations .close-btn").click(function(){
+            $("#closeSortware").click(function(){
                 win.hide();
             });
         }
 
-        $(".alert-box .close-btn").click(function(){
-            win.close();
-        });
-
+        //全屏
         $(".global-operations .fullscreen-btn").click(function(){
             win.toggleFullscreen();
         });
 
+        //缩小
         $(".global-operations .minimize-btn").click(function(){
             win.minimize();
         });
+
+        //置顶
         $(".global-operations .always-on-top-btn").click(function(){
             var $this = $(this);
             if($this.hasClass("cur")){
@@ -101,137 +127,29 @@ define(function(require, exports, module) {
             }
         });
 
-        //TODO dialog config
-        if(isMac){
-            var $DialogConfig = {
-                frame:true,
-                position: 'center',
-                height:418,
-                width:610
-            }
-        }else{
-            var $DialogConfig = {
-                frame:false,
-                position: 'center',
-                height:418,
-                width:610
-            }
-        }
 
-        var setAlwaysOnTop = function(win){
-            var $alwaysOnTop = $("#alwaysOnTop").hasClass("cur");
-            if($alwaysOnTop){
-                win.setAlwaysOnTop(true);
-            }else{
-                win.setAlwaysOnTop(false);
-            }
-        }
-
-
-        //TODO 全局设置
+        //TODO Dialog 操作
         $("#settingBtn").click(function(){
-            gui.Window.open('http://localhost:3030/globalSetting',{
-                frame:$DialogConfig.frame,
-                position: $DialogConfig.position,
-                width:640,
-                height: 370,
-                focus:true,
-                resizable:false,
-                id:'globalSetting'
-            },function(new_win){
-
-                setAlwaysOnTop(new_win);
-
-                new_win.on('close', function () {
-                    new_win.hide(); // PRETEND TO BE CLOSED ALREADY
-                    new_win.close(true);//防止进程没被杀死
-                });
-            });
+            $("#modalDialog,#globalConfigDialog").show();
         });
 
-        //TODO 新增项目
-        var addProjectWinFun = function(){
-            var $menuListSite = $(".menu-list li").size();
+        $("#globalConfigDialog li").click(function(){
+            var $index = $(this).index();
+            $(this).addClass("cur").siblings().removeClass("cur");
+            $("#globalConfigDialog").find(".tab-content").eq($index).show().siblings().hide();
 
-            gui.Window.open('http://localhost:3030/addProject?itemsIndex=' + $menuListSite,{
-                frame:$DialogConfig.frame,
-                position: $DialogConfig.position,
-                width:$DialogConfig.width,
-                height: $DialogConfig.height,
-                resizable:false,
-                focus:true,
-                id:"addProjectWin"
-            },function(new_win){
-
-                setAlwaysOnTop(new_win);
-
-                new_win.on('close', function () {
-                    new_win.hide(); // PRETEND TO BE CLOSED ALREADY
-                    updateCssSprite(true,$menuListSite);
-                    new_win.close(true);//防止进程没被杀死
-                });
-            });
-        }
-        $("#addProject").click(function(){
-            addProjectWinFun();
-        });
-
-
-        //TODO 编辑项目
-        var editProjectWinFun = function(){
-            var $currentItems = $("input[name='itemsIndex']").val();
-            gui.Window.open('http://localhost:3030/editProject?itemsIndex=' + $currentItems, {
-                frame: $DialogConfig.frame,
-                position: $DialogConfig.position,
-                width: $DialogConfig.width,
-                height: $DialogConfig.height,
-                resizable:false,
-                focus: true,
-                id:"editProjectWin"
-            },function(new_win){
-
-                setAlwaysOnTop(new_win);
-
-                new_win.on('close', function () {
-                    new_win.hide(); // PRETEND TO BE CLOSED ALREADY
-                    updateCssSprite(false, $currentItems);
-                    new_win.close(true);//防止进程没被杀死
-                });
-            });
-        }
-        $(".edit-btn").click(function() {
-            if($(".menu-list li").size() > 0){
-                editProjectWinFun();
-            }else{
-                addProjectWinFun();
-            }
-        });
-
-
-        //删除项目
-        $("#deletProject").click(function(e){
-            e.preventDefault();
-
-            var $currentItems = $("input[name='currentIndex']").val();
-
-            var r = confirm("是否确认删除该项目！")
-            if(r==true){
-                $.get("/deleteProject?itemsIndex=" + $currentItems).done(function(data){
-                    alert('删除成功！');
-                    win.close();
-                }).fail(function(data){
-                    alert("删除失败！")
-                });
-            }
         });
 
         //TODO 取消按钮当前窗口
-        $("#cancelWin").click(function(e){
+        $("#cancelWin,#closeDilog,#closeAbout").click(function(e){
             e.preventDefault();
-            win.close();
+
+            //清空错误提示
+            jQuery("input[name='itemsName']").siblings(".help-block").html("");
+            jQuery("input[name='localPath']").parent().siblings(".help-block").html("");
+            $("#modalDialog,#projectConfigDialog,#globalConfigDialog").hide();
         });
     }
-
 
     exports.init = init;
 });

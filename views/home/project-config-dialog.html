@@ -1,0 +1,218 @@
+<div class="add-project" id="projectConfigDialog" style="display: none;">
+    <div class="global-operations alert-box">
+        <h1></h1>
+        <a href="javascript:void(0);" title="关闭软件" class="close-btn" id="closeDilog"></a>
+    </div>
+    <form id="editConfigFrome" class="form-horizontal xl" method="post" enctype="multipart/form-data">
+    <div class="content">
+        <div class="flex-box">
+            <div class="tab-side no-drag">
+                <ul data-index="0">
+                    <li v-on:click="changeMenu(0)" class="cur">
+                        <a href="javascript:void(0)">项目设置</a>
+                    </li>
+                    <li v-on:click="changeMenu(1)">
+                        <a href="javascript:void(0)">FTP设置</a>
+                    </li>
+                    <li v-on:click="changeMenu(2)">
+                        <a href="javascript:void(0)">更多设置</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="no-drag">
+                <div class="tab-content">
+                    <fieldset>
+                        <!-- 项目配置-->
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                项目名称 <em class="red">*</em>
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="itemsName" placeholder="项目A" class="form-control" :value="Current.itemsName" />
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Appended input-->
+                            <label class="control-label">
+                                项目目录 <em class="red">*</em>
+                            </label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <span class="add-on">
+                                        <label>
+                                            <input type="file" id="chooseLocal"  class="control-file choose-local" nwdirectory />
+                                        </label>
+                                    </span>
+                                    <input type="text" id="localPath" name="localPath" class="form-control local-path" placeholder="<%= DefaultPath %>" :value="Current.localPath">
+
+                                    <a href="javascript:void(0)" class="btn btn-default btn-sm file-local">更改目录</a>
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="tab-content hide">
+                    <fieldset>
+                        <!-- FTP 配置-->
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                主机名
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="ftpHost" class="form-control" placeholder="10.198.14.14" :value="Current.ftpHost">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                端口
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="ftpPort" style="width:6em;" class="form-control" placeholder="21" :value="Current.ftpPort">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                远程目录
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="ftpRemotePath" class="form-control" placeholder="/proj_qcloud_v2" :value="Current.ftpRemotePath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                测试路径
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="testPath" class="form-control" placeholder="http://10.198.14.14/open_proj/proj_qcloud_v2" :value="Current.testPath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                用户名
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="ftpUser" class="form-control" placeholder="" :value="Current.ftpUser">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                密码
+                            </label>
+                            <div class="controls">
+                                <input type="password" name="ftpPassword" class="form-control" placeholder="" :value="Current.ftpPassword">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="tab-content hide">
+                    <fieldset>
+                        <!-- 更多设置 -->
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                提单路径
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="releasePath" class="form-control" placeholder="/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2" :value="Current.releasePath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Appended checkbox -->
+                            <label class="control-label">
+                                输出目录
+                            </label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <label class="check-block">
+                                        <input v-model="Current.destPathSwitch" name="destPathSwitch" id="destPathSwitch" type="checkbox" class="checkbox">
+                                        自定义输出目录
+                                    </label>
+
+                                    <input type="text" id="destPath" v-if="Current.destPathSwitch" name="destPath" class="form-control dest-path disabled" data-path="<%= DefaultPath %>" :value="Current.destPath">
+
+                                    <a v-if="Current.destPathSwitch" href="javascript:void(0)" class="btn btn-default btn-sm file-dest">更改目录</a>
+
+                                    <label>
+                                        <input type="file" id="choosedest" value="上传文件" class="control-file" nwdirectory />
+                                    </label>
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Appended checkbox -->
+                            <label class="control-label">
+                                css版本控制文件
+                            </label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <label class="check-block">
+                                        <input v-model="Current.versionsSyncSwitch" name="versionsSyncSwitch" type="checkbox" class="checkbox">
+                                        定义文件存放目录
+                                    </label>
+
+                                    <input type="text"  v-if="Current.versionsSyncSwitch" id="versionsFilePath" name="versionsFilePath" class="form-control dest-path disabled" data-path="<%= DefaultPath %>" :value="Current.versionsFilePath">
+
+                                    <a v-if="Current.versionsSyncSwitch" href="javascript:void(0)" class="btn btn-default btn-sm file-sync">更改目录</a>
+
+                                    <label>
+                                        <input type="file" id="chooseSync" value="上传文件" class="control-file" nwdirectory />
+                                    </label>
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Appended checkbox -->
+                            <label class="control-label">
+                                sprite文件夹名称
+                            </label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <label class="check-block">
+                                        <input v-model="Current.spriteFolderSwitch" name="spriteFolderSwitch" type="checkbox" class="checkbox">
+                                        自定义sprite文件夹名称
+                                    </label>
+
+                                    <input name="spriteFolderName" v-if="Current.spriteFolderSwitch" :value="Current.spriteFolderName" type="text" class="form-control" />
+                                </div>
+                                <p style="font-size:12px;color:#666;">此文件夹名下存放待合并为sprites图片<br>的小图片，默认命名为slice</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <!-- 当前项目ID-->
+        <input type="hidden" name="dialogStatus" value="edit"/>
+
+        <!-- 判断是否为编辑或者新增配置字段 -->
+        <input type="hidden" name="panelBox" value="1"/>
+        <!-- 当前项目ID-->
+        <input type="hidden" class="current-index" name="currentIndex" value="0"/>
+        <!-- END -->
+        <button class="btn btn-primary btn-sm">保存</button>
+        <button class="btn btn-default btn-sm" id="cancelWin">取消</button>
+        <button class="btn btn-danger btn-sm" id="deletProject" v-on:click="deleProject">删除此项目</button>
+    </div>
+    </form>
+</div>

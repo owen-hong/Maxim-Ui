@@ -38,11 +38,12 @@ a.red{
     -webkit-app-region: drag;
 }
 .content .flex-box{
-     flex-wrap: nowrap;
-     display: flex;
-     -webkit-box-flex: 1;
-     /* border-right: 1px solid #e6e6e6; */
-     overflow: hidden;
+    flex-wrap: nowrap;
+    display: flex;
+    -webkit-box-flex: 1;
+    overflow: hidden;
+    height: 340px;
+    background-color: #fff;
 }
 .content aside{
     width: 144px;
@@ -50,7 +51,7 @@ a.red{
     font-size: 14px;
     background-color: #354351;
     position: relative;
-    z-index: 9;
+    /*z-index: 9;*/
 }
 .content .project-btn-box{
     font-size: 0;
@@ -102,12 +103,14 @@ a.red{
     display: inline-block;
     vertical-align: middle;
     font-size: 14px;
+    border-left: 1px solid #ddd;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 16px;
 }
 .itemes-info .text
 {
     vertical-align: 2px;
-    border-right: 1px solid #ddd;
-    padding-right: 16px;
     margin-right: 15px;
     vertical-align: middle;
     font-size: 16px;
@@ -245,12 +248,10 @@ main{
 .global-operations{
     width: 240px;
     min-width: 240px;
-    height: 35px;
     position: absolute;
     right: 0;
     text-align: right;
     box-sizing: border-box;
-    border-top: 1px solid #e6e6e6;
     z-index: 9;
     font-size: 0;
 }
@@ -530,7 +531,7 @@ main .shortcut-operations a{
     top: 0;
     height: 100%;
     width: 100%;
-    z-index: 99;
+    z-index: 999;
     -webkit-app-region: drag;
 }
 #loadding-box .text {
@@ -572,7 +573,7 @@ main .shortcut-operations a{
     color: #444444;
     margin-top: 15px;
 }
-.tab-side li a.cur,
+.tab-side li.cur a,
 .tab-side li a:hover{
     background-color: #EBEBEB;
     text-decoration:inherit;

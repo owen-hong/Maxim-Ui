@@ -1,0 +1,14 @@
+<div class="itemes-info drag" id="itemesTitle">
+    <div class="itemes-info-bd">
+        <span class="text">{{Current.itemsName ? Current.itemsName : '请新建项目'}}</span>
+        <a href="javascript:void(0);" v-if="Current.itemsName"  v-on:click="editProject" class="edit-btn" title="设置当前项目">设置</a>
+    </div>
+</div>
+
+
+<div class="global-operations">
+    <a href="javascript:void(0);" title="置顶窗口" class="always-on-top-btn" id="alwaysOnTop"><i class="pushpin-icon"></i></a>
+    <a href="javascript:void(0);" title="最小化窗口" class="minimize-btn" id="minimize"></a>
+    <a href="javascript:void(0);" title="全屏模式" class="fullscreen-btn" id="enterFullscreen"></a>
+    <a href="javascript:void(0);" title="关闭软件" class="close-btn" id="closeSortware"></a>
+</div>

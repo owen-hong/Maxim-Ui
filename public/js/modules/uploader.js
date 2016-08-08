@@ -36,6 +36,8 @@ define(function(require, exports, module) {
             var $DestPath = "<div class='logs-box'><h3 class='releasePath'>临时目录文件列表</h3><div class='logs-text-box'>";
             var $releasePath = "<div class='logs-box'><h3 class='releasePath'>提单路径</h3><div class='logs-text-box'>";
             var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
+            var $versionsSyncFiles = "<div class='logs-box'><h3 style='color:#06c;'>CSS版本控制文件列表</h3><div class='logs-text-box'>";
+
             var $errorMessage="";
 
             if (result.errorMessage.length > 0) {
@@ -70,6 +72,16 @@ define(function(require, exports, module) {
                 });
             }
 
+            //版本同步文件输出
+            if(result.versionsSyncFiles.length > 0) {
+                $.each(result.versionsSyncFiles, function (i, SyncValue) {
+                    $versionsSyncFiles += '<a data-href="' + SyncValue + '">' + SyncValue + '</a>';
+                });
+                $versionsSyncFiles += '</div></div>';
+            }else{
+                $versionsSyncFiles='';
+            }
+
             if(result.errorFiles.length > 0){
                 $.each(result.errorFiles, function (i, errorValue) {
                     var $errorValue = errorValue;
@@ -102,7 +114,7 @@ define(function(require, exports, module) {
             $(".drop-tips").hide();
 
             //输出到客户端
-            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $DestPath + $errorMessage +'</div></div>')
+            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $DestPath + $versionsSyncFiles + $errorMessage +'</div></div>')
 
             //输出提单复制路径到input.hidden
             if($releasePath != ""){

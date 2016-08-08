@@ -1,15 +1,22 @@
 .modal-dialog{
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -200px;
-    margin-top: -85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 999;
-    -webkit-app-region: no-drag;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    background: rgba(0,0,0,.5);
+    -webkit-app-region: drag;
 }
 .modal-content {
-    position: relative;
+    width: 500px;
+    left: 50%;
+    top:50%;
+    margin-left: -250px;
+    position: absolute;
     background-color: #fff;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
@@ -41,11 +48,39 @@
     line-height: 20px;
 }
 .modal-footer {
-    padding: 15px;
+    padding:10px 15px;
     text-align: right;
     border-top: 1px solid #e5e5e5;
     -webkit-app-region: no-drag;
 }
 .modal-footer .btn{
     cursor: pointer;
+}
+
+.add-project{
+    width: 640px;
+    height: 370px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top: -185px;
+    margin-left: -320px;
+    z-index: 999;
+}
+
+
+.loading-box .svg-loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -149px;
+    margin-left: -95px;
+}
+.loading-box .text {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    margin-top: -20px;
+    margin-left: -42px;
+    color: #fff;
 }
