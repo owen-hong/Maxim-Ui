@@ -27,100 +27,6 @@ const unique = function(array){
     return n;
 }
 
-//同步版本号
-var syncVersions = function(filePath,CurrentConfig,fileType,callback){
-
-    var versions =  CurrentConfig.cssName ? CurrentConfig.cssName : '';
-    fileType =  fileType ? fileType : '.ejs';
-
-    var RegExVersions = /\{\{\s*Maxim-versions\s*\}\}/ig;
-
-
-    var index = filePath.length;
-    var results = [];
-
-    filePath.forEach(function(cssFile) {
-        var baseName = path.basename(cssFile,'.css');
-        var devName = baseName + '-dev' + fileType;
-        var destPath = CurrentConfig.versionsFilePath;
-        var devFile = path.join(destPath, baseName + '-dev' + fileType);
-        var destFile = path.join(destPath, baseName + fileType);
-
-
-        fs.stat(devFile,function(err,stat){
-            if(stat && stat.isFile()) {
-                fs.readFile(devFile, function (error, fileData) {
-                    if (error) {
-                        results.push({
-                            versionsSyncSwitch:true,
-                            fName: destFile,
-                            status: false,
-                            message: error
-                        });
-
-                        index--;
-                        if (index <= 0) {
-                            callback(results);
-                        }
-                    }
-
-                    var $data = fileData.toString();
-                    var result = $data.replace(RegExVersions, versions);
-
-                    fs.writeFile(destFile, result, function (err) {
-                        if (err) {
-                            results.push({
-                                versionsSyncSwitch:true,
-                                fName: destFile,
-                                status: false,
-                                message: err
-                            });
-
-                            index--;
-                            if (index <= 0) {
-                                callback(results);
-                            }
-
-                            console.log(err);
-                        }
-
-                        results.push({
-                            versionsSyncSwitch:true,
-                            fName: destFile,
-                            status: true
-                        });
-
-
-                        index--;
-                        if (index <= 0) {
-                            callback(results);
-                        }
-
-                    })
-                });
-            }else{
-                results.push({
-                    versionsSyncSwitch:true,
-                    fName: devFile,
-                    status: false,
-                    message: '未找css到对应的ejs版本文件'
-                });
-
-                index--;
-                if (index <= 0) {
-                    callback(results);
-                }
-            }
-        });
-
-    });
-}
-
-
-
-
-
-
 //Config.js更新写入
 var updataConfig = function(resSwitch,res,itemsIndex){
     //拼接字符串
@@ -203,8 +109,6 @@ exports.doUploader = function(req,res){
 
     var $ftpSwitch = $currentConfig.ftpSwitch == "true" || $currentConfig.ftpSwitch == true;
     var $svnSwitch = $currentConfig.svnSwitch == "true" || $currentConfig.svnSwitch == true;
-
-    var $tinyImgSwitch = "imagemin"; //req.body.tinyImgSwitch || "imagemin";
 
     var $pxToRemSwitch = $currentConfig.pxToRemSwitch;
 
@@ -377,42 +281,15 @@ exports.doUploader = function(req,res){
         $imgFiles = unique($imgFiles);
 
         if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true" || Config.itemsConfig[$itemsIndex].imgMasterSwitch === true) {
+            //console.log("imagemin:::::::::::::::");
+            tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
-            switch($tinyImgSwitch)
-            {
-                case "tinyimg":
-                    //console.log("tiny img::::::::::::");
-                    tools.tinyImg($imgFiles, $currentConfig, Config, function (result) {
-                        //拼接dest的路劲文件
-                        destPath(result);
+                //拼接dest的路劲文件
+                destPath(result);
 
-                        //px2rem处理
-                        Px2rem();
-                    });
-                    break;
-                case "youtu":
-                    //console.log("youtu:::::::::::::::");
-                    tools.youtu($imgFiles, $currentConfig, Config, function (result) {
-
-                        //拼接dest的路劲文件
-                        destPath(result);
-
-                        //px2rem处理
-                        Px2rem();
-                    });
-                    break;
-                default:
-                    //console.log("imagemin:::::::::::::::");
-                    tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
-
-                        //拼接dest的路劲文件
-                        destPath(result);
-
-                        //px2rem处理
-                        Px2rem();
-                    });
-            }
-
+                //px2rem处理
+                Px2rem();
+            });
         }else{
             //console.log("no image min:::::::::::::::");
             tools.copyFiles($imgFiles,$currentConfig,function(result){
@@ -517,9 +394,7 @@ exports.doUploader = function(req,res){
         $cssFiles = unique($cssFiles);
 
         if($cssFiles.length > 0 && $currentConfig.versionsSyncSwitch && $currentConfig.cssNameSwitch && $currentConfig.versionsFilePath !=""){
-            syncVersions($cssFiles,$currentConfig,'.ejs',function(result){
-
-                console.log(result);
+            tools.syncVersions($cssFiles,$currentConfig,'.ejs',function(result){
 
                 //拼接dest的路径文件
                 destPath(result);
@@ -562,9 +437,6 @@ exports.doUploader = function(req,res){
             });
 
             tools.svnUtil($sucFtpFiles,$currentConfig,function (result) {
-                console.log('SVN...');
-                console.log(result);
-
                 result.forEach(function(data){
                     if(data.status){
                         $svnCommitStatus = true;
@@ -602,8 +474,6 @@ exports.doUploader = function(req,res){
 
     //判断是否正确从配置的根元素拉取文件
     if($fileUrl[0].indexOf($currentConfig.localPath) < 0){
-
-        console.log('error....,,d')
         res.json({
             status:false,
             errorMessage:'请您上传此项目配置：“项目目录”下的文件！'
@@ -630,7 +500,6 @@ exports.doUploader = function(req,res){
                     }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
                         $destCssFiles.push($DestFile);
                     }else if(resultFiles.status && $fileTypeStatus === false){
-                        console.log('test:'+$DestFile);
                         $copyFile.push($DestFile);
                     }else if(resultFiles.status===false){
                         $errorFiles.push(resultFiles.fName);
