@@ -49,6 +49,16 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
         });
     });
 
+    $("body").on("click", ".copy-btn2", function () {
+        var $this = $(this),
+            $copyInput = $(this).siblings(".copy-input2"),
+            $copyLength = $copyInput.val().length;
+
+        $copyInput.copyText(0, $copyLength,function(){
+            $this.siblings(".copy-tips").css("display", "inline-block").fadeOut(1500);
+        });
+    });
+
 
     $.get('/config.js').done(function(data){
         const result = eval("(" + data + ")"),
@@ -58,9 +68,9 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
         ItemsConfig.Current = result.itemsConfig[0] || '';
         projectConfig.Current = result.itemsConfig[0] || '';
 
-        //TODO 左侧菜单
-        let aside = new Vue({
-            el: '#aside',
+        //TODO 主界面
+        let ContentVue = new Vue({
+            el: '#content',
             data: ItemsConfig,
             methods: {
                 updataMenuIndex: function (i) {
@@ -73,7 +83,7 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
                     jQuery.get('/config.js').done(function(data) {
                         result = eval("(" + data + ")");
 
-                        controlPanelFrome.$set('Current', result.itemsConfig[i]);
+                        ContentVue.$set('Current', result.itemsConfig[i]);
                         projectConfigDialog.$set('Current', result.itemsConfig[i]);
 
                         jQuery(".menu-list li").eq(i).addClass('cur').siblings().removeClass('cur');
@@ -95,18 +105,11 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
                     jQuery("#deletProject").hide();
                     jQuery("#modalDialog").show();
                     jQuery("#projectConfigDialog").show();
-                }
-            }
-        });
-
-
-        let itemesTitle = new Vue({
-            el: '#itemesTitle',
-            data: ItemsConfig,
-            methods:{
+                },
                 editProject:function(){
                     let $currentIndex = jQuery("input[name='currentIndex']").val();
 
+                    //更新diaog里头当前值
                     projectConfigDialog.$set('Current',result.itemsConfig[$currentIndex]);
 
 
@@ -118,12 +121,48 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
                     jQuery("#deletProject").show();
                     jQuery("#modalDialog").show();
                     jQuery("#projectConfigDialog").show();
+                },
+                formSubmit:function(e){
+                    jQuery("#controlPanelFrome").submit();
+                },
+                spriteNameSwitch:function(e){
+                    ContentVue.$set('Current.spriteNameSwitch',String(e.target.checked));
+                    this.formSubmit();
+                },
+                cssNameSwitch:function(e){
+                    ContentVue.$set('Current.cssNameSwitch',String(e.target.checked));
+                    this.formSubmit();
+                },
+                updataTime:function(e){
+                    var nowTime = new Date();
+                    var $date = nowTime.getFullYear()
+                        + (nowTime.getMonth() + 1 >= 10 ? nowTime.getMonth() + 1 : '0' + (nowTime.getMonth() + 1))
+                        + (nowTime.getDate() > 10 ? nowTime.getDate() : '0' + nowTime.getDate())
+                        + (nowTime.getHours() >= 10 ? nowTime.getHours() : '0' + nowTime.getHours())
+                        + (nowTime.getMinutes() >= 10 ? nowTime.getMinutes() : '0' + nowTime.getMinutes());
+
+                    ContentVue.$set('Current.spriteName',$date);
+                    ContentVue.$set('Current.cssName',$date);
+
+                    this.formSubmit();
+                },
+                blurUpdataTime:function(e){
+                    var $nowTime = e.target.value;
+                    ContentVue.$set('Current.spriteName',$nowTime);
+                    ContentVue.$set('Current.cssName',$nowTime);
+                    this.formSubmit();
+                },
+                pxToRemSwitch:function(e){
+                    var $checked = String(e.target.checked);
+                    ContentVue.$set('Current.pxToRemSwitch',$checked);
+                    this.formSubmit();
                 }
+
             }
         });
 
 
-        //TODO 新增编辑项目
+        //TODO 新增编辑项目 Dialog
         let projectConfigDialog = new Vue({
             el: '#projectConfigDialog',
             data: projectConfig,
@@ -152,10 +191,10 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
 
                             setTimeout(function(){
                                 if(jQuery(".menu-list li").size() == 0){
-                                    controlPanelFrome.$set('Current', '');
+                                    ContentVue.$set('Current', '');
                                     projectConfigDialog.$set('Current', '');
                                 }else{
-                                    controlPanelFrome.$set('Current', result.itemsConfig[0]);
+                                    ContentVue.$set('Current', result.itemsConfig[0]);
                                     projectConfigDialog.$set('Current', result.itemsConfig[0]);
                                     jQuery(".menu-list li").eq(0).addClass('cur').siblings().removeClass('cur');
                                     $("input[name='currentIndex']").val(0);
@@ -168,49 +207,6 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
                             alert("删除失败！")
                         });
                     }
-                }
-            }
-        });
-
-        //TODO 右侧操作栏
-        let controlPanelFrome = new Vue({
-            el: '#controlPanelFrome',
-            data: ItemsConfig,
-            methods: {
-                formSubmit:function(e){
-                    jQuery("#controlPanelFrome").submit();
-                },
-                spriteNameSwitch:function(e){
-                    controlPanelFrome.$set('Current.spriteNameSwitch',String(e.target.checked));
-                    this.formSubmit();
-                },
-                cssNameSwitch:function(e){
-                    controlPanelFrome.$set('Current.cssNameSwitch',String(e.target.checked));
-                    this.formSubmit();
-                },
-                updataTime:function(e){
-                    var nowTime = new Date();
-                    var $date = nowTime.getFullYear()
-                        + (nowTime.getMonth() + 1 >= 10 ? nowTime.getMonth() + 1 : '0' + (nowTime.getMonth() + 1))
-                        + (nowTime.getDate() > 10 ? nowTime.getDate() : '0' + nowTime.getDate())
-                        + (nowTime.getHours() >= 10 ? nowTime.getHours() : '0' + nowTime.getHours())
-                        + (nowTime.getMinutes() >= 10 ? nowTime.getMinutes() : '0' + nowTime.getMinutes());
-
-                    controlPanelFrome.$set('Current.spriteName',$date);
-                    controlPanelFrome.$set('Current.cssName',$date);
-
-                    this.formSubmit();
-                },
-                blurUpdataTime:function(e){
-                    var $nowTime = e.target.value;
-                    controlPanelFrome.$set('Current.spriteName',$nowTime);
-                    controlPanelFrome.$set('Current.cssName',$nowTime);
-                    this.formSubmit();
-                },
-                pxToRemSwitch:function(e){
-                    var $checked = String(e.target.checked);
-                    controlPanelFrome.$set('Current.pxToRemSwitch',$checked);
-                    this.formSubmit();
                 }
             }
         });
@@ -270,7 +266,7 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
 
                             //updata view
                             result.itemsConfig.push(data.Config);
-                            controlPanelFrome.$set('Current', result.itemsConfig[$currentIndex]);
+                            ContentVue.$set('Current', result.itemsConfig[$currentIndex]);
                             projectConfigDialog.$set('Current', result.itemsConfig[$currentIndex]);
 
                             //更新menu list current class 设置延时触发，否则视图更新不及时
@@ -282,7 +278,7 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
                             let $currentIndex = jQuery("input[name='currentIndex']").val();
 
                             ItemsConfig.itemsConfig.$set($currentIndex, data.Config);
-                            controlPanelFrome.$set('Current',data.Config);
+                            ContentVue.$set('Current',data.Config);
 
                             //更新menu list current class 设置延时触发，否则视图更新不及时
                             setTimeout(function(){

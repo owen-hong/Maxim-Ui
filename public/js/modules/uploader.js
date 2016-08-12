@@ -29,20 +29,23 @@ define(function(require, exports, module) {
         //输出路径处理
         var PathExport = function(pathType){
             var $copyContent = '';
+            var $copyContent2 = '';
             var $testUrl = result.testPath;
             var $releaseUrl = result.releasePath;
+            var $svnReleaseUrl = result.svnReleasePath;
             var $UserDest = result.destPath;
 
-            var $DestPath = "<div class='logs-box'><h3 class='releasePath'>临时目录文件列表</h3><div class='logs-text-box'>";
-            var $releasePath = "<div class='logs-box'><h3 class='releasePath'>提单路径</h3><div class='logs-text-box'>";
-            var $testPath = "<div class='logs-box'><h3>测试地址</h3><div class='logs-text-box'>";
+            var $DestPath = "<div class='logs-box'><h3 class='releasePath'>处理成功列表</h3><div class='logs-text-box'>";
+            var $releasePath = "<div class='logs-box'><h3 class='releasePath'>FTP提交成功文件列表</h3><div class='logs-text-box'>";
+            var $svnReleasePath = "<div class='logs-box'><h3 class='releasePath'>SVN提交成功文件列表</h3><div class='logs-text-box'>";
+            var $testPath = "<div class='logs-box'><h3>预览地址</h3><div class='logs-text-box'>";
             var $versionsSyncFiles = "<div class='logs-box'><h3 style='color:#06c;'>CSS版本控制文件列表</h3><div class='logs-text-box'>";
 
-            var $errorMessage="";
+            var $errorMessage = "<div class='logs-box'><div class='logs-text-box'><p><em style='color:red'>Error log: </em></p>";
 
+
+            //TODO 批量处理失败文件
             if (result.errorMessage.length > 0) {
-                $errorMessage += "<div class='logs-box'><div class='logs-text-box'><p><em style='color:red'>Error log: </em></p>";
-
                 $.unique(result.errorMessage);//去除重复错误
                 $.each(result.errorMessage, function (i, value) {
                     var $value = value;
@@ -52,10 +55,9 @@ define(function(require, exports, module) {
                     $errorMessage += "<p>"+ $value +"</p>"
                 });
 
-                $errorMessage += "</div></div>";
             }
 
-            $.unique(result.errorFiles);//去除重复错误
+            //TODO 批量处理成功文件
             if(result.successFiles.length > 0){
                 $.each(result.successFiles, function (i, value) {
                     var $value = value;
@@ -65,14 +67,13 @@ define(function(require, exports, module) {
 
                     //此处由于是提单路径所以引用绝对路径，所以不使用$value
                     $copyContent += $releaseUrl + value + '\n';
-                    $releasePath += '<p>'+$releaseUrl + value + '</p>';
-                    $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
+                    $copyContent2 += $svnReleaseUrl + value + '\n';
 
-                    $DestPath += '<a data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
+                    $DestPath += '<a class="local" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
             }
 
-            //版本同步文件输出
+            //TODO 版本同步文件输出
             if(result.versionsSyncFiles.length > 0) {
                 $.each(result.versionsSyncFiles, function (i, SyncValue) {
                     $versionsSyncFiles += '<a data-href="' + SyncValue + '">' + SyncValue + '</a>';
@@ -82,59 +83,95 @@ define(function(require, exports, module) {
                 $versionsSyncFiles='';
             }
 
-            if(result.errorFiles.length > 0){
-                $.each(result.errorFiles, function (i, errorValue) {
-                    var $errorValue = errorValue;
-                    if(result.osType =="Windows_NT"){
-                        $errorValue = errorValue.replace(/\//g,'\\');
-                    }
 
-                    $releasePath += '<p class="red">' + $releaseUrl + errorValue + '</p>';
-                    $testPath += '<p class="red">' + $testUrl + errorValue + '</p>';
-
-                    $DestPath += '<a class="red" data-href="' + $UserDest + $errorValue + '">' + $UserDest + $errorValue + '</a>';
+            //TODO FTP提交路径处理
+            if(result.ftpSuccess && result.successFiles.length > 0){
+                $.each(result.successFiles, function (i, value) {
+                    $releasePath += '<p>'+ $releaseUrl + value + '</p>';
+                    $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
                 });
             }
+
+            //TODO SVN提交路径处理
+            if(result.svnSwitch && result.svnCommitStatus && $svnReleaseUrl != "") {
+                $.each(result.svnSuccessFiles, function (i, value) {
+                    $svnReleasePath += '<p>'+ $svnReleaseUrl + value + '</p>';
+                });
+                $svnReleasePath += '</div><a href="javascript:void(0)" class="copy-btn2"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" class="copy-input2"></textarea></div>'
+            }else{
+                $svnReleasePath = "";
+            }
+
+            //TODO SVN错误路径处理
+            if(result.svnCommitStatus !== true) {
+                $.each(result.successFiles, function (i, value) {
+                    var $value = value;
+                    if(result.osType =="Windows_NT"){
+                        $value = value.replace(/\//g,'\\');
+                    }
+                    $errorMessage += "<p><strong style='color:red'>SVN文件提交失败：</strong>"+ $UserDest + $value +"</p>" + result.svnErrorMessage;
+                });
+            }
+
 
             if(pathType =="local"){
                 $releasePath ='';
                 $testPath = '';
                 $DestPath += '</div></div>';
             }else{
-                $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" id="copy1" class="copy-input"></textarea></div>'
-                if($testUrl==""){
+
+                if($releaseUrl !=""){
+                    $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" class="copy-input"></textarea></div>'
+
+                }else{
+                    $releasePath ='';
+                }
+
+                if($testUrl == ""){
                     $testPath="";
                 }else{
                     $testPath += '</div></div>'
                 }
-                $DestPath = '';
+
+                //如果ftp返回失败，则销毁提单路径和预览地址
+                if(result.ftpSuccess === false || $ftpSwitch === false){
+                    $releasePath = "";
+                    $testPath="";
+                }
+
+                //只要有一个不等于空就清空本地路径
+                if($ftpSwitch !== false || result.svnSwitch !== false){
+                    $DestPath = '';
+                }
             }
 
             //隐藏提示
             $(".drop-tips").hide();
 
+
+            if(result.errorMessage.length <= 0 && result.svnErrorMessage == ""){
+                $errorMessage = "";
+            }
+
             //输出到客户端
-            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $DestPath + $versionsSyncFiles + $errorMessage +'</div></div>')
+            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $svnReleasePath + $DestPath + $versionsSyncFiles + $errorMessage + '</div></div>')
 
             //输出提单复制路径到input.hidden
             if($releasePath != ""){
                 $fileBox.children(".logs-wrap").last().find(".copy-input").val($copyContent);
             }
+            if($svnReleasePath != ""){
+                $fileBox.children(".logs-wrap").last().find(".copy-input2").val($copyContent2);
+            }
         }
 
         //判断返回状态
-        if (result.status===true && result.ftpSuccess===true) {
-            if($ftpSwitch === true){
-                PathExport("network");
-            }else{
-                PathExport("local");
-            }
-        } else if(result.ftpSuccess === false) {
-            $(".drop-tips").hide();
-            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs"><p class="red">FTP链接失败，请检查FTP服务器是否能正常链接或者检查FTP配置是否正确</p>');
+        if($ftpSwitch === true || result.svnSwitch === true){
+            PathExport("network");
         }else{
-            alert(result.errorMessage);
+            PathExport("local");
         }
+
     }
 
     //TODO 初始化拖拽上传组件
@@ -154,27 +191,20 @@ define(function(require, exports, module) {
             onInit: function () {
                 console.log('init success!');
             },
-            onBeforeUpload: function (id) {
-
-            },
-            onNewFile: function (id, file) {
-                //console.log("onNewFile~");
-            },
-            onComplete: function () {
-                //console.log('onComplete!!');
-            },
-            onUploadProgress: function (id, percent) {
-                //            console.log("onUploadProgress: ");
-                //            console.log(percent);
-            },
             onUploadSuccess: function (id, result) {
-                //更新上一次上传文件数组
-                $repeatfiles = result.repeatFiles;
-                $repeatfilesType = result.repeatfilesType;
+                if(result.status === true){
+                    //更新上一次上传文件数组
+                    $repeatfiles = result.repeatFiles;
+                    $repeatfilesType = result.repeatfilesType;
 
-                //成功函数初始化
-                uploadAjaxSuccess(result);
-
+                    //成功函数初始化
+                    uploadAjaxSuccess(result);
+                }else{
+                    alert(result.errorMessage);
+                    //hide loading
+                    $("#loadding-box").hide();
+                    return false;
+                }
             },
             onUploadError: function (id, message) {
                 $("#loadding-box").hide();
@@ -233,8 +263,20 @@ define(function(require, exports, module) {
                                     contentType: false,
                                     processData: false,
                                     forceSync: false,
-                                    success: function (data) {
-                                        uploadAjaxSuccess(data);
+                                    success: function (result) {
+                                        if(result.status === true){
+                                            //更新上一次上传文件数组
+                                            $repeatfiles = result.repeatFiles;
+                                            $repeatfilesType = result.repeatfilesType;
+
+                                            //成功函数初始化
+                                            uploadAjaxSuccess(result);
+                                        }else{
+                                            alert(result.errorMessage);
+                                            //hide loading
+                                            $("#loadding-box").hide();
+                                            return false;
+                                        }
                                     },
                                     error: function (errMsg) {
                                         $("#loadding-box").hide();

@@ -15,6 +15,9 @@
                         <a href="javascript:void(0)">FTP设置</a>
                     </li>
                     <li v-on:click="changeMenu(2)">
+                        <a href="javascript:void(0)">SVN设置</a>
+                    </li>
+                    <li v-on:click="changeMenu(3)">
                         <a href="javascript:void(0)">更多设置</a>
                     </li>
                 </ul>
@@ -54,7 +57,7 @@
                         </div>
                     </fieldset>
                 </div>
-                <div class="tab-content hide">
+                <div class="tab-content hide" style="padding-top: 5px;;">
                     <fieldset>
                         <!-- FTP 配置-->
                         <div class="control-group">
@@ -90,16 +93,6 @@
                         <div class="control-group">
                             <!-- Text input-->
                             <label class="control-label">
-                                测试路径
-                            </label>
-                            <div class="controls">
-                                <input type="text" name="testPath" class="form-control" placeholder="http://10.198.14.14/open_proj/proj_qcloud_v2" :value="Current.testPath">
-                                <p class="help-block"></p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <!-- Text input-->
-                            <label class="control-label">
                                 用户名
                             </label>
                             <div class="controls">
@@ -117,11 +110,16 @@
                                 <p class="help-block"></p>
                             </div>
                         </div>
-                    </fieldset>
-                </div>
-                <div class="tab-content hide">
-                    <fieldset>
-                        <!-- 更多设置 -->
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                预览地址
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="testPath" class="form-control" placeholder="http://10.198.14.14/open_proj/proj_qcloud_v2" :value="Current.testPath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
                         <div class="control-group">
                             <!-- Text input-->
                             <label class="control-label">
@@ -132,6 +130,56 @@
                                 <p class="help-block"></p>
                             </div>
                         </div>
+                    </fieldset>
+                </div>
+                <div class="tab-content">
+                    <fieldset>
+                        <!-- 项目配置-->
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                SVN本地目录
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="svnLocalPath" placeholder="F:\proj_qcloud_v2\release" class="form-control" :value="Current.svnLocalPath" />
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Appended input-->
+                            <label class="control-label">
+                                SVN用户名
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="svnUser" placeholder="" class="form-control" :value="Current.svnUser" />
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Appended input-->
+                            <label class="control-label">
+                                SVN密码
+                            </label>
+                            <div class="controls">
+                                <input type="password" name="svnPassword" placeholder="" class="form-control" :value="Current.svnPassword" />
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                提单路径
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="svnReleasePath" class="form-control" placeholder="/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2" :value="Current.svnReleasePath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="tab-content hide">
+                    <fieldset>
+                        <!-- 更多设置 -->
                         <div class="control-group">
                             <!-- Appended checkbox -->
                             <label class="control-label">

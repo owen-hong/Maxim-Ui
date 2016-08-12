@@ -24,17 +24,13 @@ define(function(require, exports, module) {
 
         //TODO 浏览器打开窗口 超链接
         $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
-            var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
             var $url = $(this).data("href");
-
-            if($ftpSwitch === true){
-                if (!$url == undefined || !$url == "") {
-                    gui.Shell.openExternal($url);
-                }
+            if($(this).hasClass('local')){
+                console.log('ab');
+                gui.Shell.showItemInFolder($url);
             }else{
-                if (!$url == undefined || !$url == "") {
-                    gui.Shell.showItemInFolder($url);
-                }
+
+                gui.Shell.openExternal($url);
             }
         });
 

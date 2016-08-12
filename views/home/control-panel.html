@@ -14,6 +14,18 @@
     </div>
 
     <hr/>
+
+    <!--  SVN提交 -->
+    <div class="check-block border">
+        <label class="info-text">SVN提交</label>
+        <label class="switch" title="SVN提交">
+            <input type="checkbox" v-on:click="formSubmit" v-model="Current.svnSwitch" name="svnSwitch" class="switch-input">
+            <span class="switch-helper">{{Current.svnSwitch == true ? 'on':'off'}}</span>
+        </label>
+    </div>
+
+    <hr/>
+
     <div class="form-group">
         <!-- 图片压缩 -->
         <div class="check-block border">
@@ -24,6 +36,7 @@
             </label>
         </div>
     </div>
+
     <hr/>
 
     <!-- 资源同步 -->
@@ -62,7 +75,9 @@
             </label>
         </div>
     </div>
+
     <hr/>
+
     <!-- px转rem -->
     <div class="form-group">
         <div class="check-block">
@@ -85,5 +100,6 @@
             <input type="text" v-on:blur="formSubmit" v-else name="propertyBlackList" class="form-control" placeholder="font-size,font" :value="Current.propertyBlackList" disabled>
         </label>
     </div>
+
     <hr/>
 </form>

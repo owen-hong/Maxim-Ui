@@ -201,12 +201,17 @@ exports.doUploader = function(req,res){
     var $itemsIndex = req.body.itemsIndex || 0;
     var $currentConfig = Config.itemsConfig[$itemsIndex];
 
-    var $ftpSwitch = req.body.ftpSwitch;
+    var $ftpSwitch = $currentConfig.ftpSwitch == "true" || $currentConfig.ftpSwitch == true;
+    var $svnSwitch = $currentConfig.svnSwitch == "true" || $currentConfig.svnSwitch == true;
+
     var $tinyImgSwitch = "imagemin"; //req.body.tinyImgSwitch || "imagemin";
 
-    var $pxToRemSwitch = req.body.pxToRemSwitch;
+    var $pxToRemSwitch = $currentConfig.pxToRemSwitch;
 
     var $errorFiles = [];
+    var $svnErrorMessage = '';
+    var $svnCommitStatus = true;
+    var $svnSuccessFiles = [];
     var $errorMessage = [];
     var $successFiles = [];
     var $copyFile =[];
@@ -215,6 +220,7 @@ exports.doUploader = function(req,res){
     var $imgFiles = [];
     var $destCssFiles = [];
     var $versionsSyncFiles = [];
+    var $svnCommitFiles = [];
 
     /*
      *
@@ -236,7 +242,7 @@ exports.doUploader = function(req,res){
         $successFiles = $newSuccessFiles;
 
         var osType = os.type();
-        if ($ftpSwitch == "true" && $successFiles.length > 0) {
+        if ($ftpSwitch && $successFiles.length > 0) {
 
             var $sucFtpFiles = [];
             $successFiles.forEach(function(sucPaths){
@@ -269,26 +275,40 @@ exports.doUploader = function(req,res){
                         status: true,
                         osType:osType,
                         releasePath: $currentConfig.releasePath,
+                        svnSwitch: $currentConfig.svnSwitch,
+                        svnErrorMessage:$svnErrorMessage,
+                        svnSuccessFiles:$svnSuccessFiles,
+                        svnCommitStatus:$svnCommitStatus,
+                        svnReleasePath: $currentConfig.svnReleasePath,
                         testPath: $currentConfig.testPath,
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
                         versionsSyncFiles:$versionsSyncFiles,
+                        svnCommitFiles:$svnCommitFiles,
                         errorFiles: $errorFiles,
                         successFiles: $successFiles,
                         errorMessage:$errorMessage
                     });
                 }else{
+                    $errorMessage.push('FTP链接失败，请检查FTP服务器是否能正常链接或者检查FTP配置是否正确');
+
                     res.json({
                         ftpSuccess:false,
                         status: false,
                         osType:osType,
                         releasePath: $currentConfig.releasePath,
+                        svnSwitch: $currentConfig.svnSwitch,
+                        svnErrorMessage:$svnErrorMessage,
+                        svnSuccessFiles:$svnSuccessFiles,
+                        svnCommitStatus:$svnCommitStatus,
+                        svnReleasePath: $currentConfig.svnReleasePath,
                         testPath: $currentConfig.testPath,
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
                         versionsSyncFiles:$versionsSyncFiles,
+                        svnCommitFiles:$svnCommitFiles,
                         errorFiles: $errorFiles,
                         successFiles: $successFiles,
                         errorMessage:$errorMessage
@@ -301,11 +321,17 @@ exports.doUploader = function(req,res){
                 status: true,
                 osType:osType,
                 releasePath: $currentConfig.releasePath,
+                svnSwitch: $currentConfig.svnSwitch,
+                svnErrorMessage:$svnErrorMessage,
+                svnSuccessFiles:$svnSuccessFiles,
+                svnCommitStatus:$svnCommitStatus,
+                svnReleasePath: $currentConfig.svnReleasePath,
                 testPath: $currentConfig.testPath,
                 destPath: $currentConfig.destPath,
                 repeatFiles : $repeatfiles,
                 repeatfilesType : $repeatfilesType,
                 versionsSyncFiles:$versionsSyncFiles,
+                svnCommitFiles:$svnCommitFiles,
                 errorFiles: $errorFiles,
                 successFiles: $successFiles,
                 errorMessage:$errorMessage
@@ -322,8 +348,9 @@ exports.doUploader = function(req,res){
     * */
     var destPath = function(data){
         data.forEach(function(result){
-
-            if(result.status && result.versionsSyncSwitch){
+            if(result.status && result.svnSwitch){
+                $svnCommitFiles.push(result.fName);
+            }else if(result.status && result.versionsSyncSwitch){
                 $versionsSyncFiles.push(result.fName);
             }else if(result.status){//关闭ftp后直接输出成功压缩后的文件数组
                 $successFiles.push(result.fName);
@@ -464,6 +491,7 @@ exports.doUploader = function(req,res){
 
         if($copyFile.length > 0){
             tools.copyFiles($copyFile,$currentConfig,function(result){
+
                 //拼接dest的路径文件
                 destPath(result);
 
@@ -497,9 +525,58 @@ exports.doUploader = function(req,res){
                 destPath(result);
 
 
+                //svn 上传文件
+                svnCommit();
+            });
+
+        }else{
+            //svn 上传文件
+            svnCommit();
+        }
+    }
+
+
+    var svnCommit = function(){
+        //去除重复
+        $successFiles = unique($successFiles);
+        $errorFiles = unique($errorFiles);
+
+        //过滤成功返回结果与失败返回结果中相同部分
+        var $newSuccessFiles = [];
+        $successFiles.forEach(function(sucValue){
+            if($errorFiles.indexOf(sucValue) == -1){
+                $newSuccessFiles.push(sucValue);
+            }
+        });
+        $successFiles = $newSuccessFiles;
+
+        if ($svnSwitch && $successFiles.length > 0) {
+            var $sucFtpFiles = [];
+            $successFiles.forEach(function (sucPaths) {
+                if (os.type() == "Windows_NT") {
+                    var $localPath = sucPaths.replace(/\//g, '\\');
+                } else {
+                    var $localPath = sucPaths;
+                }
+                $sucFtpFiles.push($currentConfig.destPath + $localPath);
+            });
+
+            tools.svnUtil($sucFtpFiles,$currentConfig,function (result) {
+                console.log('SVN...');
+                console.log(result);
+
+                result.forEach(function(data){
+                    if(data.status){
+                        $svnCommitStatus = true;
+                        $svnSuccessFiles = $successFiles;
+                    }else{
+                        $svnCommitStatus = false;
+                        $svnErrorMessage = data.message;
+                    }
+                });
+
                 //ftp 上传文件
                 ftpUploader(res);
-
             });
 
         }else{
@@ -507,7 +584,6 @@ exports.doUploader = function(req,res){
             ftpUploader(res);
         }
     }
-
 
 
     //TODO 文件分类
@@ -524,10 +600,10 @@ exports.doUploader = function(req,res){
     });
 
 
-
-
     //判断是否正确从配置的根元素拉取文件
     if($fileUrl[0].indexOf($currentConfig.localPath) < 0){
+
+        console.log('error....,,d')
         res.json({
             status:false,
             errorMessage:'请您上传此项目配置：“项目目录”下的文件！'
@@ -547,12 +623,14 @@ exports.doUploader = function(req,res){
                     var $filesName = path.basename(resultFiles.fName);
                     var $fileType = $filesName.split(".")[1] || '';
 
-                    var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0;
+
+                    var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 || $fileType.indexOf("svg");
                     if($fileTypeStatus && resultFiles.status){
                         $imgFiles.push($DestFile);
                     }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
                         $destCssFiles.push($DestFile);
-                    }else if(resultFiles.status){
+                    }else if(resultFiles.status && $fileTypeStatus === false){
+                        console.log('test:'+$DestFile);
                         $copyFile.push($DestFile);
                     }else if(resultFiles.status===false){
                         $errorFiles.push(resultFiles.fName);
@@ -590,6 +668,8 @@ exports.updateCssSprite = function(req,res){
 
     var $ftpSwitch = req.body.ftpSwitch == "on" ? true : false;
 
+    var $svnSwitch = req.body.svnSwitch == "on" ? true : false;
+
     var $imgMasterSwitch = req.body.imgMasterSwitch == "on" ? true : false;
 
     var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? true : false;
@@ -607,6 +687,8 @@ exports.updateCssSprite = function(req,res){
 
 
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
+
+    Config.itemsConfig[$itemsIndex].svnSwitch = $svnSwitch;
 
     Config.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
 
@@ -652,7 +734,6 @@ exports.validateFtp = function(req,res){
     $switchNull($currentItemes.ftpHost);
     $switchNull($currentItemes.ftpPort);
     $switchNull($currentItemes.ftpRemotePath);
-    $switchNull($currentItemes.testPath);
     $switchNull($currentItemes.ftpUser);
     $switchNull($currentItemes.ftpPassword);
 
@@ -697,6 +778,7 @@ exports.doConfig = function(req,res){
             $obj.localPath = req.body.localPath.trim();
 
             $obj.releasePath = req.body.releasePath.trim();
+            $obj.svnReleasePath = req.body.svnReleasePath.trim();
             $obj.testPath = req.body.testPath.trim();
 
             $obj.ftpHost = req.body.ftpHost.trim();
@@ -705,7 +787,13 @@ exports.doConfig = function(req,res){
             $obj.ftpUser = req.body.ftpUser.trim();
             $obj.ftpPassword = req.body.ftpPassword.trim();
 
+
+            $obj.svnLocalPath = req.body.svnLocalPath.trim();
+            $obj.svnUser = req.body.svnUser.trim();
+            $obj.svnPassword = req.body.svnPassword.trim();
+
             $obj.ftpSwitch = false;
+            $obj.svnSwitch = false;
 
             $obj.imgMasterSwitch = true;
             $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin
@@ -739,6 +827,7 @@ exports.doConfig = function(req,res){
             Config.itemsConfig[$currentIndex].localPath = req.body.localPath.trim();
 
             Config.itemsConfig[$currentIndex].releasePath = req.body.releasePath.trim();
+            Config.itemsConfig[$currentIndex].svnReleasePath = req.body.svnReleasePath.trim();
             Config.itemsConfig[$currentIndex].testPath = req.body.testPath.trim();
 
 
@@ -757,8 +846,11 @@ exports.doConfig = function(req,res){
             Config.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath.trim();
             Config.itemsConfig[$currentIndex].ftpUser = req.body.ftpUser.trim();
             Config.itemsConfig[$currentIndex].ftpPassword = req.body.ftpPassword.trim();
-        }
 
+            Config.itemsConfig[$currentIndex].svnLocalPath = req.body.svnLocalPath.trim();
+            Config.itemsConfig[$currentIndex].svnUser = req.body.svnUser.trim();
+            Config.itemsConfig[$currentIndex].svnPassword = req.body.svnPassword.trim();
+        }
     }else{
         //全局设置
         Config.tinyApi = req.body.tinyApi;

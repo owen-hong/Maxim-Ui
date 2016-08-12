@@ -222,55 +222,13 @@ define(function(requires, exports, module) {
             //}
             var $this = this;
             //var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
-            //if(isMac){
-            //    var $DialogConfig = {
-            //        frame:true,
-            //        position: 'center',
-            //        height:418,
-            //        width:610
-            //    }
-            //}else{
-            //    var $DialogConfig = {
-            //        frame:false,
-            //        position: 'center',
-            //        height:418,
-            //        width:610
-            //    }
-            //}
-            //
-            //var setAlwaysOnTop = function(win){
-            //    var $alwaysOnTop = $("#alwaysOnTop").hasClass("cur");
-            //    if($alwaysOnTop){
-            //        win.setAlwaysOnTop(true);
-            //    }else{
-            //        win.setAlwaysOnTop(false);
-            //    }
-            //}
 
             //判断是否项目为空
-            //var $menuListSite = $(".menu-list li").size();
-            //if($menuListSite <= 0){
-            //    alert("请先配置你的项目");
-            //    gui.Window.open('http://localhost:3030/addProject?itemsIndex=' + $menuListSite,{
-            //        frame:$DialogConfig.frame,
-            //        position: $DialogConfig.position,
-            //        width:$DialogConfig.width,
-            //        height: $DialogConfig.height,
-            //        focus:true,
-            //        id:"addProjectWin"
-            //    },function(new_win){
-            //
-            //        setAlwaysOnTop(new_win);
-            //
-            //        new_win.on('close', function () {
-            //            new_win.hide(); // PRETEND TO BE CLOSED ALREADY
-            //            $this.updateCssSprite(true,$menuListSite);
-            //            new_win.close(true);//防止进程没被杀死
-            //        });
-            //    });
-            //    return false;
-            //}
-
+            var $menuListSite = $(".menu-list li").size();
+            if($menuListSite <= 0){
+                alert("请先配置你的工程项目");
+                return false;
+            }
 
             //判断FTP是否开启，开启就做FTP配置校验，未开启就弹出FTP配置让用户完善
             var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
@@ -282,22 +240,6 @@ define(function(requires, exports, module) {
                         $this.processQueue();
                     }else{
                         alert("请完善FTP配置.");
-                        //gui.Window.open('http://localhost:3030/editProject?itemsIndex=' + $itemsIndex, {
-                        //    frame: $DialogConfig.frame,
-                        //    position: $DialogConfig.position,
-                        //    width: $DialogConfig.width,
-                        //    height: $DialogConfig.height,
-                        //    focus: true,
-                        //    id:"editProjectWin"
-                        //},function(new_win){
-                        //    setAlwaysOnTop(new_win);
-                        //
-                        //    new_win.on('close', function () {
-                        //        new_win.hide(); // PRETEND TO BE CLOSED ALREADY
-                        //        $this.updateCssSprite(false,$itemsIndex);
-                        //        new_win.close(true);//防止进程没被杀死
-                        //    });
-                        //});
                         return false;
                     }
                 });
@@ -342,21 +284,8 @@ define(function(requires, exports, module) {
             }
 
             //获取各个任务的开关
-            var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
-            var $imgSwitch = $("input[name='imgSwitch']:checked").val();
-
             var $itemsIndex = $("input[name='itemsIndex']").val();
-
-            var $pxToRemSwitch = $("input[name='pxToRemSwitch']").prop("checked");
-
-
-
-            widget.settings.extraData.ftpSwitch = $ftpSwitch;
-            widget.settings.extraData.tinyImgSwitch = $imgSwitch;
-
             widget.settings.extraData.itemsIndex = $itemsIndex;
-
-            widget.settings.extraData.pxToRemSwitch = $pxToRemSwitch;
 
 
             $.each(widget.settings.extraData, function (exKey, exVal) {

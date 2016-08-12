@@ -414,19 +414,23 @@ main .shortcut-operations a{
 }
 
 /*复制提示*/
-.drop-files-box .logs-box .copy-btn{
+.drop-files-box .logs-box .copy-btn,
+.drop-files-box .logs-box .copy-btn2
+{
     font-weight: normal;
     cursor: pointer;
     color:#006DFF;
     margin-top: 10px;
     display: inline-block;
 }
-.drop-files-box .logs-box .copy-input{
+.drop-files-box .logs-box .copy-input,
+.drop-files-box .logs-box .copy-input2
+{
     opacity: 0;
     width: 0;
     height: 0;
 }
-.drop-files-box .logs-box .copy-btn .copy-icon,
+.drop-files-box .logs-box  .copy-icon,
 .drop-files-box .logs-box .success-icon
 {
     width: 15px;
