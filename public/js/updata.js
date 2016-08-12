@@ -136,7 +136,6 @@ var checkUpdataTime = function(){
 
 //每隔一分钟检查服务器是否需要更新
 setInterval(function() {
-    console.log('a');
     checkUpdataTime();
 },60000);
 
