@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.2.6",
-  "version": "2.2.6",
+  "name": "Maxim2.3.1",
+  "version": "2.3.1",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.2.6.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.3.1.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.2.6.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.3.1.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、添加SVN提交功能\n 2、新增同步版本号到版本文件功能\n 3、自动更新机制优化，改成后台自动更新",
+  "updataInfo":"1、修复SVN提交@2x某个图片会漏提交bug\n",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
