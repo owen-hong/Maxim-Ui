@@ -15,11 +15,11 @@ var CSSOM = {
 CSSOM.CSSImportRule = function CSSImportRule() {
 	CSSOM.CSSRule.call(this);
 	this.href = "";
-	this.media = new CSSOM.MediaList();
-	this.styleSheet = new CSSOM.CSSStyleSheet();
+	this.media = new CSSOM.MediaList;
+	this.styleSheet = new CSSOM.CSSStyleSheet;
 };
 
-CSSOM.CSSImportRule.prototype = new CSSOM.CSSRule();
+CSSOM.CSSImportRule.prototype = new CSSOM.CSSRule;
 CSSOM.CSSImportRule.prototype.constructor = CSSOM.CSSImportRule;
 CSSOM.CSSImportRule.prototype.type = 3;
 
@@ -42,7 +42,8 @@ Object.defineProperty(CSSOM.CSSImportRule.prototype, "cssText", {
 
     var buffer = '';
     var index;
-    for (var character; (character = cssText.charAt(i)); i++) {
+    var mediaText = '';
+    for (var character; character = cssText.charAt(i); i++) {
 
       switch (character) {
         case ' ':
