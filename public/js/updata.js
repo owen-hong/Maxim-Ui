@@ -129,7 +129,7 @@ var checkUpdataTime = function(){
     var m = today.getMinutes();
     var currentTime = h + ":" + m;
 
-    if(currentTime == '10:30' || currentTime == '13:30' || currentTime == '16:30' || currentTime == '19:30' ){
+    if(currentTime == '10:30' || currentTime == '13:30' || currentTime == '15:30' || currentTime == '16:30' || currentTime == '17:30' || currentTime == '19:30' ){
         checkMaximUpdada();
     }
 }

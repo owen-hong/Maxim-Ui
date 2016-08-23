@@ -14,6 +14,8 @@ define(function(require, exports, module) {
     //返回ajax数据函数处理
     var uploadAjaxSuccess = function (result) {
 
+        console.log(result);
+
         var $fileBox = $("#drag-and-drop-zone");
         var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
 
@@ -54,8 +56,19 @@ define(function(require, exports, module) {
                     }
                     $errorMessage += "<p>"+ $value +"</p>"
                 });
-
             }
+            if (result.errorFiles.length > 0) {
+                $.each(result.errorFiles, function (i, value) {
+                    var $value = value;
+                    if(result.osType =="Windows_NT"){
+                        $value = value.replace(/\//g,'\\');
+                    }
+
+                    $DestPath += '<a  style="color:red" class="local" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
+                });
+            }
+
+
 
             //TODO 批量处理成功文件
             if(result.successFiles.length > 0){
@@ -69,7 +82,7 @@ define(function(require, exports, module) {
                     $copyContent += $releaseUrl + value + '\n';
                     $copyContent2 += $svnReleaseUrl + value + '\n';
 
-                    $DestPath += '<a class="local" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
+                    $DestPath += '<a  class="local" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
             }
 
