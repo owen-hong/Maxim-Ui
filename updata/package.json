@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.3.5",
-  "version": "2.3.5",
+  "name": "Maxim2.3.6",
+  "version": "2.3.6",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.3.5.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.3.6.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.3.5.zip"
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.3.6.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、优化SVG合并出现错误捕获\n2、样式资源同步错误文件捕获\n3、优化SVG相同图片不合并bug",
+  "updataInfo":"1、优化SVN功能，降低SVN提交出现文件冲突",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }

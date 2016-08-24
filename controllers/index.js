@@ -269,6 +269,53 @@ exports.doUploader = function(req,res){
         });
     }
 
+
+    /*
+     *
+     *
+     * TODO CSS 处理
+     *
+     *
+     * */
+    var cssWork = function(){
+        tools.sprite($cssFiles, $currentConfig, function (result) {
+            result.forEach(function(resultFiles){
+                if(os.type() == "Windows_NT"){
+                    var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
+                }else{
+                    var $DestFile = $currentConfig.destPath + resultFiles.fName;
+                }
+
+                var $filesName = path.basename(resultFiles.fName);
+                var $fileType = $filesName.split(".")[1] || '';
+
+
+                var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 || $fileType.indexOf("svg");
+                if($fileTypeStatus && resultFiles.status){
+                    $imgFiles.push($DestFile);
+                }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
+                    $destCssFiles.push($DestFile);
+                }else if(resultFiles.status && $fileTypeStatus === false){
+                    $copyFile.push($DestFile);
+                }else if(resultFiles.status===false){
+                    $errorFiles.push(resultFiles.fName);
+                }
+            });
+
+            //拼接dest的路径文件
+            destPath(result);
+
+            if($imgFiles.length > 0){
+                //TODO tiny img
+                tinyImg();
+            }else{
+                //TODO px2rem
+                Px2rem();
+            }
+        });
+    }
+
+
     /*
      *
      *
@@ -303,6 +350,7 @@ exports.doUploader = function(req,res){
         }
     }
 
+
     /*
      *
      *
@@ -324,6 +372,7 @@ exports.doUploader = function(req,res){
             jsMin();
         }
     }
+
 
     /*
      *
@@ -355,6 +404,7 @@ exports.doUploader = function(req,res){
         }
     }
 
+
     /*
      *
      *
@@ -381,6 +431,7 @@ exports.doUploader = function(req,res){
             syncVersionsFiles();
         }
     }
+
 
     /*
      *
@@ -411,6 +462,13 @@ exports.doUploader = function(req,res){
     }
 
 
+    /*
+     *
+     *
+     * TODO SVN提交
+     *
+     *
+     * */
     var svnCommit = function(){
         //去除重复
         $successFiles = unique($successFiles);
@@ -479,53 +537,38 @@ exports.doUploader = function(req,res){
             errorMessage:'请您上传此项目配置：“项目目录”下的文件！'
         });
     }else{
-        //TODO CSS处理 miniCsses
-        if($cssFiles.length > 0) {
-            tools.sprite($cssFiles, $currentConfig, function (result) {
+        var goWork = function(){
+            //TODO CSS处理
+            if($cssFiles.length > 0) {
+                cssWork();
+            }else if($imgFiles.length > 0){
+                //TODO tiny img
+                tinyImg();
+            }else if($jsFiles.length > 0){
+                //TODO jsMin
+                jsMin();
+            }else if($copyFile.length > 0){
+                //TODO copyFiles
+                copyFiles();
+            }
+        }
 
-                result.forEach(function(resultFiles){
-                    if(os.type() == "Windows_NT"){
-                        var $DestFile = $currentConfig.destPath + resultFiles.fName.replace(/\//g,'\\');
-                    }else{
-                        var $DestFile = $currentConfig.destPath + resultFiles.fName;
-                    }
+        if($currentConfig.svnSwitch === true){
+            tools.svnUpdate($currentConfig,function(err,data){
+                if(err){
+                    res.json({
+                        status:false,
+                        errorMessage:'SVN Update出现错误,请解决冲突再重试.'
+                    });
 
-                    var $filesName = path.basename(resultFiles.fName);
-                    var $fileType = $filesName.split(".")[1] || '';
-
-
-                    var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 || $fileType.indexOf("svg");
-                    if($fileTypeStatus && resultFiles.status){
-                        $imgFiles.push($DestFile);
-                    }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
-                        $destCssFiles.push($DestFile);
-                    }else if(resultFiles.status && $fileTypeStatus === false){
-                        $copyFile.push($DestFile);
-                    }else if(resultFiles.status===false){
-                        $errorFiles.push(resultFiles.fName);
-                    }
-                });
-
-                //拼接dest的路径文件
-                destPath(result);
-
-                if($imgFiles.length > 0){
-                    //TODO tiny img
-                    tinyImg();
-                }else{
-                    //TODO px2rem
-                    Px2rem();
+                    return;
                 }
+                console.log('svn updata success..');
+
+                goWork();
             });
-        }else if($imgFiles.length > 0){
-            //TODO tiny img
-            tinyImg();
-        }else if($jsFiles.length > 0){
-            //TODO jsMin
-            jsMin();
-        }else if($copyFile.length > 0){
-            //TODO copyFiles
-            copyFiles();
+        }else{
+            goWork();
         }
     }
 }
