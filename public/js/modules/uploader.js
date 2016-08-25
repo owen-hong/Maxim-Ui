@@ -13,9 +13,6 @@ define(function(require, exports, module) {
 
     //返回ajax数据函数处理
     var uploadAjaxSuccess = function (result) {
-
-        console.log(result);
-
         var $fileBox = $("#drag-and-drop-zone");
         var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
 

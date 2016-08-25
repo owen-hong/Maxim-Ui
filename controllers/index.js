@@ -252,6 +252,9 @@ exports.doUploader = function(req,res){
     * */
     var destPath = function(data){
         data.forEach(function(result){
+
+
+
             if(result.status && result.svnSwitch){
                 $svnCommitFiles.push(result.fName);
             }else if(result.status && result.versionsSyncSwitch){
@@ -290,7 +293,7 @@ exports.doUploader = function(req,res){
                 var $fileType = $filesName.split(".")[1] || '';
 
 
-                var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 || $fileType.indexOf("svg");
+                var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 || $fileType.indexOf("svg") >= 0;
                 if($fileTypeStatus && resultFiles.status){
                     $imgFiles.push($DestFile);
                 }else if($fileType.indexOf("css") >= 0 && resultFiles.status){
