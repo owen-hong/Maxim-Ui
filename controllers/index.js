@@ -109,13 +109,17 @@ exports.doUploader = function(req,res){
 
     var $ftpSwitch = $currentConfig.ftpSwitch == "true" || $currentConfig.ftpSwitch == true;
     var $svnSwitch = $currentConfig.svnSwitch == "true" || $currentConfig.svnSwitch == true;
+    var $httpSwitch = $currentConfig.httpSwitch == "true" || $currentConfig.httpSwitch == true;
 
     var $pxToRemSwitch = $currentConfig.pxToRemSwitch;
 
     var $errorFiles = [];
     var $svnErrorMessage = '';
+    var $httpErrorMessage = [];
     var $svnCommitStatus = true;
     var $svnSuccessFiles = [];
+    var $httpCommitStatus = true;
+    var $httpSuccessFiles = [];
     var $errorMessage = [];
     var $successFiles = [];
     var $copyFile =[];
@@ -147,7 +151,6 @@ exports.doUploader = function(req,res){
 
         var osType = os.type();
         if ($ftpSwitch && $successFiles.length > 0) {
-
             var $sucFtpFiles = [];
             $successFiles.forEach(function(sucPaths){
                 if(os.type() == "Windows_NT"){
@@ -184,7 +187,13 @@ exports.doUploader = function(req,res){
                         svnSuccessFiles:$svnSuccessFiles,
                         svnCommitStatus:$svnCommitStatus,
                         svnReleasePath: $currentConfig.svnReleasePath,
+                        httpSwitch: $currentConfig.httpSwitch,
+                        httpCommitStatus:$httpCommitStatus,
+                        httpSuccessFiles:$httpSuccessFiles,
+                        httpReleasePath: $currentConfig.httpReleasePath,
+                        httpErrorMessage: $httpErrorMessage,
                         testPath: $currentConfig.testPath,
+                        httpTestPath: $currentConfig.httpTestPath,
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
@@ -207,7 +216,13 @@ exports.doUploader = function(req,res){
                         svnSuccessFiles:$svnSuccessFiles,
                         svnCommitStatus:$svnCommitStatus,
                         svnReleasePath: $currentConfig.svnReleasePath,
+                        httpSwitch: $currentConfig.httpSwitch,
+                        httpCommitStatus:$httpCommitStatus,
+                        httpSuccessFiles:$httpSuccessFiles,
+                        httpReleasePath: $currentConfig.httpReleasePath,
+                        httpErrorMessage: $httpErrorMessage,
                         testPath: $currentConfig.testPath,
+                        httpTestPath: $currentConfig.httpTestPath,
                         destPath: $currentConfig.destPath,
                         repeatFiles : $repeatfiles,
                         repeatfilesType : $repeatfilesType,
@@ -230,7 +245,13 @@ exports.doUploader = function(req,res){
                 svnSuccessFiles:$svnSuccessFiles,
                 svnCommitStatus:$svnCommitStatus,
                 svnReleasePath: $currentConfig.svnReleasePath,
+                httpSwitch: $currentConfig.httpSwitch,
+                httpCommitStatus:$httpCommitStatus,
+                httpSuccessFiles:$httpSuccessFiles,
+                httpReleasePath: $currentConfig.httpReleasePath,
+                httpErrorMessage: $httpErrorMessage,
                 testPath: $currentConfig.testPath,
+                httpTestPath: $currentConfig.httpTestPath,
                 destPath: $currentConfig.destPath,
                 repeatFiles : $repeatfiles,
                 repeatfilesType : $repeatfilesType,
@@ -252,16 +273,13 @@ exports.doUploader = function(req,res){
     * */
     var destPath = function(data){
         data.forEach(function(result){
-
-
-
             if(result.status && result.svnSwitch){
                 $svnCommitFiles.push(result.fName);
             }else if(result.status && result.versionsSyncSwitch){
                 $versionsSyncFiles.push(result.fName);
             }else if(result.status){//关闭ftp后直接输出成功压缩后的文件数组
                 $successFiles.push(result.fName);
-            }else if(result.versionsSyncSwitch == undefined || result.versionsSyncSwitch ==false){
+            }else if(result.status == false){
                 $errorFiles.push(result.fName);
                 if(result.message !== undefined){
                     $errorMessage.push(result.message);
@@ -499,12 +517,67 @@ exports.doUploader = function(req,res){
 
             tools.svnUtil($sucFtpFiles,$currentConfig,function (result) {
                 result.forEach(function(data){
-                    if(data.status){
+                    if(data.svnStatus){
                         $svnCommitStatus = true;
                         $svnSuccessFiles = $successFiles;
                     }else{
                         $svnCommitStatus = false;
                         $svnErrorMessage = data.message;
+                    }
+                });
+
+                //http 上传文件
+                httpCommit(res);
+            });
+        }else{
+            //http 上传文件
+            httpCommit(res);
+        }
+    }
+
+    /*
+     *
+     *
+     * TODO HTTP提交
+     *
+     *
+     * */
+    var httpCommit = function(){
+        //去除重复
+        $successFiles = unique($successFiles);
+        $errorFiles = unique($errorFiles);
+
+        //过滤成功返回结果与失败返回结果中相同部分
+        var $newSuccessFiles = [];
+        $successFiles.forEach(function(sucValue){
+            if($errorFiles.indexOf(sucValue) == -1){
+                $newSuccessFiles.push(sucValue);
+            }
+        });
+        $successFiles = $newSuccessFiles;
+
+        if ($httpSwitch && $successFiles.length > 0) {
+            var $sucFtpFiles = [];
+            $successFiles.forEach(function (sucPaths) {
+                if (os.type() == "Windows_NT") {
+                    var $localPath = sucPaths.replace(/\//g, '\\');
+                } else {
+                    var $localPath = sucPaths;
+                }
+                $sucFtpFiles.push($currentConfig.destPath + $localPath);
+            });
+
+            $currentConfig.httpRemote = 'http://10.100.65.223:8080/upload';
+            tools.httpCommit($sucFtpFiles,$currentConfig,function (result) {
+                result.forEach(function(data){
+                    if(data.httpStatus && data.status){
+                        $httpCommitStatus = true;
+
+                        $httpSuccessFiles.push(data.fName);
+
+                    }else{
+                        $httpCommitStatus = false;
+                        $httpErrorMessage.push(data.message);
                     }
                 });
 
@@ -517,6 +590,7 @@ exports.doUploader = function(req,res){
             ftpUploader(res);
         }
     }
+
 
 
     //TODO 文件分类
@@ -561,7 +635,7 @@ exports.doUploader = function(req,res){
                 if(err){
                     res.json({
                         status:false,
-                        errorMessage:'SVN Update出现错误,请解决冲突再重试.'
+                        errorMessage:'SVN Update出现错误！\n 1、请检查SVN本地目录是否出现冲突.2、检查SVN帐号密码是否填写正确'
                     });
 
                     return;
@@ -585,6 +659,8 @@ exports.updateCssSprite = function(req,res){
 
     var $svnSwitch = req.body.svnSwitch == "on" ? true : false;
 
+    var $httpSwitch = req.body.httpSwitch == "on" ? true : false;
+
     var $imgMasterSwitch = req.body.imgMasterSwitch == "on" ? true : false;
 
     var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? true : false;
@@ -604,6 +680,8 @@ exports.updateCssSprite = function(req,res){
     Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
 
     Config.itemsConfig[$itemsIndex].svnSwitch = $svnSwitch;
+
+    Config.itemsConfig[$itemsIndex].httpSwitch = $httpSwitch;
 
     Config.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
 
@@ -702,13 +780,13 @@ exports.doConfig = function(req,res){
             $obj.ftpUser = req.body.ftpUser.trim();
             $obj.ftpPassword = req.body.ftpPassword.trim();
 
-
             $obj.svnLocalPath = req.body.svnLocalPath.trim();
             $obj.svnUser = req.body.svnUser.trim();
             $obj.svnPassword = req.body.svnPassword.trim();
 
             $obj.ftpSwitch = false;
             $obj.svnSwitch = false;
+            $obj.httpSwitch = false;
 
             $obj.imgMasterSwitch = true;
             $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin
@@ -746,6 +824,10 @@ exports.doConfig = function(req,res){
             Config.itemsConfig[$currentIndex].testPath = req.body.testPath.trim();
 
 
+            Config.itemsConfig[$currentIndex].httpTestPath = req.body.httpTestPath.trim();
+            Config.itemsConfig[$currentIndex].httpReleasePath = req.body.httpReleasePath.trim();
+
+
             Config.itemsConfig[$currentIndex].destPathSwitch = $destPathSwitch;
             Config.itemsConfig[$currentIndex].destPath = req.body.destPath || DefaultDestPath;
 
@@ -768,8 +850,8 @@ exports.doConfig = function(req,res){
         }
     }else{
         //全局设置
-        Config.tinyApi = req.body.tinyApi;
-        Config.proxy = req.body.proxy;
+        //Config.tinyApi = req.body.tinyApi;
+        //Config.proxy = req.body.proxy;
     }
 
     updataConfig(true,res,$currentIndex);

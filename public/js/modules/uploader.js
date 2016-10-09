@@ -29,15 +29,21 @@ define(function(require, exports, module) {
         var PathExport = function(pathType){
             var $copyContent = '';
             var $copyContent2 = '';
+            var $copyContent3 = '';
             var $testUrl = result.testPath;
+            var $httpTestUrl = result.httpTestPath;
             var $releaseUrl = result.releasePath;
             var $svnReleaseUrl = result.svnReleasePath;
+            var $httpReleaseUrl = result.httpReleasePath;
             var $UserDest = result.destPath;
 
             var $DestPath = "<div class='logs-box'><h3 class='releasePath'>处理成功列表</h3><div class='logs-text-box'>";
-            var $releasePath = "<div class='logs-box'><h3 class='releasePath'>FTP提交成功文件列表</h3><div class='logs-text-box'>";
+            var $releasePath = "<div class='logs-box'><h3 class='releasePath'>FTP提单路径</h3><div class='logs-text-box'>";
             var $svnReleasePath = "<div class='logs-box'><h3 class='releasePath'>SVN提交成功文件列表</h3><div class='logs-text-box'>";
-            var $testPath = "<div class='logs-box'><h3>预览地址</h3><div class='logs-text-box'>";
+            var $testPath = "<div class='logs-box'><h3>FTP预览地址</h3><div class='logs-text-box'>";
+            var $httpTestPath = "<div class='logs-box'><h3>HTTP预览地址</h3><div class='logs-text-box'>";
+            var $httpReleasePath = "<div class='logs-box'><h3 class='releasePath'>HTTP提单路径</h3><div class='logs-text-box'>";
+
             var $versionsSyncFiles = "<div class='logs-box'><h3 style='color:#06c;'>CSS版本控制文件列表</h3><div class='logs-text-box'>";
 
             var $errorMessage = "<div class='logs-box'><div class='logs-text-box'><p><em style='color:red'>Error log: </em></p>";
@@ -48,15 +54,18 @@ define(function(require, exports, module) {
                 $.unique(result.errorMessage);//去除重复错误
                 $.each(result.errorMessage, function (i, value) {
                     var $value = value;
+
                     if(result.osType =="Windows_NT"){
-                        $value = value.replace(/\//g,'\\');
+                        $value = value.replace(/\//g,'\\').replace(/\\br\\/g,'<br>');
                     }
+
                     $errorMessage += "<p>"+ $value +"</p>"
                 });
             }
             if (result.errorFiles.length > 0) {
                 $.each(result.errorFiles, function (i, value) {
                     var $value = value;
+
                     if(result.osType =="Windows_NT"){
                         $value = value.replace(/\//g,'\\');
                     }
@@ -64,7 +73,6 @@ define(function(require, exports, module) {
                     $DestPath += '<a  style="color:red" class="local" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
             }
-
 
 
             //TODO 批量处理成功文件
@@ -78,6 +86,7 @@ define(function(require, exports, module) {
                     //此处由于是提单路径所以引用绝对路径，所以不使用$value
                     $copyContent += $releaseUrl + value + '\n';
                     $copyContent2 += $svnReleaseUrl + value + '\n';
+                    $copyContent3 += $httpReleaseUrl + value + '\n';
 
                     $DestPath += '<a  class="local" data-href="' + $UserDest + $value + '">' + $UserDest + $value + '</a>';
                 });
@@ -100,6 +109,8 @@ define(function(require, exports, module) {
                     $releasePath += '<p>'+ $releaseUrl + value + '</p>';
                     $testPath += '<a data-href="' + $testUrl + value + '">' + $testUrl + value + '</a>';
                 });
+            }else{
+                $testPath = "";
             }
 
             //TODO SVN提交路径处理
@@ -111,7 +122,6 @@ define(function(require, exports, module) {
             }else{
                 $svnReleasePath = "";
             }
-
             //TODO SVN错误路径处理
             if(result.svnCommitStatus !== true) {
                 $.each(result.successFiles, function (i, value) {
@@ -124,24 +134,59 @@ define(function(require, exports, module) {
             }
 
 
+            //TODO http提交路径处理
+            if(result.httpSwitch && result.httpCommitStatus && result.httpSuccessFiles.length > 0){
+                $.each(result.httpSuccessFiles, function (i, value) {
+                    $httpTestPath += '<a data-href="' + $httpTestUrl + value + '">' + $httpTestUrl + value + '</a>';
+                    $httpReleasePath += '<a data-href="' + $httpReleaseUrl + value + '">' + $httpReleaseUrl + value + '</a>';
+                });
+            }else{
+                $httpReleasePath = "";
+            }
+
+            console.log(result);
+            //TODO http错误路径处理
+            if(result.httpErrorMessage.length > 0){
+                $.each(result.httpErrorMessage, function (i, value) {
+                    var $value = value;
+                    if(result.osType =="Windows_NT"){
+                        $value = value.replace(/\//g,'\\');
+                    }
+                    $errorMessage += "<p>"+ $value +"</p>"
+                });
+            }
+
             if(pathType =="local"){
                 $releasePath ='';
                 $testPath = '';
+                $httpReleasePath = '';
+                $httpTestPath="";
                 $DestPath += '</div></div>';
             }else{
 
                 if($releaseUrl !=""){
                     $releasePath += '</div><a href="javascript:void(0)" class="copy-btn"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" class="copy-input"></textarea></div>'
-
                 }else{
                     $releasePath ='';
                 }
-
-                if($testUrl == ""){
+                if($testUrl == "" || $testPath ==""){
                     $testPath="";
                 }else{
                     $testPath += '</div></div>'
                 }
+
+
+                if($httpReleaseUrl != "" || $httpReleasePath != ""){
+                    $httpReleasePath += '</div><a href="javascript:void(0)" class="copy-btn3"><i class="copy-icon"></i>复制</a><div class="copy-tips"><i class="success-icon"></i>复制成功</div><textarea type="text" class="copy-input3"></textarea></div>'
+                }else{
+                    $httpReleasePath = ''
+                }
+                if($httpTestUrl == "" || $httpTestPath ==""){
+                    $httpTestPath="";
+                }else{
+                    $httpTestPath += '</div></div>'
+                }
+
 
                 //如果ftp返回失败，则销毁提单路径和预览地址
                 if(result.ftpSuccess === false || $ftpSwitch === false){
@@ -149,8 +194,14 @@ define(function(require, exports, module) {
                     $testPath="";
                 }
 
+                //如果HTTP开关没开，则销毁预览地址
+                if(result.httpSwitch === false || result.httpSuccessFiles.length){
+                    $httpReleasePath = "";
+                    $httpTestPath = "";
+                }
+
                 //只要有一个不等于空就清空本地路径
-                if($ftpSwitch !== false || result.svnSwitch !== false){
+                if($ftpSwitch !== false || result.svnSwitch !== false || result.httpSwitch !== false){
                     $DestPath = '';
                 }
             }
@@ -159,12 +210,19 @@ define(function(require, exports, module) {
             $(".drop-tips").hide();
 
 
-            if(result.errorMessage.length <= 0 && result.svnErrorMessage == ""){
+            if(result.errorMessage.length <= 0 && result.svnErrorMessage == "" && result.httpErrorMessage == ""){
                 $errorMessage = "";
             }
 
             //输出到客户端
-            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+$testPath+ $releasePath + $svnReleasePath + $DestPath + $versionsSyncFiles + $errorMessage + '</div></div>')
+            var allDestPath = $testPath + $releasePath + $svnReleasePath + $httpTestPath + $httpReleasePath + $DestPath + $versionsSyncFiles + $errorMessage;
+
+            console.log(allDestPath);
+            if(allDestPath == ""){
+                allDestPath = "<p style='color:#06c290'>处理成功</p>";
+            }
+
+            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+ allDestPath + '</div></div>')
 
             //输出提单复制路径到input.hidden
             if($releasePath != ""){
@@ -173,13 +231,18 @@ define(function(require, exports, module) {
             if($svnReleasePath != ""){
                 $fileBox.children(".logs-wrap").last().find(".copy-input2").val($copyContent2);
             }
+            if($httpReleasePath != ""){
+                $fileBox.children(".logs-wrap").last().find(".copy-input3").val($copyContent3);
+            }
         }
 
         //判断返回状态
-        if($ftpSwitch === true || result.svnSwitch === true){
+        if($ftpSwitch === true || result.svnSwitch === true || result.httpSwitch === true){
             PathExport("network");
+            console.log('network');
         }else{
             PathExport("local");
+            console.log('local');
         }
 
     }

@@ -25,8 +25,8 @@ function isGlobal(identifier) {
   }
   if(typeof window !== "undefined") {
     return identifier in window
-  } else if(typeof GLOBAL !== "undefined") {
-    return identifier in GLOBAL
+  } else if(typeof global !== "undefined") {
+    return identifier in global
   } else if(typeof self !== "undefined") {
     return identifier in self
   } else {

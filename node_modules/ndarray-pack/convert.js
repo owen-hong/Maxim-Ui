@@ -5,7 +5,7 @@ var do_convert = require("./doConvert.js")
 
 module.exports = function convert(arr, result) {
   var shape = [], c = arr, sz = 1
-  while(c instanceof Array) {
+  while(Array.isArray(c)) {
     shape.push(c.length)
     sz *= c.length
     c = c[0]

@@ -47,11 +47,14 @@
     "http-proxy": "^1.13.2",
     "killport": "^1.0.1",
     "log4js": "^0.6.31",
-    "maxim-workflow": "^0.3.4",
+    "maxim-workflow": "^1.0.2",
     "method-override": "^2.3.5",
     "node-webkit-updater": "^0.3.2",
     "os-homedir": "^1.0.1",
+    "postcss-import": "^8.1.2",
     "request": "^2.69.0",
+    "stylelint": "^7.2.0",
+    "svg2png": "^4.0.0",
     "svn-spawn": "^0.1.5"
   },
   "files": [
@@ -66,5 +69,8 @@
     "url": "https://github.com/owen-hong/Maxim-Ui/issues"
   },
   "homepage": "https://github.com/owen-hong/Maxim-Ui/",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "stylelint-config-standard": "^13.0.0"
+  }
 }

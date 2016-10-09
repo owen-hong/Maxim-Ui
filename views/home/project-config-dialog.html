@@ -5,7 +5,7 @@
     </div>
     <form id="editConfigFrome" class="form-horizontal xl" method="post" enctype="multipart/form-data">
     <div class="content">
-        <div class="flex-box">
+        <div class="flex-box" style="overflow-y: auto;overflow-x: hidden">
             <div class="tab-side no-drag">
                 <ul data-index="0">
                     <li v-on:click="changeMenu(0)" class="cur">
@@ -18,6 +18,9 @@
                         <a href="javascript:void(0)">SVN设置</a>
                     </li>
                     <li v-on:click="changeMenu(3)">
+                        <a href="javascript:void(0)">HTTP设置</a>
+                    </li>
+                    <li v-on:click="changeMenu(4)">
                         <a href="javascript:void(0)">更多设置</a>
                     </li>
                 </ul>
@@ -126,13 +129,13 @@
                                 提单路径
                             </label>
                             <div class="controls">
-                                <input type="text" name="releasePath" class="form-control" placeholder="/usr/local/imgcache/htdocs//open_proj/proj_qcloud_v2" :value="Current.releasePath">
+                                <input type="text" name="releasePath" class="form-control" placeholder="/data/ftp/release/" :value="Current.releasePath">
                                 <p class="help-block"></p>
                             </div>
                         </div>
                     </fieldset>
                 </div>
-                <div class="tab-content">
+                <div class="tab-content hide">
                     <fieldset>
                         <!-- 项目配置-->
                         <div class="control-group">
@@ -179,6 +182,31 @@
                 </div>
                 <div class="tab-content hide">
                     <fieldset>
+                        <!-- HTTP设置 -->
+                        <div class="control-group">
+                            <!-- Appended checkbox -->
+                            <label class="control-label">
+                                预览地址
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="httpTestPath" placeholder="" class="form-control" :value="Current.httpTestPath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
+                                提单路径
+                            </label>
+                            <div class="controls">
+                                <input type="text" name="httpReleasePath" class="form-control" placeholder="/data/ftp/open_proj" :value="Current.httpReleasePath">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="tab-content hide">
+                    <fieldset>
                         <!-- 更多设置 -->
                         <div class="control-group">
                             <!-- Appended checkbox -->
@@ -214,8 +242,8 @@
                                         <input v-model="Current.versionsSyncSwitch" name="versionsSyncSwitch" type="checkbox" class="checkbox">
                                         定义文件存放目录
                                     </label>
-
-                                    <input type="text"  v-if="Current.versionsSyncSwitch" id="versionsFilePath" name="versionsFilePath" class="form-control dest-path disabled" data-path="<%= DefaultPath %>" :value="Current.versionsFilePath">
+                                    <input type="text"  v-if="Current.versionsSyncSwi
+tch" id="versionsFilePath" name="versionsFilePath" class="form-control dest-path disabled" data-path="<%= DefaultPath %>" :value="Current.versionsFilePath">
 
                                     <a v-if="Current.versionsSyncSwitch" href="javascript:void(0)" class="btn btn-default btn-sm file-sync">更改目录</a>
 

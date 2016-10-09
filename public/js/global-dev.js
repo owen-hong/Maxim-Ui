@@ -48,10 +48,18 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
             $this.siblings(".copy-tips").css("display", "inline-block").fadeOut(1500);
         });
     });
-
     $("body").on("click", ".copy-btn2", function () {
         var $this = $(this),
             $copyInput = $(this).siblings(".copy-input2"),
+            $copyLength = $copyInput.val().length;
+
+        $copyInput.copyText(0, $copyLength,function(){
+            $this.siblings(".copy-tips").css("display", "inline-block").fadeOut(1500);
+        });
+    });
+    $("body").on("click", ".copy-btn3", function () {
+        var $this = $(this),
+            $copyInput = $(this).siblings(".copy-input3"),
             $copyLength = $copyInput.val().length;
 
         $copyInput.copyText(0, $copyLength,function(){
@@ -135,11 +143,11 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
                 },
                 updataTime:function(e){
                     var nowTime = new Date();
-                    var $date = nowTime.getFullYear()
-                        + (nowTime.getMonth() + 1 >= 10 ? nowTime.getMonth() + 1 : '0' + (nowTime.getMonth() + 1))
-                        + (nowTime.getDate() > 10 ? nowTime.getDate() : '0' + nowTime.getDate())
-                        + (nowTime.getHours() >= 10 ? nowTime.getHours() : '0' + nowTime.getHours())
-                        + (nowTime.getMinutes() >= 10 ? nowTime.getMinutes() : '0' + nowTime.getMinutes());
+                    var $date = nowTime.getFullYear().toString()
+                        + (nowTime.getMonth() + 1 >= 9 ? nowTime.getMonth() + 1 : '0' + (nowTime.getMonth() + 1)).toString()
+                        + (nowTime.getDate() >= 10 ? nowTime.getDate() : '0' + nowTime.getDate()).toString()
+                        + (nowTime.getHours() >= 10 ? nowTime.getHours() : '0' + nowTime.getHours()).toString()
+                        + (nowTime.getMinutes() >= 10 ? nowTime.getMinutes() : '0' + nowTime.getMinutes()).toString();
 
                     ContentVue.$set('Current.spriteName',$date);
                     ContentVue.$set('Current.cssName',$date);
@@ -162,7 +170,7 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
         });
 
 
-        //TODO 新增编辑项目 Dialog
+        //TODO 新增 编辑 项目 Dialog
         let projectConfigDialog = new Vue({
             el: '#projectConfigDialog',
             data: projectConfig,

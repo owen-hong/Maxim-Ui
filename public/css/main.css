@@ -42,7 +42,7 @@ a.red{
     display: flex;
     -webkit-box-flex: 1;
     overflow: hidden;
-    height: 340px;
+    height: 342px;
     background-color: #fff;
 }
 .content aside{
@@ -415,7 +415,8 @@ main .shortcut-operations a{
 
 /*复制提示*/
 .drop-files-box .logs-box .copy-btn,
-.drop-files-box .logs-box .copy-btn2
+.drop-files-box .logs-box .copy-btn2,
+.drop-files-box .logs-box .copy-btn3
 {
     font-weight: normal;
     cursor: pointer;
@@ -424,7 +425,8 @@ main .shortcut-operations a{
     display: inline-block;
 }
 .drop-files-box .logs-box .copy-input,
-.drop-files-box .logs-box .copy-input2
+.drop-files-box .logs-box .copy-input2,
+.drop-files-box .logs-box .copy-input3
 {
     opacity: 0;
     width: 0;

@@ -6,7 +6,7 @@
     </a>
     <!--  上传服务器或者本地 -->
     <div class="check-block border">
-        <label class="info-text">上传至服务器</label>
+            <label class="info-text">FTP提交</label>
         <label class="switch" title="上传至服务器">
             <input type="checkbox" v-on:click="formSubmit" v-model="Current.ftpSwitch" name="ftpSwitch" class="switch-input">
             <span class="switch-helper">{{Current.ftpSwitch == true ? 'on':'off'}}</span>
@@ -21,6 +21,17 @@
         <label class="switch" title="SVN提交">
             <input type="checkbox" v-on:click="formSubmit" v-model="Current.svnSwitch" name="svnSwitch" class="switch-input">
             <span class="switch-helper">{{Current.svnSwitch == true ? 'on':'off'}}</span>
+        </label>
+    </div>
+
+    <hr/>
+
+    <!--  HTTP提交 -->
+    <div class="check-block border">
+        <label class="info-text">HTTP提交</label>
+        <label class="switch" title="SVN提交">
+            <input type="checkbox" v-on:click="formSubmit" v-model="Current.httpSwitch" name="httpSwitch" class="switch-input">
+            <span class="switch-helper">{{Current.httpSwitch == true ? 'on':'off'}}</span>
         </label>
     </div>
 
