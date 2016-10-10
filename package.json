@@ -1,0 +1,17 @@
+{
+  "name": "Maxim2.4.0",
+  "version": "2.4.0",
+  "author": "owen hong <520ued.com@gmail.com>",
+  "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
+  "packages": {
+    "mac": {
+      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.4.0.zip"
+    },
+    "win": {
+      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.4.0.zip"
+    }
+  },
+  "core":false,
+  "updataInfo":"1、HTTP上传功能优化\n 2、svg sprite升级优化",
+  "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
+}
