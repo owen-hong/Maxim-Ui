@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.4.0",
-  "version": "2.4.0",
+  "name": "Maxim2.4.1",
+  "version": "2.4.1",
   "author": "owen hong <520ued.com@gmail.com>",
-  "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
+  "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.4.0.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.4.1.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.4.0.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.4.1.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、HTTP上传功能优化\n 2、svg sprite升级优化",
+  "updataInfo":"1、优化资源同步导致bug，支持多层级引用同步\n ",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
