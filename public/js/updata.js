@@ -8,6 +8,7 @@ var pkg = require('./updata/package.json'); // Insert your app's manifest here
 var updater = require('node-webkit-updater');
 var upd = new updater(pkg);
 
+
 // Args passed when new app is launched from temp dir during update
 // ------------- Step 1 -------------
 var checkMaximUpdada = function(){

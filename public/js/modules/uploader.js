@@ -144,7 +144,6 @@ define(function(require, exports, module) {
                 $httpReleasePath = "";
             }
 
-            console.log(result);
             //TODO http错误路径处理
             if(result.httpErrorMessage.length > 0){
                 $.each(result.httpErrorMessage, function (i, value) {
@@ -195,7 +194,7 @@ define(function(require, exports, module) {
                 }
 
                 //如果HTTP开关没开，则销毁预览地址
-                if(result.httpSwitch === false || result.httpSuccessFiles.length){
+                if(result.httpSwitch === false || result.httpSuccessFiles.length <=0){
                     $httpReleasePath = "";
                     $httpTestPath = "";
                 }

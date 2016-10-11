@@ -47,7 +47,7 @@
     "http-proxy": "^1.13.2",
     "killport": "^1.0.1",
     "log4js": "^0.6.31",
-    "maxim-workflow": "^1.0.2",
+    "maxim-workflow": "^1.0.4",
     "method-override": "^2.3.5",
     "node-webkit-updater": "^0.3.2",
     "os-homedir": "^1.0.1",

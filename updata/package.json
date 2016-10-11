@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.3.8",
-  "version": "2.3.8",
+  "name": "Maxim2.4.2",
+  "version": "2.4.2",
   "author": "owen hong <520ued.com@gmail.com>",
-  "manifestUrl": "http://115.159.36.96/maxim/Maxim-updada/package.json",
+  "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
   "packages": {
     "mac": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/mac/updapp2.3.8.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.4.2.zip"
     },
     "win": {
-      "url": "http://115.159.36.96/maxim/Maxim-updada/win/updapp2.3.8.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.4.2.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、去除Csslint样式校验功能",
+  "updataInfo":"1、更新cssom-maxim模块，修复重复属性被删除问题\n ",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }

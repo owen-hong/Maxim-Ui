@@ -77,9 +77,10 @@ exports.index = function(req,res){
                 }
             }else{
                 res.render('home/index',{
-                    title: 'owen tools',
+                    title: 'Maxim',
                     config:Config,
                     DefaultPath:DefaultDestPath,
+                    version:MaximVersion.version,
                     configItemes:itemsConfig
                 });
             }
@@ -87,7 +88,7 @@ exports.index = function(req,res){
     }
 
     res.render('home/index',{
-        title: 'owen tools',
+        title: 'Maxim',
         config:Config,
         DefaultPath:DefaultDestPath,
         version:MaximVersion.version,
@@ -309,7 +310,6 @@ exports.doUploader = function(req,res){
 
                 var $filesName = path.basename(resultFiles.fName);
                 var $fileType = $filesName.split(".")[1] || '';
-
 
                 var $fileTypeStatus = $fileType.indexOf("png") >= 0 || $fileType.indexOf("jpg") >= 0 || $fileType.indexOf("svg") >= 0;
                 if($fileTypeStatus && resultFiles.status){
@@ -567,7 +567,6 @@ exports.doUploader = function(req,res){
                 $sucFtpFiles.push($currentConfig.destPath + $localPath);
             });
 
-            $currentConfig.httpRemote = 'http://10.100.65.223:8080/upload';
             tools.httpCommit($sucFtpFiles,$currentConfig,function (result) {
                 result.forEach(function(data){
                     if(data.httpStatus && data.status){
@@ -824,6 +823,7 @@ exports.doConfig = function(req,res){
             Config.itemsConfig[$currentIndex].testPath = req.body.testPath.trim();
 
 
+            Config.itemsConfig[$currentIndex].httpRemote = req.body.httpRemote.trim();
             Config.itemsConfig[$currentIndex].httpTestPath = req.body.httpTestPath.trim();
             Config.itemsConfig[$currentIndex].httpReleasePath = req.body.httpReleasePath.trim();
 
