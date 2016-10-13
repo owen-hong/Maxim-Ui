@@ -138,8 +138,10 @@ define(function(require, exports, module) {
             if(result.httpSwitch && result.httpCommitStatus && result.httpSuccessFiles.length > 0){
                 $.each(result.httpSuccessFiles, function (i, value) {
                     $httpTestPath += '<a data-href="' + $httpTestUrl + value + '">' + $httpTestUrl + value + '</a>';
-                    $httpReleasePath += '<a data-href="' + $httpReleaseUrl + value + '">' + $httpReleaseUrl + value + '</a>';
+                    $httpReleasePath +='<p>'+ $httpReleaseUrl + value + '</p>';
                 });
+
+
             }else{
                 $httpReleasePath = "";
             }
@@ -216,7 +218,6 @@ define(function(require, exports, module) {
             //输出到客户端
             var allDestPath = $testPath + $releasePath + $svnReleasePath + $httpTestPath + $httpReleasePath + $DestPath + $versionsSyncFiles + $errorMessage;
 
-            console.log(allDestPath);
             if(allDestPath == ""){
                 allDestPath = "<p style='color:#06c290'>处理成功</p>";
             }
