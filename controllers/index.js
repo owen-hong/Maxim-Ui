@@ -380,7 +380,7 @@ exports.doUploader = function(req,res){
      *
      * */
     var Px2rem  = function(){
-        if($destCssFiles.length > 0 && $pxToRemSwitch == "true"){
+        if($destCssFiles.length > 0 && $pxToRemSwitch === true){
             tools.px2rem($destCssFiles,$currentConfig,function(result){
                 //拼接dest的路劲文件
                 destPath(result);
