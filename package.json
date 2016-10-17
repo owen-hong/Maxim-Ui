@@ -54,7 +54,6 @@
     "postcss-import": "^8.1.2",
     "request": "^2.69.0",
     "stylelint": "^7.2.0",
-    "svg2png": "^4.0.0",
     "svn-spawn": "^0.1.5"
   },
   "files": [
