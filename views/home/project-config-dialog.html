@@ -86,6 +86,23 @@
                         <div class="control-group">
                             <!-- Text input-->
                             <label class="control-label">
+                                上传协议
+                            </label>
+                            <div class="controls">
+                                    <label class="radio-inline">
+                                    <input class="radio" type="radio" name="ftpType" value="ftp" v-model="Current.ftpType"/>
+                                    FTP
+                                </label>
+                                <label class="radio-inline">
+                                    <input class="radio" type="radio" name="ftpType" value="sftp" v-model="Current.ftpType"/>
+                                    SFTP
+                                </label>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <label class="control-label">
                                 远程目录
                             </label>
                             <div class="controls">

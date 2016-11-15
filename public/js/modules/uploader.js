@@ -13,6 +13,9 @@ define(function(require, exports, module) {
 
     //返回ajax数据函数处理
     var uploadAjaxSuccess = function (result) {
+
+        console.log(result);
+
         var $fileBox = $("#drag-and-drop-zone");
         var $ftpSwitch = $("input[name='ftpSwitch']").prop("checked");
 
@@ -95,7 +98,7 @@ define(function(require, exports, module) {
             //TODO 版本同步文件输出
             if(result.versionsSyncFiles.length > 0) {
                 $.each(result.versionsSyncFiles, function (i, SyncValue) {
-                    $versionsSyncFiles += '<a data-href="' + SyncValue + '">' + SyncValue + '</a>';
+                    $versionsSyncFiles += '<a class="local" data-href="' + SyncValue + '">' + SyncValue + '</a>';
                 });
                 $versionsSyncFiles += '</div></div>';
             }else{

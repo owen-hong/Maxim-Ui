@@ -418,10 +418,8 @@ exports.doUploader = function(req,res){
 
             });
         }else{
-
             //检测是否有需要copy的文件
             copyFiles();
-
         }
     }
 
@@ -639,7 +637,6 @@ exports.doUploader = function(req,res){
 
                     return;
                 }
-                console.log('svn updata success..');
 
                 goWork();
             });
@@ -775,6 +772,7 @@ exports.doConfig = function(req,res){
 
             $obj.ftpHost = req.body.ftpHost.trim();
             $obj.ftpPort = req.body.ftpPort.trim();
+            $obj.ftpType = req.body.ftpType || 'ftp';
             $obj.ftpRemotePath = req.body.ftpRemotePath.trim();
             $obj.ftpUser = req.body.ftpUser.trim();
             $obj.ftpPassword = req.body.ftpPassword.trim();
@@ -840,6 +838,7 @@ exports.doConfig = function(req,res){
 
             Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost.trim();
             Config.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort.trim();
+            Config.itemsConfig[$currentIndex].ftpType = req.body.ftpType || 'ftp';
             Config.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath.trim();
             Config.itemsConfig[$currentIndex].ftpUser = req.body.ftpUser.trim();
             Config.itemsConfig[$currentIndex].ftpPassword = req.body.ftpPassword.trim();

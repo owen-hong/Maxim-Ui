@@ -86,14 +86,13 @@ Routes.handle(app);
  * */
 
 
-var killport = require('killport');
-
 if(Config.debug){
     app.listen(app.get('port'),function(){
         console.log('Node listening on port:' + app.get('port'));
     }).on('error', function(err) {
 
         if(os.platform() == 'darwin'){
+            var killport = require('killport');
             //判断端口是否被占用，占用就kill，然后重启
             if(err.code =='EADDRINUSE'){
                 killport(3030)
@@ -114,6 +113,5 @@ if(Config.debug){
         }else{
             console.log('windows port error~~')
         }
-
     });
 }

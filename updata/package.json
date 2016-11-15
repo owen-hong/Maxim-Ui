@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.4.9",
-  "version": "2.4.9",
+  "name": "Maxim2.5.0",
+  "version": "2.5.0",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
   "packages": {
     "mac": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.4.9.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.0.zip"
     },
     "win": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.4.9.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.0.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、修复图片压缩报错bug\n",
+  "updataInfo":"1、优化文件复制接口\n2、新增sftp上传功能\n3、版本同步bug修复\n4、优化样式格式校验功能",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }

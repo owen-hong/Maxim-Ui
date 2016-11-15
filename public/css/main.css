@@ -42,7 +42,7 @@ a.red{
     display: flex;
     -webkit-box-flex: 1;
     overflow: hidden;
-    height: 342px;
+    height: 385px;
     background-color: #fff;
 }
 .content aside{

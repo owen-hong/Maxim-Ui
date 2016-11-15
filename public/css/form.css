@@ -150,8 +150,10 @@ legend + .control-group {
 
 /*form*/
 .radio-inline{
-    display: block;
+    display: inline-block;
     cursor: pointer;
+    vertical-align: middle;
+    margin-right: 20px;
 }
 .check-inline{
     cursor: pointer;
