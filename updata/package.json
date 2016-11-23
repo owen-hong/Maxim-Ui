@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.5.4",
-  "version": "2.5.4",
+  "name": "Maxim2.5.5",
+  "version": "2.5.5",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
   "packages": {
     "mac": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.4.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.5.zip"
     },
     "win": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.4.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.5.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、优化SVG换色功能\n2、将Svg Sprite生成的position换成百分比",
+  "updataInfo":"1、支持svg sprite响应式功能\n2、修复svg sprite后background导致的优先级问题",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
