@@ -407,7 +407,9 @@ exports.doUploader = function(req,res){
         //去重复
         $jsFiles = unique($jsFiles);
 
-        if($jsFiles.length > 0){
+        let $jsMinSwitch = $currentConfig.jsMinSwitch ? $currentConfig.jsMinSwitch:false;
+
+        if($jsFiles.length > 0 && $jsMinSwitch){
             tools.compressJS($jsFiles,$currentConfig,function(result){
 
                 //拼接dest的路径文件
@@ -418,6 +420,10 @@ exports.doUploader = function(req,res){
 
             });
         }else{
+            if($jsFiles.length > 0){
+                $copyFile = $copyFile.concat($jsFiles);
+            }
+
             //检测是否有需要copy的文件
             copyFiles();
         }
@@ -437,6 +443,7 @@ exports.doUploader = function(req,res){
 
         if($copyFile.length > 0){
             tools.copyFiles($copyFile,$currentConfig,function(result){
+                console.log(result);
 
                 //拼接dest的路径文件
                 destPath(result);
@@ -661,6 +668,8 @@ exports.updateCssSprite = function(req,res){
 
     var $resourceSyncSwitch = req.body.resourceSyncSwitch == "on" ? true : false;
 
+    var $jsMinSwitch = req.body.jsMinSwitch == "on" ? true : false;
+
     var $spriteNameSwitch = req.body.spriteNameSwitch == "on" ? true : false;
     var $spriteName = req.body.spriteName.trim();
 
@@ -682,6 +691,8 @@ exports.updateCssSprite = function(req,res){
     Config.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
 
     Config.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
+
+    Config.itemsConfig[$itemsIndex].jsMinSwitch = $jsMinSwitch;
 
     Config.itemsConfig[$itemsIndex].spriteNameSwitch = $spriteNameSwitch;
     Config.itemsConfig[$itemsIndex].spriteName = $spriteName;
@@ -784,6 +795,8 @@ exports.doConfig = function(req,res){
             $obj.ftpSwitch = false;
             $obj.svnSwitch = false;
             $obj.httpSwitch = false;
+
+            $obj.jsMinSwitch = false;
 
             $obj.imgMasterSwitch = true;
             $obj.imgSwitch = "imagemin"; //默认为本地压缩imagemin

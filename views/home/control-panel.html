@@ -61,6 +61,17 @@
 
     <hr/>
 
+    <!-- JS压缩 -->
+    <div class="check-block border" title="将样式中引用的资源,例如:FONT,SVG, JPEG, GIF, PNG等除雪碧图以外，只要是被样式引用到的资源都会同步到服务器，并生成对应的提单路径">
+        <label class="info-text">JS压缩</label>
+        <label class="switch" title="JS压缩">
+            <input type="checkbox" v-on:click="formSubmit" v-model="Current.jsMinSwitch" name="jsMinSwitch" class="switch-input">
+            <span class="switch-helper">{{Current.jsMinSwitch == true ? 'on':'off'}}</span>
+        </label>
+    </div>
+
+    <hr/>
+
     <!--  样式处理 -->
     <div class="form-group">
         <label class="info-text">文件重命名</label>
