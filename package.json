@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.5.7",
-  "version": "2.5.7",
+  "name": "Maxim2.5.8",
+  "version": "2.5.8",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
   "packages": {
     "mac": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.7.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.8.zip"
     },
     "win": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.7.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.8.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、新增JS压缩控制开关\n",
+  "updataInfo":"1、上传服务器新增JS文件链处理\n2、修复界面按钮可拖拽bug",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
