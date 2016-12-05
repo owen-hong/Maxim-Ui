@@ -27,17 +27,6 @@ seajs.use(["jquery","vue","Copy","uploader","window"],function($,vue,Copy,Uoload
         $("#multipleFile").click();
     });
 
-    //TODO 关闭右侧工具栏
-    $("#closeMenu").click(function(){
-        let $parentBox = $(this).parent().parent();
-        if($parentBox.hasClass("in")){
-            $parentBox.removeClass("in").animate({"margin-right":0},500);
-        }else{
-            $parentBox.addClass("in").animate({"margin-right":"-240px"},500);
-        }
-    });
-
-
     //设置复制内容
     $("body").on("click", ".copy-btn", function () {
         var $this = $(this),

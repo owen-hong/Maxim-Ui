@@ -68,10 +68,21 @@ class JSCompressor{
     _compressJS(file,config){
         return function (cb) {
             function _compress() {
+
+                //处理文件链场景
+                var sourceFilePath = file;
+                if (path.extname(file).indexOf('js') != -1) {
+                    var lstatSync = fs.lstatSync(file);
+                    var isSymbolicLink = lstatSync.isSymbolicLink();
+                    if(isSymbolicLink){
+                        sourceFilePath = fs.realpathSync(file);
+                    }
+                }
+
                 //压缩文件
                 let result = null;
                 try{
-                    result = uglifyJS.minify(file, {
+                    result = uglifyJS.minify(sourceFilePath, {
                         compress: {
                             sequences     : true,  // join consecutive statemets with the “comma operator”
                             properties    : true,  // optimize property access: a["foo"] → a.foo
@@ -105,9 +116,11 @@ class JSCompressor{
                     });
                     return;
                 }
+
                 //目标文件路径
                 let targetFile = file.replace(config.localPath,config.destPath);
                 let targetDir = path.dirname(targetFile);
+
                 common.createPath(targetDir,fs);
                 //写文件
                 try{

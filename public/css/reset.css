@@ -71,6 +71,7 @@ a {
     cursor: pointer;
     -webkit-app-region: no-drag !important;
     outline: none;
+    -webkit-user-drag: none;
 }
 a:hover{
     text-decoration: underline;

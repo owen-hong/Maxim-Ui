@@ -13,14 +13,24 @@ Copyfile.prototype = {
             Config.destPath = Config.destPath[Config.destPath.length-1] === path.sep ? Config.destPath : Config.destPath + path.sep;
 
             var relativeFile = file.replace(Config.destPath, '').replace(Config.localPath, '');
-            var destPath = path.join(Config.destPath,relativeFile);
 
-            fse.copy(file, destPath, function (err) {
+            //处理文件链场景
+            var sourceFilePath = file;
+            if (path.extname(file).indexOf('js') != -1) {
+                var lstatSync = fse.lstatSync(file);
+                var isSymbolicLink = lstatSync.isSymbolicLink();
+                if(isSymbolicLink){
+                    sourceFilePath = fse.realpathSync(file);
+                }
+            }
+
+            var destPath = path.join(Config.destPath,relativeFile);
+            fse.copy(sourceFilePath, destPath, function (err) {
                 var $destPathName = destPath.replace(Config.destPath, '').replace(Config.localPath, '').replace(/\\/g, '\/');
 
                 if (err) {
                     try {
-                        if (err.message.indexOf('Source and destination must not be the same') < 0) {
+                        if (err.message && err.message.indexOf('Source and destination must not be the same') < 0) {
                             results.push({
                                 status: false,
                                 fName: $destPathName,

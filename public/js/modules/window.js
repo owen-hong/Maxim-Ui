@@ -21,15 +21,12 @@ define(function(require, exports, module) {
             }
         });
 
-
         //TODO 浏览器打开窗口 超链接
         $("body").on("click", ".drop-files-box .logs-text-box a,#apply-tiny-api", function () {
             var $url = $(this).data("href");
             if($(this).hasClass('local')){
-                console.log('ab');
                 gui.Shell.showItemInFolder($url);
             }else{
-
                 gui.Shell.openExternal($url);
             }
         });
@@ -84,6 +81,15 @@ define(function(require, exports, module) {
             });
         };
 
+        //TODO 关闭右侧工具栏
+        $("#closeMenu").click(function(){
+            let $parentBox = $(this).parent().parent();
+            if($parentBox.hasClass("in")){
+                $parentBox.removeClass("in").animate({"margin-right":0},500);
+            }else{
+                $parentBox.addClass("in").animate({"margin-right":"-240px"},500);
+            }
+        });
 
         //TODO 全局控制窗口开关
         var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
@@ -110,7 +116,8 @@ define(function(require, exports, module) {
         });
 
         //置顶
-        $(".global-operations .always-on-top-btn").click(function(){
+        $("#alwaysOnTop").click(function(e){
+            e.preventDefault();
             var $this = $(this);
             if($this.hasClass("cur")){
                 $this.attr("title","窗口置顶");
