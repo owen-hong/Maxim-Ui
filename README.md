@@ -2,9 +2,9 @@
 Maxim node-webkit
 
 ###2016-10-09
-- HTTP提交功能
-- 优化svg sprites功能
-- 更新Maxim所有功能包
+- HTTP鎻愪氦鍔熻兘
+- 浼樺寲svg sprites鍔熻兘
+- 鏇存柊Maxim鎵�鏈夊姛鑳藉寘
 
 
 

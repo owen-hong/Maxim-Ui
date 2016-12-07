@@ -14,10 +14,10 @@ file.prototype.fileUpload = function(files, Config, callback){
     var index = files.length,
         results = [];
     try {
-        if(!Config.httpRemote) {
+        if(!Config.httpRemote || !Config.httpToken) {
             results.push({
                 httpStatus: false,
-                message: "上传请求地址为空"
+                message: !Config.httpRemote ? "上传请求地址为空" : "HTTP上传校验密钥不能为空"
             });
             callback(results);
         } else if(!Config.httpReleasePath || Config.httpReleasePath.indexOf("/data/release/") !== 0) {
@@ -41,6 +41,7 @@ file.prototype.fileUpload = function(files, Config, callback){
                 // 表单数据
                 var
                     formData = {
+                        httpToken: Config.httpToken,
                         releasePath: Config.httpReleasePath,
                         releatedPath: releatedPath,
                         file: fs.createReadStream(path)
@@ -60,13 +61,22 @@ file.prototype.fileUpload = function(files, Config, callback){
                         });
                         console.error('upload failed:', err);
                     } else if(httpResponse.statusCode === 200) {
-                        results.push({
-                            httpStatus: true,
-                            fName: path.replace(Config.destPath, '').replace(rootPath, '').replace(/\\/g, '\/'),
-                            status: true,
-                            message: "文件上传成功"
-                        });
-                        console.log('Upload successful!  Server responded with:', body);
+                        if(body === "-1") {
+                            // 如果响应的是-1,token验证不通过
+                            results.push({
+                                httpStatus: true,
+                                status: false,
+                                message: "校验密钥不正确，请联系andypliang获取最新的验证密钥。"
+                            });
+                        } else {
+                            results.push({
+                                httpStatus: true,
+                                fName: path.replace(Config.destPath, '').replace(rootPath, '').replace(/\\/g, '\/'),
+                                status: true,
+                                message: "文件上传成功"
+                            });
+                            console.log('Upload successful!  Server responded with:', body);
+                        }
                     } else {
                         // 状态码不是200的都需要检查url
                         index = 0;
