@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.5.9",
-  "version": "2.5.9",
+  "name": "Maxim2.6.0",
+  "version": "2.6.0",
   "author": "owen hong <520ued.com@gmail.com>",
   "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
   "packages": {
     "mac": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.9.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.6.0.zip"
     },
     "win": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.5.9.zip"
+      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.6.0.zip"
     }
   },
   "core":false,
-  "updataInfo":"1、http上传功能新增Token验证，Token请找andypliang获取\n",
+  "updataInfo":"1、迁移配置文件到系统公共配置文件存放区\n2、加密用户配置文件",
   "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
 }
