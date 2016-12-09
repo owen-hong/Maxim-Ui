@@ -2,19 +2,38 @@
  * Created by owenhong on 2015/11/10.
  */
 
-var fs = require('fs');
-var path = require('path');
-var request = require('request');
-var os = require("os");
-var osHomedir = require('os-homedir');
-var Config = require('../config.js');
-var Maxim = require('maxim-workflow');
-var tools = new Maxim();
-var MaximVersion = require('../updata/package.json');
+const fs = require('fs-extra');
+const path = require('path');
+const request = require('request');
+const os = require("os");
+const osHomedir = require('os-homedir');
+const Maxim = require('maxim-workflow');
+const tools = new Maxim();
+const Crypto = require('./crypto.js');
+const Config = require('../config.js');
+const MaximVersion = require('../updata/package.json');
 
+
+let appDataPath = "";
+if(os.platform() == "win32"){
+    appDataPath = path.join(process.env.APPDATA,'Maxim');
+}else if(os.platform() == "darwin"){
+    appDataPath = path.join(process.env.HOME + '/Libray/Application Support','Maxim');
+}
+
+let ConfigJsonPath = path.join(appDataPath,'config.json');
+if(fs.existsSync(ConfigJsonPath) === true){
+    var md5ConfigJson = require(ConfigJsonPath);
+    var ConfigJson = JSON.parse(Crypto.decode(md5ConfigJson.md5));
+}else{
+    var ConfigJson = Config;
+    fs.outputFileSync(ConfigJsonPath,JSON.stringify(ConfigJson));
+}
+
+console.log(ConfigJsonPath);
 
 exports.configData = function(req,res) {
-    res.send(JSON.stringify(Config));
+    res.send(JSON.stringify(ConfigJson));
 }
 
 
@@ -30,12 +49,12 @@ const unique = function(array){
 //Config.js更新写入
 var updataConfig = function(resSwitch,res,itemsIndex){
     //拼接字符串
-    var configJsPath = __dirname.split('controllers')[0] + 'config.js';
-    var newData = 'var Config =' + JSON.stringify(Config) + '\nmodule.exports = Config;';
+    var newData = JSON.stringify(ConfigJson);
+    var md5NewData = '{"md5":"' + Crypto.encode(newData) + '"}';
 
     //写入文件
     if(resSwitch === true) {
-        fs.writeFile(configJsPath, newData, function (err) {
+        fs.outputFile(ConfigJsonPath, md5NewData, function (err) {
             if (err) {
                 res.json({
                     status: false,
@@ -44,12 +63,12 @@ var updataConfig = function(resSwitch,res,itemsIndex){
             } else {
                 res.json({
                     status:true,
-                    Config:Config.itemsConfig[itemsIndex]
+                    Config:ConfigJson.itemsConfig[itemsIndex]
                 })
             }
         });
     }else{
-        fs.writeFile(configJsPath, newData, function (err) {
+        fs.outputFile(ConfigJsonPath, md5NewData, function (err) {
             if (err) {
                 console.log(err);
             }
@@ -59,26 +78,26 @@ var updataConfig = function(resSwitch,res,itemsIndex){
 
 
 exports.index = function(req,res){
-    var itemsConfig = Config.itemsConfig[0] ? Config.itemsConfig : "" ;
+    var itemsConfig = ConfigJson.itemsConfig[0] ? ConfigJson.itemsConfig : "" ;
     var DefaultPath = osHomedir() + path.sep;
     var DefaultDestPath = DefaultPath + "Dest";
 
     //判断monitor是否开启
-    if(Config.monitor){
+    if(ConfigJson.monitor){
         //http://520ued.com/maxim/downCount
         request('http://520ued.com/maxim/downCount', function (error, response, result) {
             if (!error && response.statusCode == 200) {
                 var result = JSON.parse(result);
 
                 if(result.status){
-                    Config.monitor = false;
+                    ConfigJson.monitor = false;
 
                     updataConfig(false,res);
                 }
             }else{
                 res.render('home/index',{
                     title: 'Maxim',
-                    config:Config,
+                    config:ConfigJson,
                     DefaultPath:DefaultDestPath,
                     version:MaximVersion.version,
                     configItemes:itemsConfig
@@ -89,7 +108,7 @@ exports.index = function(req,res){
 
     res.render('home/index',{
         title: 'Maxim',
-        config:Config,
+        config:ConfigJson,
         DefaultPath:DefaultDestPath,
         version:MaximVersion.version,
         configItemes:itemsConfig
@@ -106,7 +125,7 @@ exports.doUploader = function(req,res){
     var $filesType = req.body.filesType.split(',');
 
     var $itemsIndex = req.body.itemsIndex || 0;
-    var $currentConfig = Config.itemsConfig[$itemsIndex];
+    var $currentConfig = ConfigJson.itemsConfig[$itemsIndex];
 
     var $ftpSwitch = $currentConfig.ftpSwitch == "true" || $currentConfig.ftpSwitch == true;
     var $svnSwitch = $currentConfig.svnSwitch == "true" || $currentConfig.svnSwitch == true;
@@ -348,7 +367,7 @@ exports.doUploader = function(req,res){
         //去重复
         $imgFiles = unique($imgFiles);
 
-        if(Config.itemsConfig[$itemsIndex].imgMasterSwitch == "true" || Config.itemsConfig[$itemsIndex].imgMasterSwitch === true) {
+        if($currentConfig.imgMasterSwitch == "true" || $currentConfig.imgMasterSwitch === true) {
             //console.log("imagemin:::::::::::::::");
             tools.imagemin($imgFiles, $currentConfig, Config, function (result) {
 
@@ -408,7 +427,6 @@ exports.doUploader = function(req,res){
         $jsFiles = unique($jsFiles);
 
         let $jsMinSwitch = $currentConfig.jsMinSwitch ? $currentConfig.jsMinSwitch:false;
-
         if($jsFiles.length > 0 && $jsMinSwitch){
             tools.compressJS($jsFiles,$currentConfig,function(result){
 
@@ -682,27 +700,27 @@ exports.updateCssSprite = function(req,res){
     var $propertyBlackList = req.body.propertyBlackList ? req.body.propertyBlackList.trim() : '';
 
 
-    Config.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].ftpSwitch = $ftpSwitch;
 
-    Config.itemsConfig[$itemsIndex].svnSwitch = $svnSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].svnSwitch = $svnSwitch;
 
-    Config.itemsConfig[$itemsIndex].httpSwitch = $httpSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].httpSwitch = $httpSwitch;
 
-    Config.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].imgMasterSwitch = $imgMasterSwitch;
 
-    Config.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].resourceSyncSwitch = $resourceSyncSwitch;
 
-    Config.itemsConfig[$itemsIndex].jsMinSwitch = $jsMinSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].jsMinSwitch = $jsMinSwitch;
 
-    Config.itemsConfig[$itemsIndex].spriteNameSwitch = $spriteNameSwitch;
-    Config.itemsConfig[$itemsIndex].spriteName = $spriteName;
+    ConfigJson.itemsConfig[$itemsIndex].spriteNameSwitch = $spriteNameSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].spriteName = $spriteName;
 
-    Config.itemsConfig[$itemsIndex].cssNameSwitch = $cssNameSwitch;
-    Config.itemsConfig[$itemsIndex].cssName = $cssName;
+    ConfigJson.itemsConfig[$itemsIndex].cssNameSwitch = $cssNameSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].cssName = $cssName;
 
-    Config.itemsConfig[$itemsIndex].pxToRemSwitch = $pxToRemSwitch;
-    Config.itemsConfig[$itemsIndex].rootValue = $rootValue;
-    Config.itemsConfig[$itemsIndex].propertyBlackList = $propertyBlackList;
+    ConfigJson.itemsConfig[$itemsIndex].pxToRemSwitch = $pxToRemSwitch;
+    ConfigJson.itemsConfig[$itemsIndex].rootValue = $rootValue;
+    ConfigJson.itemsConfig[$itemsIndex].propertyBlackList = $propertyBlackList;
 
 
     updataConfig(true,res,$itemsIndex);
@@ -712,7 +730,7 @@ exports.updateCssSprite = function(req,res){
 exports.deleteProject = function(req,res){
     var $itemsIndex = req.query.itemsIndex;
 
-    Config.itemsConfig.splice($itemsIndex,1);
+    ConfigJson.itemsConfig.splice($itemsIndex,1);
 
 
     updataConfig(true,res,$itemsIndex);
@@ -722,7 +740,7 @@ exports.deleteProject = function(req,res){
 //查询FTP是否为空
 exports.validateFtp = function(req,res){
     var $itemsIndex = req.query.itemsIndex;
-    var $currentItemes = Config.itemsConfig[$itemsIndex];
+    var $currentItemes = ConfigJson.itemsConfig[$itemsIndex];
 
     var $null = false;
     var $switchNull = function(data){
@@ -768,7 +786,7 @@ exports.doConfig = function(req,res){
         var $obj = {};
 
         //判断是否是新增项目
-        var $itemsConfigSize = Config.itemsConfig.length || 0;
+        var $itemsConfigSize = ConfigJson.itemsConfig.length || 0;
 
         if($itemsConfigSize <= $currentIndex){
             //新增项目
@@ -791,6 +809,11 @@ exports.doConfig = function(req,res){
             $obj.svnLocalPath = req.body.svnLocalPath.trim();
             $obj.svnUser = req.body.svnUser.trim();
             $obj.svnPassword = req.body.svnPassword.trim();
+
+            $obj.httpRemote = req.body.httpRemote.trim();
+            $obj.httpTestPath = req.body.httpTestPath.trim();
+            $obj.httpReleasePath = req.body.httpReleasePath.trim();
+            $obj.httpToken = req.body.httpToken.trim();
 
             $obj.ftpSwitch = false;
             $obj.svnSwitch = false;
@@ -823,42 +846,42 @@ exports.doConfig = function(req,res){
             $obj.propertyBlackList = "";
 
 
-            Config.itemsConfig.push($obj);
+            ConfigJson.itemsConfig.push($obj);
         }else{
             //编辑项目
-            Config.itemsConfig[$currentIndex].itemsName = req.body.itemsName.trim();
-            Config.itemsConfig[$currentIndex].localPath = req.body.localPath.trim();
+            ConfigJson.itemsConfig[$currentIndex].itemsName = req.body.itemsName.trim();
+            ConfigJson.itemsConfig[$currentIndex].localPath = req.body.localPath.trim();
 
-            Config.itemsConfig[$currentIndex].releasePath = req.body.releasePath.trim();
-            Config.itemsConfig[$currentIndex].svnReleasePath = req.body.svnReleasePath.trim();
-            Config.itemsConfig[$currentIndex].testPath = req.body.testPath.trim();
-
-
-            Config.itemsConfig[$currentIndex].httpRemote = req.body.httpRemote.trim();
-            Config.itemsConfig[$currentIndex].httpTestPath = req.body.httpTestPath.trim();
-            Config.itemsConfig[$currentIndex].httpReleasePath = req.body.httpReleasePath.trim();
+            ConfigJson.itemsConfig[$currentIndex].releasePath = req.body.releasePath.trim();
+            ConfigJson.itemsConfig[$currentIndex].svnReleasePath = req.body.svnReleasePath.trim();
+            ConfigJson.itemsConfig[$currentIndex].testPath = req.body.testPath.trim();
 
 
-            Config.itemsConfig[$currentIndex].destPathSwitch = $destPathSwitch;
-            Config.itemsConfig[$currentIndex].destPath = req.body.destPath || DefaultDestPath;
+            ConfigJson.itemsConfig[$currentIndex].httpRemote = req.body.httpRemote.trim();
+            ConfigJson.itemsConfig[$currentIndex].httpTestPath = req.body.httpTestPath.trim();
+            ConfigJson.itemsConfig[$currentIndex].httpReleasePath = req.body.httpReleasePath.trim();
+            ConfigJson.itemsConfig[$currentIndex].httpToken = req.body.httpToken.trim();
 
-            Config.itemsConfig[$currentIndex].versionsSyncSwitch = $versionsSyncSwitch;
-            Config.itemsConfig[$currentIndex].versionsFilePath = $versionsFilePath;
+            ConfigJson.itemsConfig[$currentIndex].destPathSwitch = $destPathSwitch;
+            ConfigJson.itemsConfig[$currentIndex].destPath = req.body.destPath || DefaultDestPath;
+
+            ConfigJson.itemsConfig[$currentIndex].versionsSyncSwitch = $versionsSyncSwitch;
+            ConfigJson.itemsConfig[$currentIndex].versionsFilePath = $versionsFilePath;
 
 
-            Config.itemsConfig[$currentIndex].spriteFolderSwitch = $spriteFolderSwitch;
-            Config.itemsConfig[$currentIndex].spriteFolderName = req.body.spriteFolderName ? req.body.spriteFolderName.trim() : "slice";
+            ConfigJson.itemsConfig[$currentIndex].spriteFolderSwitch = $spriteFolderSwitch;
+            ConfigJson.itemsConfig[$currentIndex].spriteFolderName = req.body.spriteFolderName ? req.body.spriteFolderName.trim() : "slice";
 
-            Config.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost.trim();
-            Config.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort.trim();
-            Config.itemsConfig[$currentIndex].ftpType = req.body.ftpType || 'ftp';
-            Config.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath.trim();
-            Config.itemsConfig[$currentIndex].ftpUser = req.body.ftpUser.trim();
-            Config.itemsConfig[$currentIndex].ftpPassword = req.body.ftpPassword.trim();
+            ConfigJson.itemsConfig[$currentIndex].ftpHost = req.body.ftpHost.trim();
+            ConfigJson.itemsConfig[$currentIndex].ftpPort = req.body.ftpPort.trim();
+            ConfigJson.itemsConfig[$currentIndex].ftpType = req.body.ftpType || 'ftp';
+            ConfigJson.itemsConfig[$currentIndex].ftpRemotePath = req.body.ftpRemotePath.trim();
+            ConfigJson.itemsConfig[$currentIndex].ftpUser = req.body.ftpUser.trim();
+            ConfigJson.itemsConfig[$currentIndex].ftpPassword = req.body.ftpPassword.trim();
 
-            Config.itemsConfig[$currentIndex].svnLocalPath = req.body.svnLocalPath.trim();
-            Config.itemsConfig[$currentIndex].svnUser = req.body.svnUser.trim();
-            Config.itemsConfig[$currentIndex].svnPassword = req.body.svnPassword.trim();
+            ConfigJson.itemsConfig[$currentIndex].svnLocalPath = req.body.svnLocalPath.trim();
+            ConfigJson.itemsConfig[$currentIndex].svnUser = req.body.svnUser.trim();
+            ConfigJson.itemsConfig[$currentIndex].svnPassword = req.body.svnPassword.trim();
         }
     }else{
         //全局设置
