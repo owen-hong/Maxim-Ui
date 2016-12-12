@@ -55,6 +55,43 @@ define(function(require, exports, module) {
             $("#versionsFilePath").val($val);
         });
 
+        //导出设置
+        $("#chooseExport").on("change", function () {
+            var $val = $(this).val();
+            $("#exportPath").val($val);
+        });
+        $("#exportBtn").click(function(){
+            var $path = $("#exportPath").val().trim();
+            if($path == ""){
+                alert('导出路径不能为空..');
+                return;
+            };
+
+            $.get('/global/exportConfig?exportPath=' + $path).done(function(data){
+                if(data.status){
+                    alert('导出成功!')
+                }else{
+                    alert(data.message)
+                }
+            }).fail(function(){
+                alert('系统错误..');
+                return;
+            })
+
+            console.log($path);
+        });
+        //导入设置
+        $("#chooseImport").on("change", function () {
+            var $val = $(this).val();
+            $("#importPath").val($val);
+        });
+        $("#importBtn").click(function(){
+            var $path = $("#importPath").val().trim();
+
+            if($path == ""){
+                alert('导入路径不能为空..');
+                return;
+            };
 
         //TODO 启动托盘
         var Tray = function(){

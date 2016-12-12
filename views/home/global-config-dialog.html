@@ -10,6 +10,9 @@
                 <div class="tab-side no-drag">
                     <ul>
                         <li class="cur">
+                            <a href="javascript:void(0)">全局配置</a>
+                        </li>
+                        <li>
                             <a href="javascript:void(0)">关于Maxim</a>
                         </li>
                         <li>
@@ -17,8 +20,48 @@
                         </li>
                     </ul>
                 </div>
-                <div class="no-drag" style="width:68%;">
+                <div class="no-drag" style="width:85%;">
                     <div class="tab-content">
+                        <div class="control-group">
+                            <!-- Appended input-->
+                            <label class="control-label">
+                                导出配置文件路径
+                            </label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <span class="add-on">
+                                        <label>
+                                            <input style="left:0;top:0;width: 200px;z-index: 9;" type="file" id="chooseExport"  class="control-file choose-local" nwdirectory />
+                                        </label>
+                                    </span>
+                                    <input type="text" id="exportPath" class="form-control local-path" v-model="" placeholder="">
+
+                                    <a href="javascript:void(0)" style="padding: 3px 20px;" id="exportBtn" class="btn btn-default btn-sm file-export">确认导出</a>
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="control-group">
+                            <!-- Appended input-->
+                            <label class="control-label">
+                                导入配置文件路径
+                            </label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <span class="add-on">
+                                        <label>
+                                            <input style="left:0;top:0;width: 200px;z-index: 9;" type="file" id="chooseImport"  class="control-file choose-local" />
+                                        </label>
+                                    </span>
+                                    <input type="text" id="importPath" class="form-control local-path" v-model="" placeholder="">
+
+                                </div>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content hide">
                         <div class="about-info-box">
                             <i class="logo-about"></i>
                             <p class="version-text">当前版本: <%= version %></p>

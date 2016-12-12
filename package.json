@@ -1,17 +1,76 @@
 {
-  "name": "Maxim2.6.1",
-  "version": "2.6.1",
-  "author": "owen hong <520ued.com@gmail.com>",
-  "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
-  "packages": {
-    "mac": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.6.1.zip"
-    },
-    "win": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.6.1.zip"
-    }
+  "name": "Maxim-Ui",
+  "version": "2.2.0",
+  "description": "Qcloud front end workflow tools",
+  "author": {
+    "name": "Owenhong",
+    "email": "520UED.com@gmail.com",
+    "url": "http://520UED.com"
   },
-  "core":false,
-  "updataInfo":"1、修复Mac版本配置文件目录存放bug\n",
-  "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
+  "maintainers": [
+    {
+      "name": "Owenhong",
+      "email": "520ued.com@gmail.com",
+      "web": "http://520ued.com"
+    }
+  ],
+  "nodejs": true,
+  "main": "index.html",
+  "node-main": "app.js",
+  "node-remote": "http://localhost:3030",
+  "window": {
+    "icon": "app.png",
+    "frame": false,
+    "title": "node-webkit demo",
+    "position": "center",
+    "resizable": true,
+    "show_in_taskbar": true,
+    "fullscreen": false,
+    "always-on-top": false,
+    "show": false,
+    "kiosk": false,
+    "width": 800,
+    "height": 600,
+    "min_width": 800,
+    "min_height": 600
+  },
+  "webkit": {
+    "page-cache": false,
+    "plugin": true
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "connect-multiparty": "^2.0.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "fs-extra": "^0.26.5",
+    "http-proxy": "^1.13.2",
+    "killport": "^1.0.1",
+    "log4js": "^0.6.31",
+    "maxim-workflow": "^1.0.4",
+    "method-override": "^2.3.5",
+    "node-webkit-updater": "^0.3.2",
+    "os-homedir": "^1.0.1",
+    "postcss-import": "^8.1.2",
+    "request": "^2.69.0",
+    "ssh2": "^0.5.2",
+    "stylelint": "^7.2.0",
+    "svn-spawn": "^0.1.5"
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owen-hong/Maxim-Ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/owen-hong/Maxim-Ui/issues"
+  },
+  "homepage": "https://github.com/owen-hong/Maxim-Ui/",
+  "license": "MIT",
+  "devDependencies": {
+    "stylelint-config-standard": "^13.0.0"
+  }
 }

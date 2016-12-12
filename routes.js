@@ -27,6 +27,11 @@ exports.handle = function (app) {
 
     //edit config.js
     app.post('/tools/doConfig', Home.doConfig);
+
+    //export config
+    app.get('/global/exportConfig', Home.exportConfig);
+    app.get('/global/importConfig', Home.importConfig);
+
 }
 
 

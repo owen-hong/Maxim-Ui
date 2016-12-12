@@ -18,19 +18,22 @@ let appDataPath = "";
 if(os.platform() == "win32"){
     appDataPath = path.join(process.env.APPDATA,'Maxim');
 }else if(os.platform() == "darwin"){
-    appDataPath = path.join(process.env.HOME + '/Libray/Application Support','Maxim');
+    appDataPath = path.join(process.env.HOME + '/Library/Application Support','Maxim');
 }
 
 let ConfigJsonPath = path.join(appDataPath,'config.json');
 if(fs.existsSync(ConfigJsonPath) === true){
     var md5ConfigJson = require(ConfigJsonPath);
-    var ConfigJson = JSON.parse(Crypto.decode(md5ConfigJson.md5));
+
+    if(md5ConfigJson.md5){
+        var ConfigJson = JSON.parse(Crypto.decode(md5ConfigJson.md5));
+    }else{
+        var ConfigJson = md5ConfigJson;
+    }
 }else{
     var ConfigJson = Config;
     fs.outputFileSync(ConfigJsonPath,JSON.stringify(ConfigJson));
 }
-
-console.log(ConfigJsonPath);
 
 exports.configData = function(req,res) {
     res.send(JSON.stringify(ConfigJson));
@@ -893,4 +896,55 @@ exports.doConfig = function(req,res){
 }
 
 
+
+exports.exportConfig = function(req,res){
+    let destPath = path.join(req.query.exportPath,'config.json');
+
+    fs.copy(ConfigJsonPath,destPath,function(err){
+        if(err){
+            res.json({
+                status:false,
+                message:err.message
+            })
+            return;
+        }
+        res.json({
+            status:true
+        })
+    });
+
+    console.log(path);
+}
+exports.importConfig = function(req,res){
+    let destPath = req.query.importPath;
+    if(fs.existsSync(destPath) === true){
+        let extName = path.extname(destPath);
+
+        if(extName ==".json"){
+            fs.copy(destPath,ConfigJsonPath,function(err){
+                if(err){
+                    res.json({
+                        status:false,
+                        message:err.message
+                    })
+                    return;
+                }
+                res.json({
+                    status:true
+                })
+            });
+        }else{
+            res.json({
+                status:false,
+                message:'导入的配置文件类型不对，文件类型必须为json....'
+            })
+        }
+    }else{
+        console.log("abc");
+        res.json({
+            status:false,
+            message:'导入配置文件不存在....'
+        })
+    };
+}
 
