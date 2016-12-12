@@ -92,6 +92,21 @@ define(function(require, exports, module) {
                 alert('导入路径不能为空..');
                 return;
             };
+            if (!confirm("请确认导入配置文件，导入后不可恢复，建议导入前先备份现有配置!")) {
+                window.event.returnValue = false;
+            }else{
+                $.get('/global/importConfig?importPath=' + $path).done(function(data){
+                    if(data.status){
+                        alert('导入成功!请重启Maxim即可立即生效!');
+                    }else{
+                        alert(data.message)
+                    }
+                }).fail(function(){
+                    alert('系统错误..');
+                    return;
+                });
+            }
+        });
 
         //TODO 启动托盘
         var Tray = function(){
