@@ -57,17 +57,15 @@ define(function(require, exports, module) {
 
         //导出设置
         $("#chooseExport").on("change", function () {
-            var $val = $(this).val();
+            var $val = $(this).val().trim();
             $("#exportPath").val($val);
-        });
-        $("#exportBtn").click(function(){
-            var $path = $("#exportPath").val().trim();
-            if($path == ""){
+
+            if($val == ""){
                 alert('导出路径不能为空..');
                 return;
             };
 
-            $.get('/global/exportConfig?exportPath=' + $path).done(function(data){
+            $.get('/global/exportConfig?exportPath=' + $val).done(function(data){
                 if(data.status){
                     alert('导出成功!')
                 }else{
@@ -76,10 +74,11 @@ define(function(require, exports, module) {
             }).fail(function(){
                 alert('系统错误..');
                 return;
-            })
+            });
 
-            console.log($path);
         });
+
+
         //导入设置
         $("#chooseImport").on("change", function () {
             var $val = $(this).val();

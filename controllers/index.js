@@ -39,6 +39,7 @@ exports.configData = function(req,res) {
     res.send(JSON.stringify(ConfigJson));
 }
 
+console.log(ConfigJsonPath);
 
 //去重复公共方法
 const unique = function(array){
@@ -79,6 +80,15 @@ var updataConfig = function(resSwitch,res,itemsIndex){
     }
 }
 
+request.get('http://520ued.com/maxim/MaximUser?hostName=' + os.hostname(), function(error,httpResponse,body){
+    if (!error && httpResponse.statusCode == 200) {
+        console.log('suceess........');
+        console.log(body);
+    }else{
+        console.log('error........');
+        console.log(error);
+    }
+});
 
 exports.index = function(req,res){
     var itemsConfig = ConfigJson.itemsConfig[0] ? ConfigJson.itemsConfig : "" ;
@@ -88,7 +98,7 @@ exports.index = function(req,res){
     //判断monitor是否开启
     if(ConfigJson.monitor){
         //http://520ued.com/maxim/downCount
-        request('http://520ued.com/maxim/downCount', function (error, response, result) {
+        request.get('http://520ued.com/maxim/downCount', function (error, response, result) {
             if (!error && response.statusCode == 200) {
                 var result = JSON.parse(result);
 
@@ -464,7 +474,6 @@ exports.doUploader = function(req,res){
 
         if($copyFile.length > 0){
             tools.copyFiles($copyFile,$currentConfig,function(result){
-                console.log(result);
 
                 //拼接dest的路径文件
                 destPath(result);
@@ -674,6 +683,12 @@ exports.doUploader = function(req,res){
     }
 }
 
+
+
+exports.updateGlobalConfig = function(req,res){
+
+
+}
 
 //更新css 和 sprite 版本号和状态
 exports.updateCssSprite = function(req,res){
@@ -912,8 +927,6 @@ exports.exportConfig = function(req,res){
             status:true
         })
     });
-
-    console.log(path);
 }
 exports.importConfig = function(req,res){
     let destPath = req.query.importPath;
@@ -940,7 +953,6 @@ exports.importConfig = function(req,res){
             })
         }
     }else{
-        console.log("abc");
         res.json({
             status:false,
             message:'导入配置文件不存在....'

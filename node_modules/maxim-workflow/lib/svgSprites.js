@@ -115,7 +115,7 @@ svgSprites.prototype.init = function(files,svgSpriteDest,config,callback){
                     fse.removeSync(modifySvgPath) //合并后删除生成的改色后的单张svg
 
                     if(modifySvgPath.indexOf(data.path) >= 0){
-                        console.log('modify svg...........');
+                        //console.log('modify svg...........');
                         data.svgPath = filesData;
                         ret.push(data);
                     }

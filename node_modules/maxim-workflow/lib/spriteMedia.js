@@ -679,39 +679,38 @@ class Media{
                         });
 
                         let selector = sliceMaps[_this.config.localPath + file.fName.replace(/\//g, path.sep)];
-
                         if(selector){
                             for (let i = 0; i < len; i++) {
                                 if (includes(selector, rules[i].selectorText)) {
                                     let currentLength = rules[i].style.length;
                                     let svgUrl = rules[i].style['background-image'];
 
-                                    if(svgUrl){
+                                    if(svgUrl && !Array.isArray(svgUrl)){
                                         if(file.color){
                                             let baseName = path.basename(file.baseName);
                                             let newName = path.basename(file.fName);
                                             let CurrentUrl = svgUrl.replace(baseName,newName);
                                             let pngUrl = CurrentUrl.replace('.svg','.png');
 
-                                            if (rules[i].style['background'] == undefined) {
+                                            if (rules[i].style['background-image'] == undefined) {
                                                 currentLength++;
-                                                rules[i].style[currentLength - 1 + ''] = 'background';
+                                                rules[i].style[currentLength - 1 + ''] = 'background-image';
                                             }
 
                                             rules[i].style.length = currentLength;
-                                            rules[i].style['background-image'] = pngUrl;
-                                            rules[i].style['background'] = '-webkit-image-set(' + pngUrl + ' 1x,'+ CurrentUrl + ' 2x)';
+                                            rules[i].style['background-image'] = pngUrl + ';';
+                                            rules[i].style['background-image'] += 'background-image:-webkit-image-set(' + pngUrl + ' 1x,'+ CurrentUrl + ' 2x)';
                                         }else{
                                             let pngUrl = svgUrl.replace('.svg','.png');
 
-                                            if (rules[i].style['background'] == undefined) {
+                                            if (rules[i].style['background-image'] == undefined) {
                                                 currentLength++;
-                                                rules[i].style[currentLength - 1 + ''] = 'background';
+                                                rules[i].style[currentLength - 1 + ''] = 'background-image';
                                             }
 
                                             rules[i].style.length = currentLength;
-                                            rules[i].style['background-image'] = pngUrl;
-                                            rules[i].style['background'] = '-webkit-image-set(' + pngUrl + ' 1x,'+ svgUrl + ' 2x)';
+                                            rules[i].style['background-image'] = pngUrl + ';';
+                                            rules[i].style['background-image'] += 'background-image:-webkit-image-set(' + pngUrl + ' 1x,'+ svgUrl + ' 2x)';
                                         }
                                     }
                                 }
@@ -776,14 +775,8 @@ class Media{
                             let position = svgSpriteData.position.relative;
                             let selector = sliceMaps[svgSpriteData.svgPath];
 
-
-                            let xPisitionPercent = (absolute.x - 1) / (spriteSizeWidth - singleWidth) * -100 + '%';
-                            let yPisitionPercent = (absolute.y - 1) / (spriteSizeHeight - singleheight) * -100 + '%';
-
-
-                            //console.log(position);
-                            //console.log(xPisitionPercent,yPisitionPercent);
-                            //console.log(svgSpriteData.position.absolute);
+                            let xPisitionPercent = ((absolute.x - 1) / (spriteSizeWidth - singleWidth)).toFixed(4)  * -100 + '%';
+                            let yPisitionPercent = ((absolute.y - 1) / (spriteSizeHeight - singleheight)).toFixed(4) * -100 + '%';
 
 
                             //遍历cssom，将选择器为selector的om的属性进行修改
@@ -805,6 +798,10 @@ class Media{
                                         currentLength++;
                                         rules[i].style[currentLength - 1 + ''] = 'background-size';
                                     }
+                                    if (rules[i].style['background-repeat'] == undefined) {
+                                        currentLength++;
+                                        rules[i].style[currentLength - 1 + ''] = 'background-repeat';
+                                    }
 
                                     rules[i].style.length = currentLength;
 
@@ -813,6 +810,7 @@ class Media{
                                     rules[i].style['background-image'] += 'background-image:-webkit-image-set(url(sprite/' + svgSpritePngFile + ')1x,url(sprite/' + svgSpriteFile + ') 2x)';
                                     rules[i].style['background-position'] = xPisitionPercent +' '+ yPisitionPercent;
                                     rules[i].style['background-size'] = xSizePercent +' '+ ySizePercent + ';';
+                                    rules[i].style['background-repeat'] = 'no-repeat';
                                 }
                             }
                         });
