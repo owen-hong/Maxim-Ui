@@ -406,6 +406,11 @@ main .shortcut-operations a{
     font-size: 14px;
     color: #354351;
 }
+.drop-files-box .logs-box h3 .show-ars-btn{
+    float: right;
+    font-size: 12px;
+}
+
 .drop-files-box .logs-box h3 em{
     font-weight: normal;
     margin-left: 5px;
@@ -698,7 +703,10 @@ main .shortcut-operations a{
 }
 
 
-
+.logs-wrap .repeat-btn{
+    float: right;
+    font-size: 12px;
+}
 
 
 

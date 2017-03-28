@@ -45,7 +45,7 @@ define(function(require, exports, module) {
             var $svnReleasePath = "<div class='logs-box'><h3 class='releasePath'>SVN提交成功文件列表</h3><div class='logs-text-box'>";
             var $testPath = "<div class='logs-box'><h3>FTP预览地址</h3><div class='logs-text-box'>";
             var $httpTestPath = "<div class='logs-box'><h3>HTTP预览地址</h3><div class='logs-text-box'>";
-            var $httpReleasePath = "<div class='logs-box'><h3 class='releasePath'>HTTP提单路径</h3><div class='logs-text-box'>";
+            var $httpReleasePath = "<div class='logs-box'><h3 class='releasePath'>HTTP提单路径<a href='javascript:;' class='show-ars-btn'>显示提单列表</a></h3><div class='logs-text-box' style='display: none'>";
 
             var $versionsSyncFiles = "<div class='logs-box'><h3 style='color:#06c;'>CSS版本控制文件列表</h3><div class='logs-text-box'>";
 
@@ -225,7 +225,7 @@ define(function(require, exports, module) {
                 allDestPath = "<p style='color:#06c290'>处理成功</p>";
             }
 
-            $fileBox.append('<div class="logs-wrap"><p class="time">'+ $currentDate +'</p><div class="logs">'+ allDestPath + '</div></div>')
+            $fileBox.append('<div class="logs-wrap"><input class="repeat-path" type="hidden" value="'+ result.repeatFiles +'"/><p class="time">'+ $currentDate +'<a href="javascript:;" class="repeat-btn">再次提交</a></p><div class="logs">'+ allDestPath + '</div></div>')
 
             //输出提单复制路径到input.hidden
             if($releasePath != ""){
@@ -378,6 +378,14 @@ define(function(require, exports, module) {
         });
 
         $("#repeatLastfiles").click(function(event){
+            var lastTime;
+            repeatLastfiles(event);
+        });
+
+        $('body').on('click','.repeat-btn',function(event){
+            var $repeatVal = $(this).parent().siblings('.repeat-path').val();
+            $repeatfiles = $repeatVal;
+
             var lastTime;
             repeatLastfiles(event);
         });

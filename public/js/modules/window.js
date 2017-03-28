@@ -31,6 +31,17 @@ define(function(require, exports, module) {
             }
         });
 
+        //显示提单路径
+        $('body').on('click','.show-ars-btn',function(){
+            if($(this).text() == '隐藏提单列表'){
+                $(this).html('显示提单列表');
+            }else{
+                $(this).html('隐藏提单列表');
+            }
+
+            $(this).parent().siblings('.logs-text-box').toggle();
+        });
+
         //TODO 选择文件夹
         $(".file-local").click(function(){
             $("#chooseLocal").click();

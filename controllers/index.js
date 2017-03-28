@@ -80,15 +80,15 @@ var updataConfig = function(resSwitch,res,itemsIndex){
     }
 }
 
-request.get('http://520ued.com/maxim/MaximUser?hostName=' + os.hostname(), function(error,httpResponse,body){
-    if (!error && httpResponse.statusCode == 200) {
-        console.log('suceess........');
-        console.log(body);
-    }else{
-        console.log('error........');
-        console.log(error);
-    }
-});
+//request.get('http://520ued.com/maxim/MaximUser?hostName=' + os.hostname(), function(error,httpResponse,body){
+//    if (!error && httpResponse.statusCode == 200) {
+//        console.log('suceess........');
+//        console.log(body);
+//    }else{
+//        console.log('error........');
+//        console.log(error);
+//    }
+//});
 
 exports.index = function(req,res){
     var itemsConfig = ConfigJson.itemsConfig[0] ? ConfigJson.itemsConfig : "" ;
@@ -626,14 +626,14 @@ exports.doUploader = function(req,res){
     }
 
 
-
     //TODO 文件分类
-    $filesType.forEach(function(fileType,i){
-        if (fileType.indexOf('javascript') != -1) {
+    $fileUrl.forEach(function(fileUrl,i){
+        var $extname = path.extname(fileUrl);
+        if ($extname == '.js') {
             $jsFiles.push($fileUrl[i]);
-        } else if(fileType == "text\/css"){
+        } else if($extname == '.css'){
             $cssFiles.push($fileUrl[i]);
-        }else if(fileType == "image\/jpeg" || fileType == "image\/png"){
+        }else if($extname == '.jpge' || $extname == '.jpg' || $extname == '.png'){
             $imgFiles.push($fileUrl[i]);
         }else{
             $copyFile.push($fileUrl[i]);
