@@ -16,10 +16,8 @@ svgToPng.prototype.init = function(files,config,callback){
     var results = [];
     var index = files.length;
     files.forEach(function(file){
-
         let relativeFile = file.replace(config.destPath, '').replace(config.localPath, '');
         let svgDest = path.join(config.destPath,relativeFile);
-
 
         //获取url参数
         var getParam = function(url, id) {
@@ -169,5 +167,50 @@ svgToPng.prototype.init = function(files,config,callback){
     })
 
 }
+
+svgToPng.prototype.svg2png = function(file,config,callback){
+    var results = [];
+    var svgBuffer = pn.readFileSync(file);
+    svg2png(svgBuffer, {width: config.width, height: config.height})
+        .then(function (buffer) {
+            if(config.destPath !=''){
+                var $baseName = path.basename(file,'.svg')
+                var $destPath = path.join(config.destPath,$baseName) + '.png';
+                fse.outputFile($destPath, buffer, function (err) {
+                    if (err) {
+                        results.push({
+                            status: false,
+                            fName: file,
+                            message: err.message
+                        });
+
+                        index--;
+                        if (index <= 0) {
+                            callback(null, results);
+                        }
+                        return;
+                    }
+
+                    //SVG TO PNG文件输出
+                    results.push({
+                        status: true,
+                        fName: $destPath,
+                        buffer:buffer
+                    });
+                    callback(null, results);
+                });
+            }
+        })
+        .catch(function (error) {
+            if (error.message.indexOf('Width or height could not be determined from either') >= 0) {
+                var errorMessage = new Error(file + ': ' + '此SVG文件未设定宽高,无法转换成png');
+            } else {
+                var errorMessage = new Error(file + ': ' + error.message);
+            }
+
+            callback(errorMessage, results);
+        })
+}
+
 
 module.exports = svgToPng;
