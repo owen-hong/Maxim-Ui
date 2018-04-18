@@ -1,17 +1,17 @@
 {
-  "name": "Maxim2.6.9",
-  "version": "2.6.9",
-  "author": "owen hong <520ued.com@gmail.com>",
-  "manifestUrl": "http://owen-hong.github.io/Maxim-Ui/package.json",
+  "name": "Maxim2.7.1",
+  "version": "2.7.1",
+  "author": "baozeng <baozeng@tencent.com>",
+  "manifestUrl": "http://abc.oa.com/tools/maxim/package.json",
   "packages": {
     "mac": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.6.9.zip"
+      "url": "http://abc.oa.com/tools/maxim/updapp2.7.1.zip"
     },
     "win": {
-      "url": "http://owen-hong.github.io/Maxim-Ui/updapp2.6.9.zip"
+      "url": "http://abc.oa.com/tools/maxim/updapp2.7.1.zip"
     }
   },
   "core":false,
-  "updataInfo":"SVG换色支持行内样式功能",
-  "MacUpdataInfo":"本次更新由于涉及到更新软件内核，无法进行局部,请下载更新包："
+  "updataInfo":"修改更新地址",
+  "MacUpdataInfo":"修改更新地址"
 }
